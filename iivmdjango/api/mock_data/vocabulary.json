@@ -1,0 +1,3078 @@
+[
+  {
+    "id": "1",
+    "term": "Abscess",
+    "translations": {
+      "pl": "Ropień"
+    },
+    "category": "symptoms"
+  },
+  {
+    "id": "2",
+    "term": "Diabetes",
+    "translations": {
+      "pl": "Cukrzyca"
+    },
+    "category": "diseases"
+  },
+  {
+    "id": "3",
+    "term": "Hypertension",
+    "translations": {
+      "pl": "Nadciśnienie"
+    },
+    "category": "diseases"
+  },
+  {
+    "id": "4",
+    "term": "Ache",
+    "translations": {
+      "pl": "Ból"
+    },
+    "category": "symptoms"
+  },
+  {
+    "id": "5",
+    "term": "Acid reflux",
+    "translations": {
+      "pl": "Refluks żołądkowo-przełykowy"
+    },
+    "category": "symptoms"
+  },
+  {
+    "id": "6",
+    "term": "Acne",
+    "translations": {
+      "pl": "Trądzik"
+    },
+    "category": "symptoms"
+  },
+  {
+    "id": "7",
+    "term": "Acute",
+    "translations": {
+      "pl": "Ostry"
+    },
+    "category": "symptoms"
+  },
+  {
+    "id": "8",
+    "term": "Acute Pancreatitis",
+    "translations": {
+      "pl": "Ostre zapalenie trzustki"
+    },
+    "category": "diseases"
+  },
+  {
+    "id": "9",
+    "term": "Adenoids",
+    "translations": {
+      "pl": "Migdałki gardłowe"
+    },
+    "category": "anatomy"
+  },
+  {
+    "id": "10",
+    "term": "Adenoma",
+    "translations": {
+      "pl": "Gruczolak"
+    },
+    "category": "diseases"
+  },
+  {
+    "id": "11",
+    "term": "Airway",
+    "translations": {
+      "pl": "Drogi oddechowe"
+    },
+    "category": "anatomy"
+  },
+  {
+    "id": "12",
+    "term": "Allergies",
+    "translations": {
+      "pl": "Alergie"
+    },
+    "category": "diseases"
+  },
+  {
+    "id": "13",
+    "term": "Alzheimer's disease",
+    "translations": {
+      "pl": "Choroba Alzheimera"
+    },
+    "category": "diseases"
+  },
+  {
+    "id": "14",
+    "term": "Amniotic Fluid",
+    "translations": {
+      "pl": "Płyn owodniowy"
+    },
+    "category": "anatomy"
+  },
+  {
+    "id": "15",
+    "term": "Analgesic",
+    "translations": {
+      "pl": "Środek przeciwbólowy"
+    },
+    "category": "treatment"
+  },
+  {
+    "id": "16",
+    "term": "Anaphylactic shock",
+    "translations": {
+      "pl": "Wstrząs anafilaktyczny"
+    },
+    "category": "symptoms"
+  },
+  {
+    "id": "17",
+    "term": "Anesthesia",
+    "translations": {
+      "pl": "Znieczulenie"
+    },
+    "category": "treatment"
+  },
+  {
+    "id": "18",
+    "term": "Anesthesiologist",
+    "translations": {
+      "pl": "Anestezjolog"
+    },
+    "category": "medical professionals"
+  },
+  {
+    "id": "19",
+    "term": "Aneurysm",
+    "translations": {
+      "pl": "Tętniak"
+    },
+    "category": "diseases"
+  },
+  {
+    "id": "20",
+    "term": "Angina",
+    "translations": {
+      "pl": "Dławica piersiowa"
+    },
+    "category": "diseases"
+  },
+  {
+    "id": "21",
+    "term": "Ankle",
+    "translations": {
+      "pl": "Kostka"
+    },
+    "category": "anatomy"
+  },
+  {
+    "id": "22",
+    "term": "Anomaly",
+    "translations": {
+      "pl": "Anomalia"
+    },
+    "category": "symptoms"
+  },
+  {
+    "id": "23",
+    "term": "Anorexia nervosa",
+    "translations": {
+      "pl": "Anoreksja"
+    },
+    "category": "diseases"
+  },
+  {
+    "id": "24",
+    "term": "Anti-inflammatory",
+    "translations": {
+      "pl": "Przeciwzapalny"
+    },
+    "category": "treatment"
+  },
+  {
+    "id": "25",
+    "term": "Antibiotic",
+    "translations": {
+      "pl": "Antybiotyk"
+    },
+    "category": "treatment"
+  },
+  {
+    "id": "26",
+    "term": "Antibody",
+    "translations": {
+      "pl": "Przeciwciało"
+    },
+    "category": "biology"
+  },
+  {
+    "id": "27",
+    "term": "Anticoagulant",
+    "translations": {
+      "pl": "Antykoagulant"
+    },
+    "category": "treatment"
+  },
+  {
+    "id": "28",
+    "term": "Antioxidants",
+    "translations": {
+      "pl": "Przeciwutleniacze"
+    },
+    "category": "biology"
+  },
+  {
+    "id": "29",
+    "term": "Antiseptic",
+    "translations": {
+      "pl": "Antyseptyk"
+    },
+    "category": "treatment"
+  },
+  {
+    "id": "30",
+    "term": "Aorta",
+    "translations": {
+      "pl": "Aorta"
+    },
+    "category": "anatomy"
+  },
+  {
+    "id": "31",
+    "term": "Aortic Valve",
+    "translations": {
+      "pl": "Zastawka aortalna"
+    },
+    "category": "anatomy"
+  },
+  {
+    "id": "32",
+    "term": "Appendicitis",
+    "translations": {
+      "pl": "Zapalenie wyrostka robaczkowego"
+    },
+    "category": "diseases"
+  },
+  {
+    "id": "33",
+    "term": "Arthritis",
+    "translations": {
+      "pl": "Zapalenie stawów"
+    },
+    "category": "diseases"
+  },
+  {
+    "id": "34",
+    "term": "Ascending Colon",
+    "translations": {
+      "pl": "Okrężnica wstępująca"
+    },
+    "category": "anatomy"
+  },
+  {
+    "id": "35",
+    "term": "Asthma",
+    "translations": {
+      "pl": "Astma"
+    },
+    "category": "diseases"
+  },
+  {
+    "id": "36",
+    "term": "Atrophy",
+    "translations": {
+      "pl": "Zanik"
+    },
+    "category": "symptoms"
+  },
+  {
+    "id": "37",
+    "term": "Auditory Nerve",
+    "translations": {
+      "pl": "Nerw słuchowy"
+    },
+    "category": "anatomy"
+  },
+  {
+    "id": "38",
+    "term": "Autism",
+    "translations": {
+      "pl": "Autyzm"
+    },
+    "category": "diseases"
+  },
+  {
+    "id": "39",
+    "term": "Axillary Artery",
+    "translations": {
+      "pl": "Tętnica pachowa"
+    },
+    "category": "anatomy"
+  },
+  {
+    "id": "40",
+    "term": "Axillary Vein",
+    "translations": {
+      "pl": "Żyła pachowa"
+    },
+    "category": "anatomy"
+  },
+  {
+    "id": "41",
+    "term": "Baby Blues",
+    "translations": {
+      "pl": "Smutek poporodowy"
+    },
+    "category": "symptoms"
+  },
+  {
+    "id": "42",
+    "term": "Back labor",
+    "translations": {
+      "pl": "Ból krzyża podczas porodu"
+    },
+    "category": "symptoms"
+  },
+  {
+    "id": "43",
+    "term": "Barrier methods",
+    "translations": {
+      "pl": "Metody barierowe"
+    },
+    "category": "treatment"
+  },
+  {
+    "id": "44",
+    "term": "Benign",
+    "translations": {
+      "pl": "Łagodny"
+    },
+    "category": "symptoms"
+  },
+  {
+    "id": "45",
+    "term": "Biopsy",
+    "translations": {
+      "pl": "Biopsja"
+    },
+    "category": "diagnostic procedures"
+  },
+  {
+    "id": "46",
+    "term": "Birthmark",
+    "translations": {
+      "pl": "Znamię"
+    },
+    "category": "symptoms"
+  },
+  {
+    "id": "47",
+    "term": "Bladder cancer",
+    "translations": {
+      "pl": "Rak pęcherza moczowego"
+    },
+    "category": "diseases"
+  },
+  {
+    "id": "48",
+    "term": "Blood Pressure",
+    "translations": {
+      "pl": "Ciśnienie krwi"
+    },
+    "category": "diagnostic procedures"
+  },
+  {
+    "id": "49",
+    "term": "Blood Pressure Cuff",
+    "translations": {
+      "pl": "Mankiet do mierzenia ciśnienia"
+    },
+    "category": "medical equipment"
+  },
+  {
+    "id": "50",
+    "term": "Blood Pressure monitor",
+    "translations": {
+      "pl": "Monitor ciśnienia krwi"
+    },
+    "category": "medical equipment"
+  },
+  {
+    "id": "51",
+    "term": "Blood clot",
+    "translations": {
+      "pl": "Zakrzep"
+    },
+    "category": "symptoms"
+  },
+  {
+    "id": "52",
+    "term": "Bloody stool",
+    "translations": {
+      "pl": "Krwawy stolec"
+    },
+    "category": "symptoms"
+  },
+  {
+    "id": "53",
+    "term": "Bone marrow",
+    "translations": {
+      "pl": "Szpik kostny"
+    },
+    "category": "anatomy"
+  },
+  {
+    "id": "54",
+    "term": "Bowel movement",
+    "translations": {
+      "pl": "Ruchy jelit"
+    },
+    "category": "symptoms"
+  },
+  {
+    "id": "55",
+    "term": "Braxton Hicks contractions",
+    "translations": {
+      "pl": "Skurcze Braxtona Hicksa"
+    },
+    "category": "symptoms"
+  },
+  {
+    "id": "56",
+    "term": "Breast self exam",
+    "translations": {
+      "pl": "Samobadanie piersi"
+    },
+    "category": "diagnostic procedures"
+  },
+  {
+    "id": "57",
+    "term": "Bronchitis",
+    "translations": {
+      "pl": "Zapalenie oskrzeli"
+    },
+    "category": "diseases"
+  },
+  {
+    "id": "58",
+    "term": "Bruise",
+    "translations": {
+      "pl": "Siniak"
+    },
+    "category": "symptoms"
+  },
+  {
+    "id": "59",
+    "term": "Burn unit",
+    "translations": {
+      "pl": "Oddział leczenia oparzeń"
+    },
+    "category": "hospital departments"
+  },
+  {
+    "id": "60",
+    "term": "Bursitis",
+    "translations": {
+      "pl": "Zapalenie kaletki"
+    },
+    "category": "diseases"
+  },
+  {
+    "id": "61",
+    "term": "Calf",
+    "translations": {
+      "pl": "Łydka"
+    },
+    "category": "anatomy"
+  },
+  {
+    "id": "62",
+    "term": "Cancer",
+    "translations": {
+      "pl": "Rak"
+    },
+    "category": "diseases"
+  },
+  {
+    "id": "63",
+    "term": "Carcinogen",
+    "translations": {
+      "pl": "Karcynogen"
+    },
+    "category": "biology"
+  },
+  {
+    "id": "64",
+    "term": "Cardiac Arrest",
+    "translations": {
+      "pl": "Zatrzymanie akcji serca"
+    },
+    "category": "diseases"
+  },
+  {
+    "id": "65",
+    "term": "Cardiovascular Disease",
+    "translations": {
+      "pl": "Choroba sercowo-naczyniowa"
+    },
+    "category": "diseases"
+  },
+  {
+    "id": "66",
+    "term": "Carpal Tunnel Syndrome",
+    "translations": {
+      "pl": "Zespół cieśni nadgarstka"
+    },
+    "category": "diseases"
+  },
+  {
+    "id": "67",
+    "term": "Catheter",
+    "translations": {
+      "pl": "Cewnik"
+    },
+    "category": "medical equipment"
+  },
+  {
+    "id": "68",
+    "term": "Cavity",
+    "translations": {
+      "pl": "Próchnica"
+    },
+    "category": "diseases"
+  },
+  {
+    "id": "69",
+    "term": "Celiac disease",
+    "translations": {
+      "pl": "Celiakia"
+    },
+    "category": "diseases"
+  },
+  {
+    "id": "70",
+    "term": "Cervical Spine",
+    "translations": {
+      "pl": "Kręgosłup szyjny"
+    },
+    "category": "anatomy"
+  },
+  {
+    "id": "71",
+    "term": "Cervix",
+    "translations": {
+      "pl": "Szyjka macicy"
+    },
+    "category": "anatomy"
+  },
+  {
+    "id": "72",
+    "term": "Chickenpox",
+    "translations": {
+      "pl": "Ospa wietrzna"
+    },
+    "category": "diseases"
+  },
+  {
+    "id": "73",
+    "term": "Chills",
+    "translations": {
+      "pl": "Dreszcze"
+    },
+    "category": "symptoms"
+  },
+  {
+    "id": "74",
+    "term": "Cholesterol",
+    "translations": {
+      "pl": "Cholesterol"
+    },
+    "category": "biology"
+  },
+  {
+    "id": "75",
+    "term": "Chronic",
+    "translations": {
+      "pl": "Przewlekły"
+    },
+    "category": "symptoms"
+  },
+  {
+    "id": "76",
+    "term": "Chronic Pain",
+    "translations": {
+      "pl": "Przewlekły ból"
+    },
+    "category": "symptoms"
+  },
+  {
+    "id": "77",
+    "term": "Clinical trials",
+    "translations": {
+      "pl": "Badania kliniczne"
+    },
+    "category": "research"
+  },
+  {
+    "id": "78",
+    "term": "Coagulate",
+    "translations": {
+      "pl": "Koagulować"
+    },
+    "category": "biology"
+  },
+  {
+    "id": "79",
+    "term": "Cold",
+    "translations": {
+      "pl": "Przeziębienie"
+    },
+    "category": "diseases"
+  },
+  {
+    "id": "80",
+    "term": "Collarbone",
+    "translations": {
+      "pl": "Obojczyk"
+    },
+    "category": "anatomy"
+  },
+  {
+    "id": "81",
+    "term": "Colonoscopy",
+    "translations": {
+      "pl": "Kolonoskopia"
+    },
+    "category": "diagnostic procedures"
+  },
+  {
+    "id": "82",
+    "term": "Colorectal cancer",
+    "translations": {
+      "pl": "Rak jelita grubego"
+    },
+    "category": "diseases"
+  },
+  {
+    "id": "83",
+    "term": "Colostrum",
+    "translations": {
+      "pl": "Siara"
+    },
+    "category": "biology"
+  },
+  {
+    "id": "84",
+    "term": "Coma",
+    "translations": {
+      "pl": "Śpiączka"
+    },
+    "category": "symptoms"
+  },
+  {
+    "id": "85",
+    "term": "Complex carbohydrates",
+    "translations": {
+      "pl": "Węglowodany złożone"
+    },
+    "category": "nutrition"
+  },
+  {
+    "id": "86",
+    "term": "Compound fracture",
+    "translations": {
+      "pl": "Złamanie złożone"
+    },
+    "category": "symptoms"
+  },
+  {
+    "id": "87",
+    "term": "Congenital Abnormalities",
+    "translations": {
+      "pl": "Wady wrodzone"
+    },
+    "category": "diseases"
+  },
+  {
+    "id": "88",
+    "term": "Congestive heart failure",
+    "translations": {
+      "pl": "Zastoinowa niewydolność serca"
+    },
+    "category": "diseases"
+  },
+  {
+    "id": "89",
+    "term": "Contraceptive",
+    "translations": {
+      "pl": "Antykoncepcyjny"
+    },
+    "category": "treatment"
+  },
+  {
+    "id": "90",
+    "term": "Contractions",
+    "translations": {
+      "pl": "Skurcze"
+    },
+    "category": "symptoms"
+  },
+  {
+    "id": "91",
+    "term": "Contusion",
+    "translations": {
+      "pl": "Stłuczenie"
+    },
+    "category": "symptoms"
+  },
+  {
+    "id": "92",
+    "term": "Cornea",
+    "translations": {
+      "pl": "Rogówka"
+    },
+    "category": "anatomy"
+  },
+  {
+    "id": "93",
+    "term": "Coronary heart disease",
+    "translations": {
+      "pl": "Choroba niedokrwienna serca"
+    },
+    "category": "diseases"
+  },
+  {
+    "id": "94",
+    "term": "Cough",
+    "translations": {
+      "pl": "Kaszel"
+    },
+    "category": "symptoms"
+  },
+  {
+    "id": "95",
+    "term": "Crohn's disease",
+    "translations": {
+      "pl": "Choroba Crohna"
+    },
+    "category": "diseases"
+  },
+  {
+    "id": "96",
+    "term": "Cyst",
+    "translations": {
+      "pl": "Torbiel"
+    },
+    "category": "symptoms"
+  },
+  {
+    "id": "97",
+    "term": "Cystic Fibrosis",
+    "translations": {
+      "pl": "Mukowiscydoza"
+    },
+    "category": "diseases"
+  },
+  {
+    "id": "98",
+    "term": "Cystitis",
+    "translations": {
+      "pl": "Zapalenie pęcherza moczowego"
+    },
+    "category": "diseases"
+  },
+  {
+    "id": "99",
+    "term": "Deafness",
+    "translations": {
+      "pl": "Głuchota"
+    },
+    "category": "symptoms"
+  },
+  {
+    "id": "100",
+    "term": "Deep vein thrombosis",
+    "translations": {
+      "pl": "Zakrzepica żył głębokich"
+    },
+    "category": "diseases"
+  },
+  {
+    "id": "101",
+    "term": "Degenerative",
+    "translations": {
+      "pl": "Zwyrodnieniowy"
+    },
+    "category": "symptoms"
+  },
+  {
+    "id": "102",
+    "term": "Dehydration",
+    "translations": {
+      "pl": "Odwodnienie"
+    },
+    "category": "symptoms"
+  },
+  {
+    "id": "103",
+    "term": "Dentures",
+    "translations": {
+      "pl": "Protezy dentystyczne"
+    },
+    "category": "medical equipment"
+  },
+  {
+    "id": "104",
+    "term": "Depression",
+    "translations": {
+      "pl": "Depresja"
+    },
+    "category": "diseases"
+  },
+  {
+    "id": "105",
+    "term": "Dermatitis",
+    "translations": {
+      "pl": "Zapalenie skóry"
+    },
+    "category": "diseases"
+  },
+  {
+    "id": "106",
+    "term": "Descending Colon",
+    "translations": {
+      "pl": "Okrężnica zstępująca"
+    },
+    "category": "anatomy"
+  },
+  {
+    "id": "107",
+    "term": "Dialysis",
+    "translations": {
+      "pl": "Dializa"
+    },
+    "category": "treatment"
+  },
+  {
+    "id": "108",
+    "term": "Digestion",
+    "translations": {
+      "pl": "Trawienie"
+    },
+    "category": "biology"
+  },
+  {
+    "id": "109",
+    "term": "Dilation",
+    "translations": {
+      "pl": "Rozszerzenie"
+    },
+    "category": "symptoms"
+  },
+  {
+    "id": "110",
+    "term": "Disabilities",
+    "translations": {
+      "pl": "Niepełnosprawności"
+    },
+    "category": "diseases"
+  },
+  {
+    "id": "111",
+    "term": "Discharge",
+    "translations": {
+      "pl": "Wydzielina"
+    },
+    "category": "symptoms"
+  },
+  {
+    "id": "112",
+    "term": "Dispensing",
+    "translations": {
+      "pl": "Wydawanie"
+    },
+    "category": "treatment"
+  },
+  {
+    "id": "113",
+    "term": "Diuretic",
+    "translations": {
+      "pl": "Diuretyk"
+    },
+    "category": "treatment"
+  },
+  {
+    "id": "114",
+    "term": "Diverticulitis",
+    "translations": {
+      "pl": "Zapalenie uchyłków"
+    },
+    "category": "diseases"
+  },
+  {
+    "id": "115",
+    "term": "Dose/ Dosage",
+    "translations": {
+      "pl": "Dawka"
+    },
+    "category": "treatment"
+  },
+  {
+    "id": "116",
+    "term": "Down Syndrome",
+    "translations": {
+      "pl": "Zespół Downa"
+    },
+    "category": "diseases"
+  },
+  {
+    "id": "117",
+    "term": "Dull Pain",
+    "translations": {
+      "pl": "Tępy ból"
+    },
+    "category": "symptoms"
+  },
+  {
+    "id": "118",
+    "term": "Ear Canal",
+    "translations": {
+      "pl": "Przewód słuchowy"
+    },
+    "category": "anatomy"
+  },
+  {
+    "id": "119",
+    "term": "Ear Drum",
+    "translations": {
+      "pl": "Błona bębenkowa"
+    },
+    "category": "anatomy"
+  },
+  {
+    "id": "120",
+    "term": "Ear Infections",
+    "translations": {
+      "pl": "Infekcje ucha"
+    },
+    "category": "diseases"
+  },
+  {
+    "id": "121",
+    "term": "Eating Disorders",
+    "translations": {
+      "pl": "Zaburzenia odżywiania"
+    },
+    "category": "diseases"
+  },
+  {
+    "id": "122",
+    "term": "Ectopic pregnancy",
+    "translations": {
+      "pl": "Ciąża pozamaciczna"
+    },
+    "category": "diseases"
+  },
+  {
+    "id": "123",
+    "term": "Edema",
+    "translations": {
+      "pl": "Obrzęk"
+    },
+    "category": "symptoms"
+  },
+  {
+    "id": "124",
+    "term": "Efficacy",
+    "translations": {
+      "pl": "Skuteczność"
+    },
+    "category": "research"
+  },
+  {
+    "id": "125",
+    "term": "Elbow",
+    "translations": {
+      "pl": "Łokieć"
+    },
+    "category": "anatomy"
+  },
+  {
+    "id": "126",
+    "term": "Electrolytes",
+    "translations": {
+      "pl": "Elektrolity"
+    },
+    "category": "biology"
+  },
+  {
+    "id": "127",
+    "term": "Embolism",
+    "translations": {
+      "pl": "Zator"
+    },
+    "category": "diseases"
+  },
+  {
+    "id": "128",
+    "term": "Encephalitis",
+    "translations": {
+      "pl": "Zapalenie mózgu"
+    },
+    "category": "diseases"
+  },
+  {
+    "id": "129",
+    "term": "Endocarditis",
+    "translations": {
+      "pl": "Zapalenie wsierdzia"
+    },
+    "category": "diseases"
+  },
+  {
+    "id": "130",
+    "term": "Endometriosis",
+    "translations": {
+      "pl": "Endometrioza"
+    },
+    "category": "diseases"
+  },
+  {
+    "id": "131",
+    "term": "Endoscopy",
+    "translations": {
+      "pl": "Endoskopia"
+    },
+    "category": "diagnostic procedures"
+  },
+  {
+    "id": "132",
+    "term": "Episiotomy",
+    "translations": {
+      "pl": "Nacięcie krocza"
+    },
+    "category": "treatment"
+  },
+  {
+    "id": "133",
+    "term": "Esophagus",
+    "translations": {
+      "pl": "Przełyk"
+    },
+    "category": "anatomy"
+  },
+  {
+    "id": "134",
+    "term": "Estrogen Replacement Therapy",
+    "translations": {
+      "pl": "Terapia zastępcza estrogenem"
+    },
+    "category": "treatment"
+  },
+  {
+    "id": "135",
+    "term": "Extraction",
+    "translations": {
+      "pl": "Ekstrakcja"
+    },
+    "category": "treatment"
+  },
+  {
+    "id": "136",
+    "term": "Eyelid",
+    "translations": {
+      "pl": "Powieka"
+    },
+    "category": "anatomy"
+  },
+  {
+    "id": "137",
+    "term": "Eyesight",
+    "translations": {
+      "pl": "Wzrok"
+    },
+    "category": "anatomy"
+  },
+  {
+    "id": "138",
+    "term": "Fallopian tubes",
+    "translations": {
+      "pl": "Jajowody"
+    },
+    "category": "anatomy"
+  },
+  {
+    "id": "139",
+    "term": "Family Planning",
+    "translations": {
+      "pl": "Planowanie rodziny"
+    },
+    "category": "treatment"
+  },
+  {
+    "id": "140",
+    "term": "Fecal transplant",
+    "translations": {
+      "pl": "Przeszczep kału"
+    },
+    "category": "treatment"
+  },
+  {
+    "id": "141",
+    "term": "Female",
+    "translations": {
+      "pl": "Kobieta"
+    },
+    "category": "anatomy"
+  },
+  {
+    "id": "142",
+    "term": "Femur",
+    "translations": {
+      "pl": "Kość udowa"
+    },
+    "category": "anatomy"
+  },
+  {
+    "id": "143",
+    "term": "Fetal monitoring",
+    "translations": {
+      "pl": "Monitorowanie płodu"
+    },
+    "category": "diagnostic procedures"
+  },
+  {
+    "id": "144",
+    "term": "Fever",
+    "translations": {
+      "pl": "Gorączka"
+    },
+    "category": "symptoms"
+  },
+  {
+    "id": "145",
+    "term": "Fibromyalgia",
+    "translations": {
+      "pl": "Fibromialgia"
+    },
+    "category": "diseases"
+  },
+  {
+    "id": "146",
+    "term": "Fibrosis",
+    "translations": {
+      "pl": "Zwłóknienie"
+    },
+    "category": "symptoms"
+  },
+  {
+    "id": "147",
+    "term": "Flu",
+    "translations": {
+      "pl": "Grypa"
+    },
+    "category": "diseases"
+  },
+  {
+    "id": "148",
+    "term": "Forearm",
+    "translations": {
+      "pl": "Przedramię"
+    },
+    "category": "anatomy"
+  },
+  {
+    "id": "149",
+    "term": "Formulation",
+    "translations": {
+      "pl": "Formulacja"
+    },
+    "category": "treatment"
+  },
+  {
+    "id": "150",
+    "term": "Gallbladder",
+    "translations": {
+      "pl": "Pęcherzyk żółciowy"
+    },
+    "category": "anatomy"
+  },
+  {
+    "id": "151",
+    "term": "Gallstone",
+    "translations": {
+      "pl": "Kamień żółciowy"
+    },
+    "category": "diseases"
+  },
+  {
+    "id": "152",
+    "term": "Gangrene",
+    "translations": {
+      "pl": "Zgorzel"
+    },
+    "category": "diseases"
+  },
+  {
+    "id": "153",
+    "term": "Gastroenteritis",
+    "translations": {
+      "pl": "Nieżyt żołądkowo-jelitowy"
+    },
+    "category": "diseases"
+  },
+  {
+    "id": "154",
+    "term": "Generalized Anxiety Disorder",
+    "translations": {
+      "pl": "Uogólnione zaburzenie lękowe"
+    },
+    "category": "diseases"
+  },
+  {
+    "id": "155",
+    "term": "Generic Drug",
+    "translations": {
+      "pl": "Lek generyczny"
+    },
+    "category": "treatment"
+  },
+  {
+    "id": "156",
+    "term": "Gestational Diabetes",
+    "translations": {
+      "pl": "Cukrzyca ciążowa"
+    },
+    "category": "diseases"
+  },
+  {
+    "id": "157",
+    "term": "Glucometer",
+    "translations": {
+      "pl": "Glikometr"
+    },
+    "category": "medical equipment"
+  },
+  {
+    "id": "158",
+    "term": "Glucose",
+    "translations": {
+      "pl": "Glukoza"
+    },
+    "category": "biology"
+  },
+  {
+    "id": "159",
+    "term": "Gonorrhea",
+    "translations": {
+      "pl": "Rzeżączka"
+    },
+    "category": "diseases"
+  },
+  {
+    "id": "160",
+    "term": "Gout",
+    "translations": {
+      "pl": "Dna moczanowa"
+    },
+    "category": "diseases"
+  },
+  {
+    "id": "161",
+    "term": "Groin",
+    "translations": {
+      "pl": "Pachwina"
+    },
+    "category": "anatomy"
+  },
+  {
+    "id": "162",
+    "term": "Gum Diseases",
+    "translations": {
+      "pl": "Choroby dziąseł"
+    },
+    "category": "diseases"
+  },
+  {
+    "id": "163",
+    "term": "Hearing Aid",
+    "translations": {
+      "pl": "Aparat słuchowy"
+    },
+    "category": "medical equipment"
+  },
+  {
+    "id": "164",
+    "term": "Heart Failure",
+    "translations": {
+      "pl": "Niewydolność serca"
+    },
+    "category": "diseases"
+  },
+  {
+    "id": "165",
+    "term": "Heart murmur",
+    "translations": {
+      "pl": "Szumy sercowe"
+    },
+    "category": "symptoms"
+  },
+  {
+    "id": "166",
+    "term": "Heat Stroke",
+    "translations": {
+      "pl": "Udar cieplny"
+    },
+    "category": "diseases"
+  },
+  {
+    "id": "167",
+    "term": "Heel",
+    "translations": {
+      "pl": "Pięta"
+    },
+    "category": "anatomy"
+  },
+  {
+    "id": "168",
+    "term": "Hematoma",
+    "translations": {
+      "pl": "Krwawy wybroczyna"
+    },
+    "category": "symptoms"
+  },
+  {
+    "id": "169",
+    "term": "Hemoglobin",
+    "translations": {
+      "pl": "Hemoglobina"
+    },
+    "category": "biology"
+  },
+  {
+    "id": "170",
+    "term": "Hemorrhage",
+    "translations": {
+      "pl": "Krwotok"
+    },
+    "category": "symptoms"
+  },
+  {
+    "id": "171",
+    "term": "Hemorrhoids",
+    "translations": {
+      "pl": "Hemoroidy"
+    },
+    "category": "diseases"
+  },
+  {
+    "id": "172",
+    "term": "Hepatitis",
+    "translations": {
+      "pl": "Zapalenie wątroby"
+    },
+    "category": "diseases"
+  },
+  {
+    "id": "173",
+    "term": "Hernia",
+    "translations": {
+      "pl": "Przepuklina"
+    },
+    "category": "diseases"
+  },
+  {
+    "id": "174",
+    "term": "Herniated Discs",
+    "translations": {
+      "pl": "Przepuklina dysków"
+    },
+    "category": "diseases"
+  },
+  {
+    "id": "175",
+    "term": "Herpes simplex",
+    "translations": {
+      "pl": "Opryszczka pospolita"
+    },
+    "category": "diseases"
+  },
+  {
+    "id": "176",
+    "term": "High Blood Pressure",
+    "translations": {
+      "pl": "Wysokie ciśnienie krwi"
+    },
+    "category": "diseases"
+  },
+  {
+    "id": "177",
+    "term": "High risk pregnancy",
+    "translations": {
+      "pl": "Ciąża wysokiego ryzyka"
+    },
+    "category": "diseases"
+  },
+  {
+    "id": "178",
+    "term": "Hives",
+    "translations": {
+      "pl": "Pokrzywka"
+    },
+    "category": "symptoms"
+  },
+  {
+    "id": "179",
+    "term": "Hormone Replacement Therapy",
+    "translations": {
+      "pl": "Terapia zastępcza hormonami"
+    },
+    "category": "treatment"
+  },
+  {
+    "id": "180",
+    "term": "Hydrocephalus",
+    "translations": {
+      "pl": "Wodogłowie"
+    },
+    "category": "diseases"
+  },
+  {
+    "id": "181",
+    "term": "Hyperthyroidism",
+    "translations": {
+      "pl": "Nadczynność tarczycy"
+    },
+    "category": "diseases"
+  },
+  {
+    "id": "182",
+    "term": "Hypotension",
+    "translations": {
+      "pl": "Niedociśnienie"
+    },
+    "category": "diseases"
+  },
+  {
+    "id": "183",
+    "term": "Hypothyroidism",
+    "translations": {
+      "pl": "Niedoczynność tarczycy"
+    },
+    "category": "diseases"
+  },
+  {
+    "id": "184",
+    "term": "Hysterectomy",
+    "translations": {
+      "pl": "Histerektomia"
+    },
+    "category": "treatment"
+  },
+  {
+    "id": "185",
+    "term": "Immunizations",
+    "translations": {
+      "pl": "Szczepienia"
+    },
+    "category": "treatment"
+  },
+  {
+    "id": "186",
+    "term": "In remission",
+    "translations": {
+      "pl": "W remisji"
+    },
+    "category": "symptoms"
+  },
+  {
+    "id": "187",
+    "term": "Indigestion",
+    "translations": {
+      "pl": "Niestrawność"
+    },
+    "category": "symptoms"
+  },
+  {
+    "id": "188",
+    "term": "Infectious Diseases",
+    "translations": {
+      "pl": "Choroby zakaźne"
+    },
+    "category": "diseases"
+  },
+  {
+    "id": "189",
+    "term": "Infertility",
+    "translations": {
+      "pl": "Niepłodność"
+    },
+    "category": "diseases"
+  },
+  {
+    "id": "190",
+    "term": "Influenza",
+    "translations": {
+      "pl": "Grypa"
+    },
+    "category": "diseases"
+  },
+  {
+    "id": "191",
+    "term": "Injury",
+    "translations": {
+      "pl": "Uraz"
+    },
+    "category": "symptoms"
+  },
+  {
+    "id": "192",
+    "term": "Inpatient",
+    "translations": {
+      "pl": "Pacjent hospitalizowany"
+    },
+    "category": "hospital departments"
+  },
+  {
+    "id": "193",
+    "term": "Instep",
+    "translations": {
+      "pl": "Podbicie stopy"
+    },
+    "category": "anatomy"
+  },
+  {
+    "id": "194",
+    "term": "Iron deficiency anemia",
+    "translations": {
+      "pl": "Niedokrwistość z niedoboru żelaza"
+    },
+    "category": "diseases"
+  },
+  {
+    "id": "195",
+    "term": "Irritable bowel syndrome",
+    "translations": {
+      "pl": "Zespół jelita drażliwego"
+    },
+    "category": "diseases"
+  },
+  {
+    "id": "196",
+    "term": "Jaundice",
+    "translations": {
+      "pl": "Żółtaczka"
+    },
+    "category": "symptoms"
+  },
+  {
+    "id": "197",
+    "term": "Joint Pain",
+    "translations": {
+      "pl": "Ból stawów"
+    },
+    "category": "symptoms"
+  },
+  {
+    "id": "198",
+    "term": "Juvenile Diabetes",
+    "translations": {
+      "pl": "Cukrzyca młodzieńcza"
+    },
+    "category": "diseases"
+  },
+  {
+    "id": "199",
+    "term": "Kidney Stone",
+    "translations": {
+      "pl": "Kamień nerkowy"
+    },
+    "category": "diseases"
+  },
+  {
+    "id": "200",
+    "term": "Kidney disease",
+    "translations": {
+      "pl": "Choroba nerek"
+    },
+    "category": "diseases"
+  },
+  {
+    "id": "201",
+    "term": "Kidneys",
+    "translations": {
+      "pl": "Nerki"
+    },
+    "category": "anatomy"
+  },
+  {
+    "id": "202",
+    "term": "Lactation",
+    "translations": {
+      "pl": "Laktacja"
+    },
+    "category": "biology"
+  },
+  {
+    "id": "203",
+    "term": "Laxative",
+    "translations": {
+      "pl": "Środek przeczyszczający"
+    },
+    "category": "treatment"
+  },
+  {
+    "id": "204",
+    "term": "Lesion",
+    "translations": {
+      "pl": "Zmiana chorobowa"
+    },
+    "category": "symptoms"
+  },
+  {
+    "id": "205",
+    "term": "Leukemia",
+    "translations": {
+      "pl": "Białaczka"
+    },
+    "category": "diseases"
+  },
+  {
+    "id": "206",
+    "term": "Lumbar",
+    "translations": {
+      "pl": "Lędźwiowy"
+    },
+    "category": "anatomy"
+  },
+  {
+    "id": "207",
+    "term": "Lump",
+    "translations": {
+      "pl": "Guzek"
+    },
+    "category": "symptoms"
+  },
+  {
+    "id": "208",
+    "term": "Lumpectomy",
+    "translations": {
+      "pl": "Lumpektomia"
+    },
+    "category": "treatment"
+  },
+  {
+    "id": "209",
+    "term": "Lungs",
+    "translations": {
+      "pl": "Płuca"
+    },
+    "category": "anatomy"
+  },
+  {
+    "id": "210",
+    "term": "Lyme disease",
+    "translations": {
+      "pl": "Borelioza"
+    },
+    "category": "diseases"
+  },
+  {
+    "id": "211",
+    "term": "Lymph Nodes",
+    "translations": {
+      "pl": "Węzły chłonne"
+    },
+    "category": "anatomy"
+  },
+  {
+    "id": "212",
+    "term": "Malignant",
+    "translations": {
+      "pl": "Złośliwy"
+    },
+    "category": "symptoms"
+  },
+  {
+    "id": "213",
+    "term": "Mammogram",
+    "translations": {
+      "pl": "Mammografia"
+    },
+    "category": "diagnostic procedures"
+  },
+  {
+    "id": "214",
+    "term": "Mastectomy",
+    "translations": {
+      "pl": "Mastektomia"
+    },
+    "category": "treatment"
+  },
+  {
+    "id": "215",
+    "term": "Measles",
+    "translations": {
+      "pl": "Odra"
+    },
+    "category": "diseases"
+  },
+  {
+    "id": "216",
+    "term": "Meningitis",
+    "translations": {
+      "pl": "Zapalenie opon mózgowych"
+    },
+    "category": "diseases"
+  },
+  {
+    "id": "217",
+    "term": "Menopause",
+    "translations": {
+      "pl": "Menopauza"
+    },
+    "category": "biology"
+  },
+  {
+    "id": "218",
+    "term": "Metastasis",
+    "translations": {
+      "pl": "Przerzut"
+    },
+    "category": "symptoms"
+  },
+  {
+    "id": "219",
+    "term": "Migraine",
+    "translations": {
+      "pl": "Migrena"
+    },
+    "category": "diseases"
+  },
+  {
+    "id": "220",
+    "term": "Miscarriage",
+    "translations": {
+      "pl": "Poronienie"
+    },
+    "category": "symptoms"
+  },
+  {
+    "id": "221",
+    "term": "Mole",
+    "translations": {
+      "pl": "Znamię"
+    },
+    "category": "symptoms"
+  },
+  {
+    "id": "222",
+    "term": "Mononucleosis",
+    "translations": {
+      "pl": "Mononukleoza"
+    },
+    "category": "diseases"
+  },
+  {
+    "id": "223",
+    "term": "Multiple sclerosis",
+    "translations": {
+      "pl": "Stwardnienie rozsiane"
+    },
+    "category": "diseases"
+  },
+  {
+    "id": "224",
+    "term": "Mumps",
+    "translations": {
+      "pl": "Świnka"
+    },
+    "category": "diseases"
+  },
+  {
+    "id": "225",
+    "term": "Muscle sprain",
+    "translations": {
+      "pl": "Naciągnięcie mięśnia"
+    },
+    "category": "symptoms"
+  },
+  {
+    "id": "226",
+    "term": "Nausea",
+    "translations": {
+      "pl": "Nudności"
+    },
+    "category": "symptoms"
+  },
+  {
+    "id": "227",
+    "term": "Necrosis",
+    "translations": {
+      "pl": "Martwica"
+    },
+    "category": "symptoms"
+  },
+  {
+    "id": "228",
+    "term": "Nephritis",
+    "translations": {
+      "pl": "Zapalenie nerek"
+    },
+    "category": "diseases"
+  },
+  {
+    "id": "229",
+    "term": "Non verbal",
+    "translations": {
+      "pl": "Nieverbalny"
+    },
+    "category": "symptoms"
+  },
+  {
+    "id": "230",
+    "term": "Noninvasive",
+    "translations": {
+      "pl": "Nieinwazyjny"
+    },
+    "category": "treatment"
+  },
+  {
+    "id": "231",
+    "term": "Nostril",
+    "translations": {
+      "pl": "Nozdrze"
+    },
+    "category": "anatomy"
+  },
+  {
+    "id": "232",
+    "term": "Numbness",
+    "translations": {
+      "pl": "Drętwienie"
+    },
+    "category": "symptoms"
+  },
+  {
+    "id": "233",
+    "term": "Obesity",
+    "translations": {
+      "pl": "Otyłość"
+    },
+    "category": "diseases"
+  },
+  {
+    "id": "234",
+    "term": "Ointment",
+    "translations": {
+      "pl": "Maść"
+    },
+    "category": "treatment"
+  },
+  {
+    "id": "235",
+    "term": "Optic Nerve",
+    "translations": {
+      "pl": "Nerw wzrokowy"
+    },
+    "category": "anatomy"
+  },
+  {
+    "id": "236",
+    "term": "Oral Contraceptive",
+    "translations": {
+      "pl": "Antykoncepcja doustna"
+    },
+    "category": "treatment"
+  },
+  {
+    "id": "237",
+    "term": "Osteoarthritis",
+    "translations": {
+      "pl": "Choroba zwyrodnieniowa stawów"
+    },
+    "category": "diseases"
+  },
+  {
+    "id": "238",
+    "term": "Osteoporosis",
+    "translations": {
+      "pl": "Osteoporoza"
+    },
+    "category": "diseases"
+  },
+  {
+    "id": "239",
+    "term": "Outpatient",
+    "translations": {
+      "pl": "Pacjent ambulatoryjny"
+    },
+    "category": "hospital departments"
+  },
+  {
+    "id": "240",
+    "term": "Ovarian cancer",
+    "translations": {
+      "pl": "Rak jajnika"
+    },
+    "category": "diseases"
+  },
+  {
+    "id": "241",
+    "term": "Over the Counter Medication",
+    "translations": {
+      "pl": "Lek bez recepty"
+    },
+    "category": "treatment"
+  },
+  {
+    "id": "242",
+    "term": "Overdose",
+    "translations": {
+      "pl": "Przedawkowanie"
+    },
+    "category": "symptoms"
+  },
+  {
+    "id": "243",
+    "term": "Pacemaker",
+    "translations": {
+      "pl": "Rozrusznik serca"
+    },
+    "category": "medical equipment"
+  },
+  {
+    "id": "244",
+    "term": "Pain",
+    "translations": {
+      "pl": "Ból"
+    },
+    "category": "symptoms"
+  },
+  {
+    "id": "245",
+    "term": "Pancreas",
+    "translations": {
+      "pl": "Trzustka"
+    },
+    "category": "anatomy"
+  },
+  {
+    "id": "246",
+    "term": "Panic attack",
+    "translations": {
+      "pl": "Atak paniki"
+    },
+    "category": "symptoms"
+  },
+  {
+    "id": "247",
+    "term": "Pap smear",
+    "translations": {
+      "pl": "Cytologia"
+    },
+    "category": "diagnostic procedures"
+  },
+  {
+    "id": "248",
+    "term": "Paraplegic",
+    "translations": {
+      "pl": "Paraplegik"
+    },
+    "category": "symptoms"
+  },
+  {
+    "id": "249",
+    "term": "Pericarditis",
+    "translations": {
+      "pl": "Zapalenie osierdzia"
+    },
+    "category": "diseases"
+  },
+  {
+    "id": "250",
+    "term": "Pertussis",
+    "translations": {
+      "pl": "Krztusiec"
+    },
+    "category": "diseases"
+  },
+  {
+    "id": "251",
+    "term": "Pharmaceutical Care",
+    "translations": {
+      "pl": "Opieka farmaceutyczna"
+    },
+    "category": "treatment"
+  },
+  {
+    "id": "252",
+    "term": "Placenta",
+    "translations": {
+      "pl": "Łożysko"
+    },
+    "category": "anatomy"
+  },
+  {
+    "id": "253",
+    "term": "Placenta previa",
+    "translations": {
+      "pl": "Przodujące łożysko"
+    },
+    "category": "diseases"
+  },
+  {
+    "id": "254",
+    "term": "Pleurisy",
+    "translations": {
+      "pl": "Zapalenie opłucnej"
+    },
+    "category": "diseases"
+  },
+  {
+    "id": "255",
+    "term": "Polycystic ovary syndrome",
+    "translations": {
+      "pl": "Zespół policystycznych jajników"
+    },
+    "category": "diseases"
+  },
+  {
+    "id": "256",
+    "term": "Polyp",
+    "translations": {
+      "pl": "Polip"
+    },
+    "category": "symptoms"
+  },
+  {
+    "id": "257",
+    "term": "Post Partum",
+    "translations": {
+      "pl": "Poporodowy"
+    },
+    "category": "symptoms"
+  },
+  {
+    "id": "258",
+    "term": "Postpartum Depression",
+    "translations": {
+      "pl": "Depresja poporodowa"
+    },
+    "category": "diseases"
+  },
+  {
+    "id": "259",
+    "term": "Pre eclampsia",
+    "translations": {
+      "pl": "Stan przedrzucawkowy"
+    },
+    "category": "diseases"
+  },
+  {
+    "id": "260",
+    "term": "Prescription",
+    "translations": {
+      "pl": "Recepta"
+    },
+    "category": "treatment"
+  },
+  {
+    "id": "261",
+    "term": "Prognosis",
+    "translations": {
+      "pl": "Prognoza"
+    },
+    "category": "diagnostic procedures"
+  },
+  {
+    "id": "262",
+    "term": "Prolapse",
+    "translations": {
+      "pl": "Wypadanie"
+    },
+    "category": "symptoms"
+  },
+  {
+    "id": "263",
+    "term": "Prostate",
+    "translations": {
+      "pl": "Prostata"
+    },
+    "category": "anatomy"
+  },
+  {
+    "id": "264",
+    "term": "Prosthesis",
+    "translations": {
+      "pl": "Proteza"
+    },
+    "category": "medical equipment"
+  },
+  {
+    "id": "265",
+    "term": "Proteinuria",
+    "translations": {
+      "pl": "Białkomocz"
+    },
+    "category": "symptoms"
+  },
+  {
+    "id": "266",
+    "term": "Pulmonary Vein",
+    "translations": {
+      "pl": "Żyła płucna"
+    },
+    "category": "anatomy"
+  },
+  {
+    "id": "267",
+    "term": "Pupil",
+    "translations": {
+      "pl": "Źrenica"
+    },
+    "category": "anatomy"
+  },
+  {
+    "id": "268",
+    "term": "Pus",
+    "translations": {
+      "pl": "Ropa"
+    },
+    "category": "symptoms"
+  },
+  {
+    "id": "269",
+    "term": "Rash",
+    "translations": {
+      "pl": "Wysypka"
+    },
+    "category": "symptoms"
+  },
+  {
+    "id": "270",
+    "term": "Relapse",
+    "translations": {
+      "pl": "Nawrót"
+    },
+    "category": "symptoms"
+  },
+  {
+    "id": "271",
+    "term": "Retina",
+    "translations": {
+      "pl": "Siatkówka"
+    },
+    "category": "anatomy"
+  },
+  {
+    "id": "272",
+    "term": "Rheumatoid Arthritis",
+    "translations": {
+      "pl": "Reumatoidalne zapalenie stawów"
+    },
+    "category": "diseases"
+  },
+  {
+    "id": "273",
+    "term": "Rhinitis",
+    "translations": {
+      "pl": "Nieżyt nosa"
+    },
+    "category": "diseases"
+  },
+  {
+    "id": "274",
+    "term": "Ruptured Appendix",
+    "translations": {
+      "pl": "Pęknięty wyrostek robaczkowy"
+    },
+    "category": "symptoms"
+  },
+  {
+    "id": "275",
+    "term": "Salivary Glands",
+    "translations": {
+      "pl": "Gruczoły ślinowe"
+    },
+    "category": "anatomy"
+  },
+  {
+    "id": "276",
+    "term": "Scabies",
+    "translations": {
+      "pl": "Świerzb"
+    },
+    "category": "diseases"
+  },
+  {
+    "id": "277",
+    "term": "Scrotum",
+    "translations": {
+      "pl": "Moszna"
+    },
+    "category": "anatomy"
+  },
+  {
+    "id": "278",
+    "term": "Seizure",
+    "translations": {
+      "pl": "Napad padaczkowy"
+    },
+    "category": "symptoms"
+  },
+  {
+    "id": "279",
+    "term": "Septic shock",
+    "translations": {
+      "pl": "Wstrząs septyczny"
+    },
+    "category": "symptoms"
+  },
+  {
+    "id": "280",
+    "term": "Sharp pain",
+    "translations": {
+      "pl": "Ostry ból"
+    },
+    "category": "symptoms"
+  },
+  {
+    "id": "281",
+    "term": "Shot record",
+    "translations": {
+      "pl": "Karta szczepień"
+    },
+    "category": "medical records"
+  },
+  {
+    "id": "282",
+    "term": "Sickle Cell Anemia",
+    "translations": {
+      "pl": "Anemia sierpowata"
+    },
+    "category": "diseases"
+  },
+  {
+    "id": "283",
+    "term": "Side effects",
+    "translations": {
+      "pl": "Skutki uboczne"
+    },
+    "category": "symptoms"
+  },
+  {
+    "id": "284",
+    "term": "Sleep apnea",
+    "translations": {
+      "pl": "Bezdech senny"
+    },
+    "category": "diseases"
+  },
+  {
+    "id": "285",
+    "term": "Sleep study",
+    "translations": {
+      "pl": "Badanie snu"
+    },
+    "category": "diagnostic procedures"
+  },
+  {
+    "id": "286",
+    "term": "Spasm",
+    "translations": {
+      "pl": "Skurcz"
+    },
+    "category": "symptoms"
+  },
+  {
+    "id": "287",
+    "term": "Specialty Drugs",
+    "translations": {
+      "pl": "Leki specjalistyczne"
+    },
+    "category": "treatment"
+  },
+  {
+    "id": "288",
+    "term": "Spine",
+    "translations": {
+      "pl": "Kręgosłup"
+    },
+    "category": "anatomy"
+  },
+  {
+    "id": "289",
+    "term": "Spleen",
+    "translations": {
+      "pl": "Śledziona"
+    },
+    "category": "anatomy"
+  },
+  {
+    "id": "290",
+    "term": "Sprain",
+    "translations": {
+      "pl": "Skręcenie"
+    },
+    "category": "symptoms"
+  },
+  {
+    "id": "291",
+    "term": "Steroids",
+    "translations": {
+      "pl": "Steroidy"
+    },
+    "category": "treatment"
+  },
+  {
+    "id": "292",
+    "term": "Stethoscope",
+    "translations": {
+      "pl": "Stetoskop"
+    },
+    "category": "medical equipment"
+  },
+  {
+    "id": "293",
+    "term": "Stool culture",
+    "translations": {
+      "pl": "Posiew kału"
+    },
+    "category": "diagnostic procedures"
+  },
+  {
+    "id": "294",
+    "term": "Strep Throat",
+    "translations": {
+      "pl": "Angina paciorkowcowa"
+    },
+    "category": "diseases"
+  },
+  {
+    "id": "295",
+    "term": "Stroke",
+    "translations": {
+      "pl": "Udar"
+    },
+    "category": "diseases"
+  },
+  {
+    "id": "296",
+    "term": "Suppository",
+    "translations": {
+      "pl": "Czopek"
+    },
+    "category": "treatment"
+  },
+  {
+    "id": "297",
+    "term": "Sutures",
+    "translations": {
+      "pl": "Szwy"
+    },
+    "category": "treatment"
+  },
+  {
+    "id": "298",
+    "term": "Syringe",
+    "translations": {
+      "pl": "Strzykawka"
+    },
+    "category": "medical equipment"
+  },
+  {
+    "id": "299",
+    "term": "Tachycardia",
+    "translations": {
+      "pl": "Tachykardia"
+    },
+    "category": "symptoms"
+  },
+  {
+    "id": "300",
+    "term": "Tear Duct",
+    "translations": {
+      "pl": "Przewód łzowy"
+    },
+    "category": "anatomy"
+  },
+  {
+    "id": "301",
+    "term": "Tetanus shot",
+    "translations": {
+      "pl": "Szczepienie przeciw tężcowi"
+    },
+    "category": "treatment"
+  },
+  {
+    "id": "302",
+    "term": "Therapeutic",
+    "translations": {
+      "pl": "Terapeutyczny"
+    },
+    "category": "treatment"
+  },
+  {
+    "id": "303",
+    "term": "Thrombosis",
+    "translations": {
+      "pl": "Zakrzepica"
+    },
+    "category": "diseases"
+  },
+  {
+    "id": "304",
+    "term": "Tonsillitis",
+    "translations": {
+      "pl": "Zapalenie migdałków"
+    },
+    "category": "diseases"
+  },
+  {
+    "id": "305",
+    "term": "Tonsils",
+    "translations": {
+      "pl": "Migdałki"
+    },
+    "category": "anatomy"
+  },
+  {
+    "id": "306",
+    "term": "Toxicology",
+    "translations": {
+      "pl": "Toksykologia"
+    },
+    "category": "research"
+  },
+  {
+    "id": "307",
+    "term": "Traumatic brain Injury",
+    "translations": {
+      "pl": "Uraz mózgu"
+    },
+    "category": "symptoms"
+  },
+  {
+    "id": "308",
+    "term": "Tubal Ligation",
+    "translations": {
+      "pl": "Podwiązanie jajowodów"
+    },
+    "category": "treatment"
+  },
+  {
+    "id": "309",
+    "term": "Ulcer",
+    "translations": {
+      "pl": "Wrzód"
+    },
+    "category": "diseases"
+  },
+  {
+    "id": "310",
+    "term": "Ultrasound",
+    "translations": {
+      "pl": "Ultrasonografia"
+    },
+    "category": "diagnostic procedures"
+  },
+  {
+    "id": "311",
+    "term": "Urinary Incontinence",
+    "translations": {
+      "pl": "Nietrzymanie moczu"
+    },
+    "category": "diseases"
+  },
+  {
+    "id": "312",
+    "term": "Urine Analysis",
+    "translations": {
+      "pl": "Analiza moczu"
+    },
+    "category": "diagnostic procedures"
+  },
+  {
+    "id": "313",
+    "term": "Uterine bleeding",
+    "translations": {
+      "pl": "Krwawienie z macicy"
+    },
+    "category": "symptoms"
+  },
+  {
+    "id": "314",
+    "term": "Vaginal Infection",
+    "translations": {
+      "pl": "Infekcja pochwy"
+    },
+    "category": "diseases"
+  },
+  {
+    "id": "315",
+    "term": "Vaginal Yeast Infection",
+    "translations": {
+      "pl": "Grzybica pochwy"
+    },
+    "category": "diseases"
+  },
+  {
+    "id": "316",
+    "term": "Vaginal discharge",
+    "translations": {
+      "pl": "Wydzielina z pochwy"
+    },
+    "category": "symptoms"
+  },
+  {
+    "id": "317",
+    "term": "Vasectomy",
+    "translations": {
+      "pl": "Wazektomia"
+    },
+    "category": "treatment"
+  },
+  {
+    "id": "318",
+    "term": "Vertebrae",
+    "translations": {
+      "pl": "Kręgi"
+    },
+    "category": "anatomy"
+  },
+  {
+    "id": "319",
+    "term": "Vertigo",
+    "translations": {
+      "pl": "Zawroty głowy"
+    },
+    "category": "symptoms"
+  },
+  {
+    "id": "320",
+    "term": "Vitamins",
+    "translations": {
+      "pl": "Witaminy"
+    },
+    "category": "nutrition"
+  },
+  {
+    "id": "321",
+    "term": "Vitiligo",
+    "translations": {
+      "pl": "Bielactwo"
+    },
+    "category": "diseases"
+  },
+  {
+    "id": "322",
+    "term": "Wheezing",
+    "translations": {
+      "pl": "Świszczący oddech"
+    },
+    "category": "symptoms"
+  },
+  {
+    "id": "323",
+    "term": "Windpipe",
+    "translations": {
+      "pl": "Tchawica"
+    },
+    "category": "anatomy"
+  },
+  {
+    "id": "324",
+    "term": "Wound",
+    "translations": {
+      "pl": "Rana"
+    },
+    "category": "symptoms"
+  },
+  {
+    "id": "325",
+    "term": "Yeast Infection",
+    "translations": {
+      "pl": "Infekcja drożdżakowa"
+    },
+    "category": "diseases"
+  },
+  {
+    "id": "325",
+    "term": "Heart",
+    "translations": {
+      "pl": "Serce"
+    },
+    "category": "anatomy"
+  },
+  {
+    "id": "326",
+    "term": "ADD",
+    "translations": {
+      "pl": "Zespół Nadpobudliwości Psychoruchowej z Deficytem Uwagi"
+    },
+    "category": "acronyms",
+    "acronymExtendedName": "Attention Deficit Disorder"
+  },
+  {
+    "id": "327",
+    "term": "ADHD",
+    "translations": {
+      "pl": "Zespół Nadpobudliwości Psychoruchowej z Deficytem Uwagi"
+    },
+    "category": "acronyms",
+    "acronymExtendedName": "Attention Deficit Hyperactivity Disorder"
+  },
+  {
+    "id": "328",
+    "term": "AIDS",
+    "translations": {
+      "pl": "Zespół Nabytego Niedoboru Odporności"
+    },
+    "category": "acronyms",
+    "acronymExtendedName": "Acquired Immune Deficiency Syndrome"
+  },
+  {
+    "id": "329",
+    "term": "BM",
+    "translations": {
+      "pl": "Wypróżnienie"
+    },
+    "category": "acronyms",
+    "acronymExtendedName": "Bowel Movement"
+  },
+  {
+    "id": "330",
+    "term": "BMI",
+    "translations": {
+      "pl": "Wskaźnik Masy Ciała"
+    },
+    "category": "acronyms",
+    "acronymExtendedName": "Body Mass Index"
+  },
+  {
+    "id": "331",
+    "term": "CPR",
+    "translations": {
+      "pl": "Resuscytacja Krążeniowo-Oddechowa"
+    },
+    "category": "acronyms",
+    "acronymExtendedName": "Cardiopulmonary Resuscitation"
+  },
+  {
+    "id": "332",
+    "term": "CBC",
+    "translations": {
+      "pl": "Morfologia Krwi"
+    },
+    "category": "acronyms",
+    "acronymExtendedName": "Complete Blood Count"
+  },
+  {
+    "id": "333",
+    "term": "COPD",
+    "translations": {
+      "pl": "Przewlekła Obturacyjna Choroba Płuc"
+    },
+    "category": "acronyms",
+    "acronymExtendedName": "Chronic Obstructive Pulmonary Disease"
+  },
+  {
+    "id": "334",
+    "term": "CT Scan",
+    "translations": {
+      "pl": "Tomografia Komputerowa"
+    },
+    "category": "acronyms",
+    "acronymExtendedName": "Computed Tomography Scan"
+  },
+  {
+    "id": "335",
+    "term": "CAT Scan",
+    "translations": {
+      "pl": "Tomografia Komputerowa"
+    },
+    "category": "acronyms",
+    "acronymExtendedName": "Computed Axial Tomography Scan"
+  },
+  {
+    "id": "336",
+    "term": "D&C",
+    "translations": {
+      "pl": "Łyżeczkowanie"
+    },
+    "category": "acronyms",
+    "acronymExtendedName": "Dilation and Curettage"
+  },
+  {
+    "id": "337",
+    "term": "DNR",
+    "translations": {
+      "pl": "Nie Reanimować"
+    },
+    "category": "acronyms",
+    "acronymExtendedName": "Do Not Resuscitate"
+  },
+  {
+    "id": "338",
+    "term": "DNA",
+    "translations": {
+      "pl": "Kwas Deoksyrybonukleinowy"
+    },
+    "category": "acronyms",
+    "acronymExtendedName": "Deoxyribonucleic Acid"
+  },
+  {
+    "id": "339",
+    "term": "DPT",
+    "translations": {
+      "pl": "Szczepionka Błonica-Krztusiec-Tężec"
+    },
+    "category": "acronyms",
+    "acronymExtendedName": "Diphtheria-Pertussis-Tetanus"
+  },
+  {
+    "id": "340",
+    "term": "EEG",
+    "translations": {
+      "pl": "Elektroencefalogram"
+    },
+    "category": "acronyms",
+    "acronymExtendedName": "Electroencephalogram"
+  },
+  {
+    "id": "341",
+    "term": "EKG",
+    "translations": {
+      "pl": "Elektrokardiogram"
+    },
+    "category": "acronyms",
+    "acronymExtendedName": "Electrocardiogram"
+  },
+  {
+    "id": "342",
+    "term": "EMG",
+    "translations": {
+      "pl": "Elektromiogram"
+    },
+    "category": "acronyms",
+    "acronymExtendedName": "Electromyogram"
+  },
+  {
+    "id": "343",
+    "term": "EMS",
+    "translations": {
+      "pl": "Pogotowie Ratunkowe"
+    },
+    "category": "acronyms",
+    "acronymExtendedName": "Emergency Medical Service"
+  },
+  {
+    "id": "344",
+    "term": "ENT",
+    "translations": {
+      "pl": "Laryngologia"
+    },
+    "category": "acronyms",
+    "acronymExtendedName": "Ear, Nose, and Throat"
+  },
+  {
+    "id": "345",
+    "term": "ER",
+    "translations": {
+      "pl": "Oddział Ratunkowy"
+    },
+    "category": "acronyms",
+    "acronymExtendedName": "Emergency Room"
+  },
+  {
+    "id": "346",
+    "term": "G-tube",
+    "translations": {
+      "pl": "Sonda Żołądkowa"
+    },
+    "category": "acronyms",
+    "acronymExtendedName": "Gastric Tube"
+  },
+  {
+    "id": "347",
+    "term": "GERD",
+    "translations": {
+      "pl": "Refluks Żołądkowo-Przełykowy"
+    },
+    "category": "acronyms",
+    "acronymExtendedName": "Gastroesophageal Reflux Disease"
+  },
+  {
+    "id": "348",
+    "term": "GI",
+    "translations": {
+      "pl": "Przewód Pokarmowy"
+    },
+    "category": "acronyms",
+    "acronymExtendedName": "Gastrointestinal"
+  },
+  {
+    "id": "349",
+    "term": "HIV",
+    "translations": {
+      "pl": "Wirus Niedoboru Odporności"
+    },
+    "category": "acronyms",
+    "acronymExtendedName": "Human Immunodeficiency Virus"
+  },
+  {
+    "id": "350",
+    "term": "HPV",
+    "translations": {
+      "pl": "Wirus Brodawczaka Ludzkiego"
+    },
+    "category": "acronyms",
+    "acronymExtendedName": "Human Papillomavirus"
+  },
+  {
+    "id": "351",
+    "term": "ICU",
+    "translations": {
+      "pl": "Oddział Intensywnej Terapii"
+    },
+    "category": "acronyms",
+    "acronymExtendedName": "Intensive Care Unit"
+  },
+  {
+    "id": "352",
+    "term": "IUD",
+    "translations": {
+      "pl": "Wkładka Domaciczna"
+    },
+    "category": "acronyms",
+    "acronymExtendedName": "Intrauterine Device"
+  },
+  {
+    "id": "353",
+    "term": "IV",
+    "translations": {
+      "pl": "Dożylnie"
+    },
+    "category": "acronyms",
+    "acronymExtendedName": "Intravenous"
+  },
+  {
+    "id": "354",
+    "term": "L&D",
+    "translations": {
+      "pl": "Oddział Porodowy"
+    },
+    "category": "acronyms",
+    "acronymExtendedName": "Labor and Delivery"
+  },
+  {
+    "id": "355",
+    "term": "MG",
+    "translations": {
+      "pl": "Miligram"
+    },
+    "category": "acronyms",
+    "acronymExtendedName": "Milligram"
+  },
+  {
+    "id": "356",
+    "term": "ML",
+    "translations": {
+      "pl": "Mililitr"
+    },
+    "category": "acronyms",
+    "acronymExtendedName": "Milliliter"
+  },
+  {
+    "id": "357",
+    "term": "MRI",
+    "translations": {
+      "pl": "Rezonans Magnetyczny"
+    },
+    "category": "acronyms",
+    "acronymExtendedName": "Magnetic Resonance Imaging"
+  },
+  {
+    "id": "358",
+    "term": "MS",
+    "translations": {
+      "pl": "Stwardnienie Rozsiane"
+    },
+    "category": "acronyms",
+    "acronymExtendedName": "Multiple Sclerosis"
+  },
+  {
+    "id": "359",
+    "term": "NICU",
+    "translations": {
+      "pl": "Oddział Intensywnej Terapii Noworodków"
+    },
+    "category": "acronyms",
+    "acronymExtendedName": "Neonatal Intensive Care Unit"
+  },
+  {
+    "id": "360",
+    "term": "NPO",
+    "translations": {
+      "pl": "Nic Przez Usta"
+    },
+    "category": "acronyms",
+    "acronymExtendedName": "Nothing by Mouth"
+  },
+  {
+    "id": "361",
+    "term": "OCD",
+    "translations": {
+      "pl": "Zaburzenie Obsesyjno-Kompulsyjne"
+    },
+    "category": "acronyms",
+    "acronymExtendedName": "Obsessive Compulsive Disorder"
+  },
+  {
+    "id": "362",
+    "term": "OR",
+    "translations": {
+      "pl": "Sala Operacyjna"
+    },
+    "category": "acronyms",
+    "acronymExtendedName": "Operating Room"
+  },
+  {
+    "id": "363",
+    "term": "OT",
+    "translations": {
+      "pl": "Terapia Zajęciowa"
+    },
+    "category": "acronyms",
+    "acronymExtendedName": "Occupational Therapy"
+  },
+  {
+    "id": "364",
+    "term": "PACU",
+    "translations": {
+      "pl": "Sala Wybudzeń"
+    },
+    "category": "acronyms",
+    "acronymExtendedName": "Postanesthesia Care Unit"
+  },
+  {
+    "id": "365",
+    "term": "PAP Test",
+    "translations": {
+      "pl": "Cytologia"
+    },
+    "category": "acronyms",
+    "acronymExtendedName": "Papanicolaou Test"
+  },
+  {
+    "id": "366",
+    "term": "PCP",
+    "translations": {
+      "pl": "Lekarz Pierwszego Kontaktu"
+    },
+    "category": "acronyms",
+    "acronymExtendedName": "Primary Care Physician"
+  },
+  {
+    "id": "367",
+    "term": "PMS",
+    "translations": {
+      "pl": "Zespół Napięcia Przedmiesiączkowego"
+    },
+    "category": "acronyms",
+    "acronymExtendedName": "Premenstrual Syndrome"
+  },
+  {
+    "id": "368",
+    "term": "PT",
+    "translations": {
+      "pl": "Fizjoterapia"
+    },
+    "category": "acronyms",
+    "acronymExtendedName": "Physical Therapy"
+  },
+  {
+    "id": "369",
+    "term": "PTSD",
+    "translations": {
+      "pl": "Zespół Stresu Pourazowego"
+    },
+    "category": "acronyms",
+    "acronymExtendedName": "Post-Traumatic Stress Disorder"
+  },
+  {
+    "id": "370",
+    "term": "Post-op",
+    "translations": {
+      "pl": "Pooperacyjny"
+    },
+    "category": "acronyms",
+    "acronymExtendedName": "Postoperative"
+  },
+  {
+    "id": "371",
+    "term": "Pre-op",
+    "translations": {
+      "pl": "Przedoperacyjny"
+    },
+    "category": "acronyms",
+    "acronymExtendedName": "Preoperative"
+  },
+  {
+    "id": "372",
+    "term": "SIDS",
+    "translations": {
+      "pl": "Nagła Śmierć Łóżeczkowa"
+    },
+    "category": "acronyms",
+    "acronymExtendedName": "Sudden Infant Death Syndrome"
+  },
+  {
+    "id": "373",
+    "term": "STD",
+    "translations": {
+      "pl": "Choroba Przenoszona Drogą Płciową"
+    },
+    "category": "acronyms",
+    "acronymExtendedName": "Sexually Transmitted Disease"
+  },
+  {
+    "id": "374",
+    "term": "STREP",
+    "translations": {
+      "pl": "Paciorkowiec"
+    },
+    "category": "acronyms",
+    "acronymExtendedName": "Streptococcus"
+  },
+  {
+    "id": "375",
+    "term": "T&A",
+    "translations": {
+      "pl": "Usunięcie Migdałków i Migdałków Gardłowych"
+    },
+    "category": "acronyms",
+    "acronymExtendedName": "Tonsillectomy and Adenoidectomy"
+  },
+  {
+    "id": "376",
+    "term": "TB",
+    "translations": {
+      "pl": "Gruźlica"
+    },
+    "category": "acronyms",
+    "acronymExtendedName": "Tuberculosis"
+  },
+  {
+    "id": "377",
+    "term": "UTI",
+    "translations": {
+      "pl": "Zakażenie Układu Moczowego"
+    },
+    "category": "acronyms",
+    "acronymExtendedName": "Urinary Tract Infection"
+  }
+]
