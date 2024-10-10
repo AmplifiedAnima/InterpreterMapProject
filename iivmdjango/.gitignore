@@ -1,0 +1,63 @@
+# Virtual Environment
+venv/
+env/
+.venv/
+
+# Python
+*.pyc
+__pycache__/
+*.pyo
+*.pyd
+.Python
+pip-log.txt
+pip-delete-this-directory.txt
+
+# Django
+*.log
+local_settings.py
+db.sqlite3
+db.sqlite3-journal
+
+# Media and static files (uncomment if you're not using a CDN)
+# media/
+# static/
+
+# Secret key
+*.secret
+
+# Environment variables
+.env
+
+# IDE specific files
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS generated files
+.DS_Store
+Thumbs.db
+
+# Backup files
+*.bak
+
+# Coverage reports
+htmlcov/
+.coverage
+.coverage.*
+.cache
+
+# Translations
+*.mo
+*.pot
+
+# Django stuff:
+*.log
+local_settings.py
+
+# Node modules (if you have any in your Django project)
+node_modules/
+
+# Celery stuff
+celerybeat-schedule
+celerybeat.pid
