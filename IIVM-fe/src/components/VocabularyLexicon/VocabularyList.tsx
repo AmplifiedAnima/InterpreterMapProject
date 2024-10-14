@@ -77,7 +77,7 @@ const VocabularyList: React.FC<VocabularyListProps> = ({
   return (
     <div className="flex flex-col h-full">
       {/* Header Section */}
-      <div className="bg-gray-100 text-gray-700 font-semibold text-sm md:text-base py-2 px-3 rounded-md mb-2">
+      <div className="bg-gray-100 text-gray-700 font-semibold text-sm md:text-base py-2 px-4 rounded-md mb-2">
         <div className="flex">
           <div className="w-5/12 text-left">Word</div>
           <div className="w-6/12 text-left">Translation</div>

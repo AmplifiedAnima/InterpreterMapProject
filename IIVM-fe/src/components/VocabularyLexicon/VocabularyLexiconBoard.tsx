@@ -150,7 +150,7 @@ export const VocabularyMapBoard: React.FC<{
   );
 
   const renderCategoryList = () => (
-    <div className="flex flex-col items-center justify-center p-4 overflow-y-auto ">
+    <div className="flex flex-col items-center justify-center p-2 overflow-y-auto ">
       {categoryLabels.map((category) => (
         <Button
           key={category}
@@ -264,7 +264,7 @@ export const VocabularyMapBoard: React.FC<{
         />
         <div
           ref={mapRef}
-          className="w-[200vw] h-[300vh] origin-center"
+          className="w-[200vw] h-[300vh] "
           style={{
             transform: `translate(${position.x}px, ${position.y}px) scale(${scale})`,
             transition: isDragging ? "none" : "transform 0.1s ease-out",
@@ -332,8 +332,8 @@ export const VocabularyMapBoard: React.FC<{
     <div className="flex flex-col h-[90vh]">
       {renderToolbar()}
       <div className="flex h-[77vh]">
-        <div className="w-1/4 overflow-y-auto">{renderCategoryList()}</div>
-        <div className="w-3/4 flex">
+        <div className="w-1/4 overflow-y-auto mx-2">{renderCategoryList()}</div>
+        <div className=" flex">
           <div className="w-1/2 overflow-y-auto">
             {showGraph ? renderGraph() : renderVocabularyList()}
           </div>

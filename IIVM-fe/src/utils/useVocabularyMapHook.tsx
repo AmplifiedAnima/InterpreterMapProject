@@ -1,9 +1,8 @@
 import { useState, useRef, useEffect } from "react";
 import { VocabularyItemInterface } from "../interfaces/vocabulary.interface";
-import { useDispatch, } from "react-redux";
-import { fetchSavedVocabularyOfUser, saveVocabularyForUser } from "../redux/vocabulary/vocabularyThunks";
-import { AppDispatch, } from "../redux/store";
-
+import { useDispatch } from "react-redux";
+import { saveVocabularyForUser } from "../redux/vocabulary/vocabularyThunks";
+import { AppDispatch } from "../redux/store";
 
 export const useVocabularyMapHook = () => {
   const mapRef = useRef<HTMLDivElement>(null);
@@ -27,7 +26,6 @@ export const useVocabularyMapHook = () => {
     VocabularyItemInterface | undefined
   >(undefined);
 
-
   const [deviceType, setDeviceType] = useState<
     "mobile" | "largeTablet" | "smallTablet" | "desktop"
   >("desktop");
@@ -43,7 +41,7 @@ export const useVocabularyMapHook = () => {
   const [scale, setScale] = useState(baseScale);
 
   // const savedVocabulary = useSelector((state: RootState) => state.vocabulary.savedVocabularyToLearn);
-  const dispatch = useDispatch<AppDispatch>()
+  const dispatch = useDispatch<AppDispatch>();
 
   // Calculate map dimensions
   const calculateMapDimensions = () => {
@@ -147,10 +145,6 @@ export const useVocabularyMapHook = () => {
       document.removeEventListener("touchend", handleMouseUpOrTouchEnd);
     };
   }, [isDragging]);
-  useEffect(() => {
-    // Fetch saved vocabulary when the component mounts
-    dispatch(fetchSavedVocabularyOfUser());
-  }, [dispatch]);
 
   const handleAddVocabulary = (
     vocabularyWord: VocabularyItemInterface,

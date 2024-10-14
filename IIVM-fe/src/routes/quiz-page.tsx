@@ -7,18 +7,10 @@ import FullPageSpinner from "../components/UI/FullPageSpinner";
 
 export const QuizPage: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
-  const savedVocabularyIds = useSelector(
-    (state: RootState) => state.vocabulary.savedVocabularyIds
-  );
-  const vocabularyItems = useSelector(
-    (state: RootState) => state.vocabulary.items
-  );
-  const vocabularyStatus = useSelector(
-    (state: RootState) => state.vocabulary.status
-  );
-  const savedVocabularyStatus = useSelector(
-    (state: RootState) => state.vocabulary.savedVocabularyStatus
-  );
+  const savedVocabularyIds = useSelector((state: RootState) => state.vocabulary.savedVocabularyIds);
+  const vocabularyItems = useSelector((state: RootState) => state.vocabulary.items);
+  const vocabularyStatus = useSelector((state: RootState) => state.vocabulary.status);
+  const savedVocabularyStatus = useSelector((state: RootState) => state.vocabulary.savedVocabularyStatus);
 
   const vocabularyFetchedRef = useRef(false);
   const savedVocabularyFetchedRef = useRef(false);
@@ -29,14 +21,16 @@ export const QuizPage: React.FC = () => {
         vocabularyFetchedRef.current = true;
         await dispatch(fetchVocabulary());
       }
-      if (savedVocabularyStatus === "idle" && !savedVocabularyFetchedRef.current) {
+
+      // Check if saved vocabulary has been fetched, and fetch it only if necessary
+      if (savedVocabularyStatus === "idle" && savedVocabularyIds.length === 0) {
         savedVocabularyFetchedRef.current = true;
         await dispatch(fetchSavedVocabularyOfUser());
       }
     };
 
     fetchData();
-  }, [dispatch, vocabularyStatus, savedVocabularyStatus]);
+  }, [dispatch, vocabularyStatus, savedVocabularyStatus, savedVocabularyIds]);
 
   const isLoading = vocabularyStatus === "loading" || savedVocabularyStatus === "loading";
   const hasFailed = vocabularyStatus === "failed" || savedVocabularyStatus === "failed";

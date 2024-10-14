@@ -2,7 +2,7 @@ import * as React from "react";
 import { createBrowserRouter } from "react-router-dom";
 import { Root } from "../Root.";
 import { ErrorPage } from "../Error-page";
-import { VocbularyLeixconRoute } from "../vocabulary-lexicon-route";
+import { VocabularyLeixconRoute } from "../vocabulary-lexicon-route";
 import  LandingPage  from "../LandingPage";
 import { QuizPage } from "../quiz-page";
 import { Header } from "../../components/Header";
@@ -30,7 +30,7 @@ export const router = createBrowserRouter([
       },
       {
         path: "vocabulary-map/:category?/:id?",
-        element: <VocbularyLeixconRoute />,
+        element: <VocabularyLeixconRoute />,
       },
       {
         path: "add-word-page",

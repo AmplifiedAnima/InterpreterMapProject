@@ -90,11 +90,11 @@ export const NetworkGraph: React.FC<NetworkGraphProps> = ({
           .id((d) => d.id)
           .distance(radius * 0.5) // Increased from 0.4 to 0.5
       )
-      .force("charge", d3.forceManyBody().strength(-1800)) // Increased from -1200 to -1800
+      .force("charge", d3.forceManyBody().strength(-2500)) // Increased from -1200 to -1800
       .force("center", d3.forceCenter(width / 2, height / 2))
       .force(
         "collision",
-        d3.forceCollide<NodeData>().radius((d) => size(d.group) * 2.5) // Increased from 2 to 2.5
+        d3.forceCollide<NodeData>().radius((d) => size(d.group) * 5.5) // Increased from 2 to 2.5
       );
 
     const link = svg

@@ -5,14 +5,15 @@ import {
   fetchVocabularyByCategory,
   fetchVocabularyWithSpecificId,
   fetchVocabulary,
+  fetchSavedVocabularyOfUser,
 } from "../redux/vocabulary/vocabularyThunks";
 import { setCurrentItem } from "../redux/vocabulary/VocabularySlice";
 import { AppDispatch, RootState } from "../redux/store";
 import { useParams, useNavigate } from "react-router-dom";
-import { VocabularyItemInterface, } from "../interfaces/vocabulary.interface";
+import { VocabularyItemInterface } from "../interfaces/vocabulary.interface";
 import FullPageSpinner from "../components/UI/FullPageSpinner";
 
-export const VocbularyLeixconRoute: React.FC = () => {
+export const VocabularyLeixconRoute: React.FC = () => {
   const dispatch: AppDispatch = useDispatch();
   const navigate = useNavigate();
   const { category, id } = useParams<{ category?: string; id?: string }>();
@@ -24,17 +25,27 @@ export const VocbularyLeixconRoute: React.FC = () => {
     status,
     error,
     currentItemId,
+    savedVocabularyIds,
   } = useSelector((state: RootState) => state.vocabulary);
 
-  const currentItem = useMemo(() => 
-    currentItemId ? items[currentItemId] : null, 
-    [items, currentItemId]
-  );
+  const currentItem = useMemo(() => (currentItemId ? items[currentItemId] : null), [
+    items,
+    currentItemId,
+  ]);
 
-  // Fetch vocabulary by category, specific item, or all items
+  useEffect(() => {
+    // Fetch saved vocabulary if they're not already in the slice
+    const savedVocabularyNotInSlice = savedVocabularyIds.filter(
+      (id) => !items[id]
+    );
+    if (savedVocabularyNotInSlice.length > 0) {
+      dispatch(fetchSavedVocabularyOfUser());
+    }
+  }, [dispatch, items, savedVocabularyIds]);
+
   useEffect(() => {
     const fetchData = async () => {
-      if (status === 'loading') return;
+      if (status === "loading") return;
 
       if (id) {
         if (!items[id]) {
@@ -57,22 +68,29 @@ export const VocbularyLeixconRoute: React.FC = () => {
     fetchData();
   }, [dispatch, category, id, items, groupedItems, status]);
 
-  const handleCategorySelect = useCallback((selectedCategory: string) => {
-    navigate(`/vocabulary-map/${selectedCategory}`);
-  }, [navigate]);
+  const handleCategorySelect = useCallback(
+    (selectedCategory: string) => {
+      navigate(`/vocabulary-map/${selectedCategory}`);
+    },
+    [navigate]
+  );
 
-  const handleWordSelect = useCallback((word: VocabularyItemInterface) => {
-    dispatch(setCurrentItem(word.id));
-    navigate(`/vocabulary-map/${word.category}/${word.id}`);
-  }, [navigate, dispatch]);
+  const handleWordSelect = useCallback(
+    (word: VocabularyItemInterface) => {
+      dispatch(setCurrentItem(word.id));
+      navigate(`/vocabulary-map/${word.category}/${word.id}`);
+    },
+    [navigate, dispatch]
+  );
 
   const hasNecessaryData = useMemo(() => {
     if (!category && !id) {
       // For the main vocabulary map page
       return Object.keys(groupedItems).length > 0;
     }
-    return categoryLabels.length > 0 && (
-      !category || (groupedItems[category] && groupedItems[category].length > 0)
+    return (
+      categoryLabels.length > 0 &&
+      (!category || (groupedItems[category] && groupedItems[category].length > 0))
     );
   }, [category, id, categoryLabels, groupedItems]);
 
