@@ -150,7 +150,7 @@ export const ExistingSuggestionGroup: React.FC<ExistingSuggestionGroupProps> = (
           </div>
 
           <div className="flex items-center mt-2">
-            <div className="flex-grow mr-2">
+            <div className="flex-grow mr-2 w-1/4 overflow-x-auto">
               <strong>Suggestion:</strong> {item.suggestion}
             </div>
             <div className="flex">
@@ -191,7 +191,7 @@ export const ExistingSuggestionGroup: React.FC<ExistingSuggestionGroupProps> = (
           </Button>
         </div>
         <div className="col-span-2 font-medium">{item.suggestion_type}</div>
-        <div className="col-span-3 text-gray-600">{item.suggestion}</div>
+        <div className="col-span-3 text-gray-600 overflow-x-auto mx-4 ">{item.suggestion}</div>
         <div className="col-span-2">
           <span
             className={`px-2 py-1 rounded-full text-xs ${

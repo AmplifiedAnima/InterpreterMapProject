@@ -139,7 +139,7 @@ export const ExistingWordSuggestionsComponent: React.FC<
   }
 
   return (
-    <div className="border rounded-md overflow-hidden">
+    <div className="flex flex-col h-full border rounded-md overflow-hidden">
       <h2 className="text-base font-bold px-3 py-2 bg-gray-200">
         Existing Word Suggestions
       </h2>
@@ -153,7 +153,7 @@ export const ExistingWordSuggestionsComponent: React.FC<
           {canApprove && <div className="col-span-2"></div>}
         </div>
       )}
-      <div className={`${!isMobile ? "max-h-72" : "max-h-80"} overflow-y-auto`}>
+      <div className="flex-grow overflow-y-auto">
         <ul>{renderSuggestionGroups}</ul>
       </div>
       {toast && (

@@ -36,12 +36,11 @@ export const QuizPage: React.FC = () => {
     };
 
     fetchData();
-  }, [dispatch]); // Only depend on dispatch
+  }, [dispatch, vocabularyStatus, savedVocabularyStatus]);
 
   const isLoading = vocabularyStatus === "loading" || savedVocabularyStatus === "loading";
   const hasFailed = vocabularyStatus === "failed" || savedVocabularyStatus === "failed";
-  const isReady = vocabularyStatus === "succeeded" && savedVocabularyStatus === "succeeded" &&
-                  Object.keys(vocabularyItems).length > 0 && savedVocabularyIds.length > 0;
+  const isReady = vocabularyStatus === "succeeded" && savedVocabularyStatus === "succeeded";
 
   if (isLoading) {
     return <FullPageSpinner />;
@@ -56,11 +55,9 @@ export const QuizPage: React.FC = () => {
   }
 
   return (
-    <>
-      <QuizComponent
-        savedVocabularyIds={savedVocabularyIds}
-        vocabularyItems={vocabularyItems}
-      />
-    </>
+    <QuizComponent
+      savedVocabularyIds={savedVocabularyIds}
+      vocabularyItems={vocabularyItems}
+    />
   );
 };

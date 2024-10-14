@@ -126,7 +126,7 @@ export const NewWordSuggestionItem: React.FC<NewWordSuggestionItemProps> = ({
           isRejected || suggestion.status === "accepted" ? "opacity-50" : ""
         }`}
       >
-        <div className="col-span-2">{suggestion.term}</div>
+        <div className="col-span-2 overflow-x-auto">{suggestion.term}</div>
         <div className="col-span-1">
           <Button
             onClick={() => onLike(suggestion.id)}
@@ -149,7 +149,7 @@ export const NewWordSuggestionItem: React.FC<NewWordSuggestionItemProps> = ({
             "N/A"
           )}
         </div>
-        <div className="col-span-2 text-gray-600">{suggestion.translation}</div>
+        <div className="col-span-2 text-gray-600  overflow-x-auto">{suggestion.translation}</div>
         <div className="col-span-2 text-gray-600 mt-1">
           {suggestion.category}
         </div>{" "}
@@ -250,7 +250,7 @@ export const NewWordSuggestionsComponent: React.FC<
           {canApprove && <div className="col-span-2"></div>}
         </div>
       )}
-      <div className={`overflow-y-auto ${isMobile ? "max-h-80" : "max-h-60"}`}>
+      <div className="flex-grow overflow-y-auto">
         <ul>
           {newWordSuggestions.map((suggestion) => (
             <NewWordSuggestionItem

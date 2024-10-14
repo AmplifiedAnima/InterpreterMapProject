@@ -9,6 +9,7 @@ import {
 import { ToolTipModal } from "../UI/ToolTipModal";
 import { ExistingWordSuggestionsComponent } from "./ExistingSuggestionWordComponent";
 import { NewWordSuggestionsComponent } from "./NewWordSuggestionComponent";
+import { Button } from "../UI/Button";
 
 interface SuggestionsAcquiesceComponentProps {
   existingWordSuggestions: ExistingWordSuggestion[];
@@ -24,6 +25,7 @@ export const SuggestionsAcquiesceComponent: React.FC<
     top: number;
     left: number;
   } | null>(null);
+  const [showExistingSuggestions, setShowExistingSuggestions] = useState(true);
 
   const userRole = useSelector(
     (state: RootState) => state.authState.profile?.user_type
@@ -52,31 +54,58 @@ export const SuggestionsAcquiesceComponent: React.FC<
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-  if (existingWordSuggestions.length === 0 && newWordSuggestions.length === 0) {
-    return <div className="text-sm">No suggestions available.</div>;
-  }
-
   if (!vocabularyItems || vocabularyItems.length === 0) {
     console.warn("No vocabulary items available");
-    return <div className="text-sm">Vocabulary data is not available.</div>;
+    return (
+      <div className="flex flex-col h-full items-center justify-center text-gray-600">
+        <p className="text-lg font-medium">Vocabulary data is not available.</p>
+      </div>
+    );
   }
 
-  return (
-    <div className="text-sm flex flex-col space-y-4 h-[93vh]">
-      <ExistingWordSuggestionsComponent
-        existingWordSuggestions={existingWordSuggestions}
-        vocabularyItems={vocabularyItems}
-        canApprove={canApprove}
-        onShowModal={handleShowModal}
-        isMobile={isMobile}
-      />
+  const toggleSuggestionType = () => {
+    setShowExistingSuggestions(!showExistingSuggestions);
+  };
 
-      <NewWordSuggestionsComponent
-        newWordSuggestions={newWordSuggestions}
-        canApprove={canApprove}
-        onShowModal={handleShowModal}
-        isMobile={isMobile}
-      />
+  const noSuggestionsMessage = (
+    <div className="flex flex-col h-full items-center justify-center text-gray-600">
+      <p className="text-lg font-medium">No suggestions available.</p>
+    </div>
+  );
+
+  return (
+    <div className="flex flex-col h-full">
+      <div className="flex justify-center m-2">
+        <Button
+          onClick={toggleSuggestionType}
+          className={`w-86 rounded-lg justify-center`}
+        >
+          {showExistingSuggestions
+            ? "Show New Word Suggestions"
+            : "Show Existing Word Suggestions"}
+        </Button>
+      </div>
+
+      <div className="flex-grow overflow-hidden">
+        {existingWordSuggestions.length === 0 && newWordSuggestions.length === 0 ? (
+          noSuggestionsMessage
+        ) : showExistingSuggestions ? (
+          <ExistingWordSuggestionsComponent
+            existingWordSuggestions={existingWordSuggestions}
+            vocabularyItems={vocabularyItems}
+            canApprove={canApprove}
+            onShowModal={handleShowModal}
+            isMobile={isMobile}
+          />
+        ) : (
+          <NewWordSuggestionsComponent
+            newWordSuggestions={newWordSuggestions}
+            canApprove={canApprove}
+            onShowModal={handleShowModal}
+            isMobile={isMobile}
+          />
+        )}
+      </div>
 
       {modalContent && (
         <ToolTipModal

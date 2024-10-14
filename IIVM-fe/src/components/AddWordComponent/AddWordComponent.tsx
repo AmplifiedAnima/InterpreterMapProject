@@ -195,14 +195,14 @@ export const AddWordComponent: React.FC<AddWordComponentProps> = ({
 
   return (
     <div className="max-w-xl mx-auto mt-10 p-8 bg-white rounded-lg shadow-lg relative">
-      <div className="flex justify-between items-center mb-8">
-        <h2 className="text-2xl font-bold text-gray-700">
+      <div className="grid grid-cols-1 gap-4 justify-items-center mb-8">
+        <h2 className="text-2xl font-bold text-gray-700 text-center">
           {formType === "newWord" ? "Add New Word" : "Suggest Change"}
         </h2>
         <div className="flex space-x-3">
           <Button
             onClick={() => setFormType("newWord")}
-            className={`px-4 py-2 rounded-lg text-sm font-medium ${
+            className={`px-4 py-2 rounded-lg text-sm font-medium w-32 ${
               formType === "newWord"
                 ? "text-white"
                 : "bg-gray-200 text-gray-700"
@@ -212,7 +212,7 @@ export const AddWordComponent: React.FC<AddWordComponentProps> = ({
           </Button>
           <Button
             onClick={() => setFormType("suggestion")}
-            className={`px-4 py-2 rounded-lg text-sm font-medium ${
+            className={`px-4 py-2 rounded-lg text-sm font-medium w-32 ${
               formType === "suggestion"
                 ? "text-white"
                 : "bg-gray-200 text-gray-700"
