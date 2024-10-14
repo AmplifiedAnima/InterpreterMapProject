@@ -1,14 +1,18 @@
 version: '3'
 services:
   frontend:
-    build: ./IIVM-fe
+    build:
+      context: ./IIVM-fe
+      dockerfile: Dockerfile
     ports:
-      - "5173:5173"  # Zmiana portu na 5173
-    command: npm run dev -- --host
+      - "5173:5173"
     volumes:
       - ./IIVM-fe:/app
+    command: npm run dev -- --host
 
   backend:
-    build: ./iivmdjango
+    build:
+      context: ./iivmdjango
+      dockerfile: Dockerfile
     ports:
       - "8000:8000"
