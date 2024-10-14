@@ -1,0 +1,14 @@
+version: '3'
+services:
+  frontend:
+    build: ./IIVM-fe
+    ports:
+      - "5173:5173"  # Zmiana portu na 5173
+    command: npm run dev -- --host
+    volumes:
+      - ./IIVM-fe:/app
+
+  backend:
+    build: ./iivmdjango
+    ports:
+      - "8000:8000"
