@@ -7,6 +7,7 @@ import {
   likeNewWordSuggestion,
   approveVocabularySuggestion,
   approveNewWordSuggestion,
+  rejectSuggestion,  // Import the rejectSuggestion thunk
 } from "./suggestionThunk";
 import {
   ExistingWordSuggestion,
@@ -102,6 +103,32 @@ const suggestionSlice = createSlice({
         if (index !== -1) {
           state.newWordSuggestions[index].status = "approved";
         }
+      })
+      .addCase(rejectSuggestion.pending, (state) => {
+        state.status = "loading";
+      })
+      .addCase(rejectSuggestion.fulfilled, (state, action) => {
+        state.status = "succeeded";
+        // Find the suggestion by ID and update its status
+        const index = state.newWordSuggestions.findIndex(
+          (s) => s.id === action.payload.id
+        );
+        if (index !== -1) {
+          state.newWordSuggestions[index].status = "rejected";
+        } else {
+          // If it's an existing word suggestion
+          const existingIndex = state.existingWordSuggestions.findIndex(
+            (s) => s.id === action.payload.id
+          );
+          if (existingIndex !== -1) {
+            state.existingWordSuggestions[existingIndex].status = "rejected";
+          }
+        }
+        state.error = null;
+      })
+      .addCase(rejectSuggestion.rejected, (state, action) => {
+        state.status = "failed";
+        state.error = action.payload as string;
       });
   },
 });

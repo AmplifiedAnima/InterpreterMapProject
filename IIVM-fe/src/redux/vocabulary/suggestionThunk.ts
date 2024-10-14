@@ -48,7 +48,7 @@ export const fetchAllSuggestions = createAsyncThunk<AllSuggestionsResponse>(
       }
 
       const data: AllSuggestionsResponse = await response.json();
-      console.log(data)
+      console.log(data);
       return data;
     } catch (error) {
       return rejectWithValue(error);
@@ -228,6 +228,39 @@ export const approveNewWordSuggestion = createAsyncThunk(
 
       if (!response.ok) {
         throw new Error("Failed to approve new word suggestion");
+      }
+
+      const data = await response.json();
+      return { id: suggestionId, ...data };
+    } catch (error) {
+      return rejectWithValue(error);
+    }
+  }
+);
+export const rejectSuggestion = createAsyncThunk(
+  "vocabulary/rejectSuggestion",
+  async (
+    {
+      suggestionId,
+      suggestionType,
+    }: { suggestionId: number; suggestionType: "new_word" | "vocabulary" },
+    { rejectWithValue }
+  ) => {
+    try {
+      const response = await fetch(
+        `http://localhost:8000/reject-suggestion/${suggestionId}/`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+          },
+          body: JSON.stringify({ suggestion_type: suggestionType }),
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error("Failed to reject suggestion");
       }
 
       const data = await response.json();

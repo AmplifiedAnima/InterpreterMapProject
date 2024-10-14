@@ -7,6 +7,7 @@ class TranslationSerializer(serializers.ModelSerializer):
     class Meta:
         model = Translation
         fields = ['id', 'language', 'translation', 'is_primary', 'is_colloquial', 'is_user_proposed']
+        
 class VocabularyItemSerializer(serializers.ModelSerializer):
     translations = TranslationSerializer(many=True, read_only=True)
     primary_translations = serializers.SerializerMethodField()

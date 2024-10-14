@@ -76,7 +76,7 @@ export const QuizComponent: React.FC<QuizComponentProps> = ({
   if (savedVocabularyIds.length > 0 && vocabularyItems) {
     return (
       <div className="flex flex-col items-center justify-center p-8 bg-gray-100 rounded-lg shadow-md min-h-screen">
-        <h2 className="text-2xl font-bold mb-4">Quiz: Learn Vocabulary</h2>
+        <h2 className="text-2xl font-bold mb-4">Learn</h2>
 
         <div className="bg-white w-full max-w-lg p-6 rounded-lg shadow-lg">
           <p className="text-xl font-semibold text-gray-900 mb-4">

@@ -17,7 +17,7 @@ interface NodeData extends d3.SimulationNodeDatum {
   id: string;
   group: string;
   label?: string;
-  word?: VocabularyItemInterface; 
+  word?: VocabularyItemInterface;
 }
 
 export const NetworkGraph: React.FC<NetworkGraphProps> = ({
@@ -165,15 +165,7 @@ export const NetworkGraph: React.FC<NetworkGraphProps> = ({
     return () => {
       simulation.stop();
     };
-  }, [
-    words,
-    dimensions,
-    category,
-    isOpened,
-    selectedWordId,
-    searchTerm,
-    savedVocabularyIds,
-  ]);
+  }, [words,selectedWordId]);
 
   return (
     <svg

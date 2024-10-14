@@ -3,10 +3,10 @@ from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated
 from rest_framework import status
 from django.db import transaction
-from .serializers import VocabularyItemSerializer, TranslationSerializer, NewWordSuggestionSerializer, SuggestionToVocabularyItemSerializer
-from .models import VocabularyItem, Translation, NewWordSuggestion, SuggestionToVocabularyItem
+from .serializers import VocabularyItemSerializer
+from .models import VocabularyItem, Translation
 from djangobackend.models import UserProfile
-import uuid
+
 
 @api_view(['GET'])
 def getAllVocabularyItems(request):
@@ -67,14 +67,6 @@ def searchVocabulary(request):
     serializer = VocabularyItemSerializer(items, many=True)
     return Response(serializer.data)
 
-@api_view(['POST'])
-@permission_classes([IsAuthenticated])
-def create_new_word_suggestion(request):
-    serializer = NewWordSuggestionSerializer(data=request.data)
-    if serializer.is_valid():
-        serializer.save()
-        return Response(serializer.data, status=status.HTTP_201_CREATED)
-    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])

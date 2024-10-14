@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useRef, useEffect } from "react";
 import { VocabularyItemInterface } from "../../interfaces/vocabulary.interface";
 import { useSelector } from "react-redux";
 import { RootState } from "../../redux/store";
@@ -23,6 +23,25 @@ const VocabularyList: React.FC<VocabularyListProps> = ({
     (state: RootState) => state.vocabulary.savedVocabularyIds
   );
 
+  const listRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const headers = listRef.current?.querySelectorAll('.category-header');
+      headers?.forEach((header) => {
+        const rect = header.getBoundingClientRect();
+        if (rect.top <= 0) {
+          header.classList.add('shadow-md');
+        } else {
+          header.classList.remove('shadow-md');
+        }
+      });
+    };
+
+    listRef.current?.addEventListener('scroll', handleScroll);
+    return () => listRef.current?.removeEventListener('scroll', handleScroll);
+  }, []);
+
   const filterVocabulary = (items: VocabularyItemInterface[]) => {
     if (!searchTerm) return items;
     return items.filter((item) =>
@@ -38,10 +57,10 @@ const VocabularyList: React.FC<VocabularyListProps> = ({
     if (filteredItems.length === 0) return null;
 
     return (
-      <React.Fragment key={category}>
-        <li className="bg-[#5e67aa] text-left px-3 font-semibold py-1.5 text-white text-sm md:text-base">
+      <div key={category} className="relative">
+        <div className="category-header sticky top-0 bg-[#5e67aa] text-left px-3 font-semibold py-1.5 text-white text-sm md:text-base">
           {category.toUpperCase()}
-        </li>
+        </div>
         {filteredItems.map((item) => (
           <VocabularyItem
             key={item.id}
@@ -51,14 +70,14 @@ const VocabularyList: React.FC<VocabularyListProps> = ({
             isOnSavedVocabularyList={savedVocabularyIds.includes(item.id)}
           />
         ))}
-      </React.Fragment>
+      </div>
     );
   };
 
   return (
-    <div className="overflow-hidden px-4">
+    <div className="flex flex-col h-full">
       {/* Header Section */}
-      <div className="bg-gray-100 text-gray-700 font-semibold text-sm md:text-base py-2 px-3 rounded-md">
+      <div className="bg-gray-100 text-gray-700 font-semibold text-sm md:text-base py-2 px-3 rounded-md mb-2">
         <div className="flex">
           <div className="w-5/12 text-left">Word</div>
           <div className="w-6/12 text-left">Translation</div>
@@ -66,7 +85,7 @@ const VocabularyList: React.FC<VocabularyListProps> = ({
         </div>
       </div>
 
-      <ul className="">
+      <div ref={listRef} className="flex-1 overflow-y-auto pr-2">
         {selectedCategory && groupedVocabulary[selectedCategory]
           ? renderVocabularyItems(
               selectedCategory,
@@ -75,7 +94,7 @@ const VocabularyList: React.FC<VocabularyListProps> = ({
           : Object.entries(groupedVocabulary).map(([category, items]) =>
               renderVocabularyItems(category, items)
             )}
-      </ul>
+      </div>
     </div>
   );
 };
@@ -91,7 +110,7 @@ const VocabularyItem: React.FC<{
     : "";
 
   return (
-    <li
+    <div
       className={`border-b border-gray-200 hover:bg-gray-50 transition-colors duration-150 ease-in-out cursor-pointer ${
         isSelected ? "bg-blue-100" : ""
       } ${isOnSavedVocabularyList ? "bg-green-100" : ""}`}
@@ -110,7 +129,7 @@ const VocabularyItem: React.FC<{
           )}
         </div>
       </div>
-    </li>
+    </div>
   );
 };
 

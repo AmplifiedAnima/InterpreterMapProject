@@ -9,6 +9,7 @@ interface ToolTipModalProps {
   children: React.ReactNode;
   position?: { top: number; left: number };
   title?: string;
+  className?: string;
 }
 
 export const ToolTipModal: React.FC<ToolTipModalProps> = ({
@@ -17,6 +18,7 @@ export const ToolTipModal: React.FC<ToolTipModalProps> = ({
   children,
   position,
   title,
+  className,
 }) => {
   if (!showModal) return null;
 
@@ -24,7 +26,8 @@ export const ToolTipModal: React.FC<ToolTipModalProps> = ({
     <div
       className={cn(
         "absolute z-50 bg-white border border-gray-300 rounded-lg shadow-lg p-4",
-        "max-w-sm w-full"
+        "max-w-sm w-full",
+        className
       )}
       style={{
         top: position?.top,
@@ -42,8 +45,8 @@ export const ToolTipModal: React.FC<ToolTipModalProps> = ({
       <div
         className="overflow-y-auto max-h-[300px] pr-2"
         style={{
-          scrollbarWidth: 'thin',
-          scrollbarColor: '#5e67aa #e5e7eb',
+          scrollbarWidth: "thin",
+          scrollbarColor: "#5e67aa #e5e7eb",
         }}
       >
         {children}

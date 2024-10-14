@@ -58,8 +58,12 @@ export const VocabularyMapBoard: React.FC<{
     handleAddVocabulary,
   } = useVocabularyMapHook();
 
-  const vocabularyItems = useSelector((state: RootState) => state.vocabulary.items);
-  const savedVocabularyIds = useSelector((state: RootState) => state.vocabulary.savedVocabularyIds);
+  const vocabularyItems = useSelector(
+    (state: RootState) => state.vocabulary.items
+  );
+  const savedVocabularyIds = useSelector(
+    (state: RootState) => state.vocabulary.savedVocabularyIds
+  );
 
   const wordsInCategory: VocabularyItemInterface[] = selectedCategory
     ? Object.values(vocabularyItems).filter(
@@ -185,7 +189,9 @@ export const VocabularyMapBoard: React.FC<{
       {selectedWord && (
         <VocabularyWordDetail
           vocabularyItem={selectedWord}
-          onAddToSaved={(id: string) => handleAddVocabulary(vocabularyItems[id], () => {})}
+          onAddToSaved={(id: string) =>
+            handleAddVocabulary(vocabularyItems[id], () => {})
+          }
           deviceType={deviceType}
           goBackInRwdFunction={
             deviceType === "mobile" || deviceType === "smallTablet"
@@ -197,7 +203,9 @@ export const VocabularyMapBoard: React.FC<{
       {!selectedWord && (
         <VocabularyWordDetail
           vocabularyItem={undefined}
-          onAddToSaved={(id: string) => handleAddVocabulary(vocabularyItems[id], () => {})}
+          onAddToSaved={(id: string) =>
+            handleAddVocabulary(vocabularyItems[id], () => {})
+          }
           deviceType={deviceType}
           goBackInRwdFunction={
             deviceType === "mobile" || deviceType === "smallTablet"

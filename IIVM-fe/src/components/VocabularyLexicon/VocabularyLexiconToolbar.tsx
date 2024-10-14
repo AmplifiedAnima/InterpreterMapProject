@@ -6,7 +6,6 @@ import zoomOut from "../../assets/icons/zoom-out.svg";
 import anchor from "../../assets/icons/anchor.svg";
 import searchIcon from "../../assets/icons/search.svg";
 import saveIcon from "../../assets/icons/save.svg";
-import dropDownIcon from "../../assets/icons/arrow-down-circle.svg";
 import listIcon from "../../assets/icons/list.svg";
 import graphIcon from "../../assets/icons/bar-chart.svg";
 
@@ -44,7 +43,7 @@ export const VocabularyLexiconToolbar: React.FC<VocabularyMapToolbarProps> = ({
   selectedCategory,
 }) => {
   const [isRwd] = useState(window.innerWidth <= 768);
-  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+
   const [localSearchQuery, setLocalSearchQuery] = useState(searchQuery);
   const [suggestions, setSuggestions] = useState<string[]>([]);
   const [showSuggestions, setShowSuggestions] = useState(false);
@@ -83,10 +82,6 @@ export const VocabularyLexiconToolbar: React.FC<VocabularyMapToolbarProps> = ({
     setShowSuggestions(false);
   };
 
-  const toggleDropdown = () => {
-    setIsDropdownOpen(!isDropdownOpen);
-  };
-
   const ToolbarButton: React.FC<{
     onClick: () => void;
     imageIcon: string;
@@ -108,19 +103,26 @@ export const VocabularyLexiconToolbar: React.FC<VocabularyMapToolbarProps> = ({
   const ToolbarContent = () => (
     <>
       <ToolbarButton onClick={onShowSavedVocabulary} imageIcon={saveIcon} />
-      <ToolbarButton
-        onClick={onToggleGraph}
-        imageIcon={showGraph ? listIcon : graphIcon}
-        disabled={!selectedCategory}
-        text={showGraph ? "Show List" : `${isRwd ? "" : "Graph"}`}
-      />
+
+      {!isRwd && (
+        <ToolbarButton
+          onClick={onToggleGraph}
+          imageIcon={showGraph ? listIcon : graphIcon}
+          disabled={!selectedCategory}
+          text={showGraph ? "Show List" : "Graph"}
+        />
+      )}
       {showGraph && selectedCategory && (
         <>
           <ToolbarButton onClick={onZoomIn} imageIcon={zoomIn} />
           <ToolbarButton onClick={onZoomOut} imageIcon={zoomOut} />
           <ToolbarButton onClick={onReset} imageIcon={anchor} />
           {!onToolTipLegendOpen && (
-            <ToolbarButton onClick={setOnToolTipLegendOpen} text="Legend" imageIcon="" />
+            <ToolbarButton
+              onClick={setOnToolTipLegendOpen}
+              text="Legend"
+              imageIcon=""
+            />
           )}
         </>
       )}
@@ -130,12 +132,12 @@ export const VocabularyLexiconToolbar: React.FC<VocabularyMapToolbarProps> = ({
   return (
     <div
       className={`flex flex-row px-[0.5px] py-4 ml-4 ${
-        isRwd && "justify-center py-[2.5px] ml-0"
+        isRwd && "justify-center py-[5.5px] mx-4"
       }`}
     >
       <div className="flex flex-row relative">
         <Input
-          className={`${isRwd ? "w-32" : "w-48"} my-1 mr-1`}
+          className={`${isRwd ? "w-44" : "w-48"} my-1 `}
           value={localSearchQuery}
           onChange={handleInputChange}
           onKeyPress={handleKeyPress}
@@ -144,7 +146,8 @@ export const VocabularyLexiconToolbar: React.FC<VocabularyMapToolbarProps> = ({
         {showSuggestions && suggestions.length > 0 && (
           <div
             ref={suggestionsRef}
-            className="absolute top-full left-0 w-full bg-white border border-gray-300 rounded-md shadow-lg z-10"
+            className="absolute top-full left-0 z-50 w-full bg-white border border-gray-300 rounded-md shadow-lg "
+            style={{}}
           >
             {suggestions.map((suggestion, index) => (
               <div
@@ -160,24 +163,10 @@ export const VocabularyLexiconToolbar: React.FC<VocabularyMapToolbarProps> = ({
         <div className="flex flex-shrink-0">
           <ToolbarButton onClick={handleSearch} imageIcon={searchIcon} />
         </div>
-        {isRwd ? (
-          <div className="w-full">
-            <Button
-              onClick={toggleDropdown}
-              className="my-1 mx-1 bg-[#b9bbe8] text-blue-100 text-md flex items-center px-2"
-              imageIcon={dropDownIcon}
-            />
-            {isDropdownOpen && (
-              <div className="absolute z-30 mt-1 bg-white border border-gray-200 rounded-md shadow-lg">
-                <ToolbarContent />
-              </div>
-            )}
-          </div>
-        ) : (
-          <div className="flex flex-wrap items-center">
-            <ToolbarContent />
-          </div>
-        )}
+
+        <div className="flex flex-wrap items-center">
+          <ToolbarContent />
+        </div>
       </div>
     </div>
   );

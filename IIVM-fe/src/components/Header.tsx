@@ -44,7 +44,7 @@ export const Header = () => {
     ...(isLoggedIn
       ? [
           {
-            label: `${isMobile ? "" : "Lexicon"}`,
+            label: 'Lexicon',
             icon: mapWhite,
             onClick: () => navigate("/vocabulary-map"),
           },
@@ -53,7 +53,7 @@ export const Header = () => {
             onClick: () => navigate("suggestion-acquiesce"),
           },
           {
-            label: `${isMobile ? "" : "Learn"}`,
+            label: 'Learn',
             icon: questionMarkWhite,
             onClick: () => navigate("/quiz-page"),
           },
