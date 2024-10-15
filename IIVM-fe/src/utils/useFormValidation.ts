@@ -1,6 +1,5 @@
-import { useState } from 'react';
-import { ZodSchema } from 'zod';
-
+import { useState } from "react";
+import { ZodSchema } from "zod";
 export const useFormValidation = <T>(schema: ZodSchema<T>, initialValues: Partial<T> = {}) => {
   const [values, setValues] = useState<T>({ ...initialValues } as T);
   const [errors, setErrors] = useState<Partial<Record<keyof T, string>> | null>(null);
@@ -30,5 +29,9 @@ export const useFormValidation = <T>(schema: ZodSchema<T>, initialValues: Partia
     }
   };
 
-  return { values, errors, handleChange, handleSubmit };
+  const resetErrors = () => {
+    setErrors(null);
+  };
+
+  return { values, errors, handleChange, handleSubmit, resetErrors };
 };

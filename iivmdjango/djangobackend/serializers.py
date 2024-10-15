@@ -1,51 +1,59 @@
 from rest_framework import serializers
 from django.contrib.auth.models import User
 from .models import UserProfile
+from django.contrib.auth.password_validation import validate_password
+from django.core.exceptions import ValidationError
 
 class UserSerializer(serializers.ModelSerializer):
-    password = serializers.CharField(write_only=True)
-
     class Meta:
         model = User
         fields = ['username', 'email', 'password']
+        extra_kwargs = {
+            'password': {'write_only': True}
+        }
 
-    def create(self, validated_data):
-        user = User.objects.create_user(
-            username=validated_data['username'],
-            email=validated_data['email'],
-            password=validated_data['password']
-        )
-        return user
-
+    def validate_password(self, value):
+        try:
+            validate_password(value)
+        except ValidationError as e:
+            raise serializers.ValidationError(list(e.messages))
+        return value
 
 class UserProfileSerializer(serializers.ModelSerializer):
-    # Do not nest the user_type under user, keep it flat
-    username = serializers.CharField(source='user.username')
-    email = serializers.EmailField(source='user.email')
-    
+    username = serializers.CharField(write_only=True)
+    email = serializers.EmailField(write_only=True)
+    password = serializers.CharField(write_only=True)
+
     class Meta:
         model = UserProfile
-        fields = ['username', 'email', 'user_type', 'savedVocabulary']
+        fields = ['username', 'email', 'password', 'user_type', 'savedVocabulary']
+        extra_kwargs = {
+            'user_type': {'default': 'interpreter'},
+            'savedVocabulary': {'default': list}
+        }
+
+    def validate(self, data):
+        # Check for existing username
+        if User.objects.filter(username=data['username']).exists():
+            raise serializers.ValidationError({"username": "A user with that username already exists."})
+        
+        # Check for existing email
+        if User.objects.filter(email=data['email']).exists():
+            raise serializers.ValidationError({"email": "A user with that email already exists."})
+        
+        # Validate password
+        try:
+            validate_password(data['password'])
+        except ValidationError as e:
+            raise serializers.ValidationError({"password": list(e.messages)})
+        
+        return data
 
     def create(self, validated_data):
-        # Extract the user data and user profile data separately
-        user_data = validated_data.pop('user')
-        user_serializer = UserSerializer(data=user_data)
-        
-        if user_serializer.is_valid():
-            user = user_serializer.save()
-        else:
-            raise serializers.ValidationError(user_serializer.errors)
-        
-        # Create the UserProfile object with the new user
-        user_profile = UserProfile.objects.create(
-            user=user, 
-            user_type=validated_data.get('user_type', 'interpreter'),
-            savedVocabulary=validated_data.get('savedVocabulary', [])
-        )
-        return user_profile
-
-    def validate_user_type(self, value):
-        if value not in [choice[0] for choice in UserProfile.USER_TYPE_CHOICES]:
-            raise serializers.ValidationError("Invalid user type")
-        return value
+        user_data = {
+            'username': validated_data.pop('username'),
+            'email': validated_data.pop('email'),
+            'password': validated_data.pop('password')
+        }
+        user = User.objects.create_user(**user_data)
+        return UserProfile.objects.create(user=user, **validated_data)

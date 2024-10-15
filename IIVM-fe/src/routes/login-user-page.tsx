@@ -6,6 +6,7 @@ import { RootState, AppDispatch } from "../redux/store";
 import LoginForm from "../components/Forms/LoginForm";
 import { useNavigate } from "react-router-dom";
 import { Toast } from "../components/UI/Toast";
+import { useAuthErrorCleaner } from "../utils/useAuthErrorCleaner";
 
 const LoginUserPage: React.FC = () => {
   const dispatch: AppDispatch = useDispatch();
@@ -14,19 +15,20 @@ const LoginUserPage: React.FC = () => {
   );
   const navigate = useNavigate();
   const [toastMessage, setToastMessage] = useState<string | null>(null);
-  const [toastType, setToastType] = useState<'success' | 'error'>('success');
+  const [toastType, setToastType] = useState<"success" | "error">("success");
 
-  // Handle form submission
+  useAuthErrorCleaner();
+
   const handleLogin = async (loginData: UserLoginData) => {
     const resultAction = await dispatch(loginUser(loginData));
     if (loginUser.fulfilled.match(resultAction)) {
       console.log("Login successful:", resultAction.payload);
       setToastMessage("Login successful!");
-      setToastType('success');
+      setToastType("success");
     } else {
       console.error("Login failed:", resultAction.payload);
-      setToastMessage(error || "Login failed. Please try again.");
-      setToastType('error');
+      setToastMessage(resultAction.payload?.error || "Login failed");
+      setToastType("error");
     }
   };
 
@@ -42,7 +44,12 @@ const LoginUserPage: React.FC = () => {
 
   return (
     <>
-      <LoginForm onSubmit={handleLogin} status={status} error={error} />
+      <LoginForm
+        onSubmit={handleLogin}
+        status={status}
+        error={error?.error || null}
+        details={error ? error.details : {}}
+      />
       {toastMessage && (
         <Toast
           message={toastMessage}

@@ -50,37 +50,62 @@ const vocabularySlice = createSlice({
     clearSavedVocabulary(state) {
       state.savedVocabularyIds = [];
     },
+    clearVocabularyErrors(state) {
+      state.error = null;
+    },
   },
+
   extraReducers: (builder) => {
     builder
-    .addCase(fetchVocabulary.fulfilled, (state, action) => {
-      state.status = "succeeded";
-      if (Array.isArray(action.payload)) {
-        state.items = action.payload.reduce((acc, item) => {
-          if (item && typeof item === 'object' && 'id' in item) {
-            acc[item.id] = item as VocabularyItemInterface;
-          }
-          return acc;
-        }, {} as { [id: string]: VocabularyItemInterface });
-        state.groupedItems = groupByCategoryDescending(action.payload);
-        state.categoryLabels = [...new Set(action.payload
-          .map(item => (item as VocabularyItemInterface).category)
-          .filter((category): category is string => typeof category === 'string' && category !== '')
-        )];
-      } else if (typeof action.payload === 'object' && action.payload !== null) {
-        // If payload is an object, assume it's already in the correct format
-        state.items = action.payload as { [id: string]: VocabularyItemInterface };
-        state.groupedItems = groupByCategoryDescending(Object.values(state.items));
-        state.categoryLabels = [...new Set(
-          Object.values(state.items)
-            .map(item => item.category)
-            .filter((category): category is string => typeof category === 'string' && category !== '')
-        )];
-      } else {
-        console.error('Received payload is in an unexpected format:', action.payload);
-        state.error = 'Received invalid data format';
-      }
-    })
+      .addCase(fetchVocabulary.fulfilled, (state, action) => {
+        state.status = "succeeded";
+        if (Array.isArray(action.payload)) {
+          state.items = action.payload.reduce((acc, item) => {
+            if (item && typeof item === "object" && "id" in item) {
+              acc[item.id] = item as VocabularyItemInterface;
+            }
+            return acc;
+          }, {} as { [id: string]: VocabularyItemInterface });
+          state.groupedItems = groupByCategoryDescending(action.payload);
+          state.categoryLabels = [
+            ...new Set(
+              action.payload
+                .map((item) => (item as VocabularyItemInterface).category)
+                .filter(
+                  (category): category is string =>
+                    typeof category === "string" && category !== ""
+                )
+            ),
+          ];
+        } else if (
+          typeof action.payload === "object" &&
+          action.payload !== null
+        ) {
+          // If payload is an object, assume it's already in the correct format
+          state.items = action.payload as {
+            [id: string]: VocabularyItemInterface;
+          };
+          state.groupedItems = groupByCategoryDescending(
+            Object.values(state.items)
+          );
+          state.categoryLabels = [
+            ...new Set(
+              Object.values(state.items)
+                .map((item) => item.category)
+                .filter(
+                  (category): category is string =>
+                    typeof category === "string" && category !== ""
+                )
+            ),
+          ];
+        } else {
+          console.error(
+            "Received payload is in an unexpected format:",
+            action.payload
+          );
+          state.error = "Received invalid data format";
+        }
+      })
       .addCase(fetchVocabularyByCategory.fulfilled, (state, action) => {
         const category = action.meta.arg;
         action.payload.items.forEach((item) => {
@@ -142,7 +167,11 @@ const vocabularySlice = createSlice({
   },
 });
 
-export const { setCurrentItem, resetCurrentItem, clearSavedVocabulary } =
-  vocabularySlice.actions;
+export const {
+  setCurrentItem,
+  resetCurrentItem,
+  clearSavedVocabulary,
+  clearVocabularyErrors,
+} = vocabularySlice.actions;
 
 export const vocabularyReducer = vocabularySlice.reducer;

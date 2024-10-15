@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useFormValidation } from "../../utils/useFormValidation";
 import { userLoginSchema } from "../../interfaces/userLoginSchema";
 import { UserLoginData } from "../../redux/auth/authTypes";
@@ -10,12 +10,22 @@ interface LoginFormProps {
   onSubmit: (data: UserLoginData) => void;
   status: "idle" | "loading" | "succeeded" | "failed";
   error: string | null;
+  details: Record<string, string[]>;
 }
 
-const LoginForm: React.FC<LoginFormProps> = ({ onSubmit, status, error }) => {
-  const { values, errors, handleChange, handleSubmit } =
+const LoginForm: React.FC<LoginFormProps> = ({
+  onSubmit,
+  status,
+  error,
+  details,
+}) => {
+  const { values, errors, resetErrors, handleChange, handleSubmit } =
     useFormValidation<UserLoginData>(userLoginSchema);
-    
+
+  useEffect(() => {
+    resetErrors();
+  }, []);
+
   const navigate = useNavigate();
 
   return (
@@ -25,8 +35,11 @@ const LoginForm: React.FC<LoginFormProps> = ({ onSubmit, status, error }) => {
         className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4"
       >
         <div className="mb-4">
-          <label htmlFor="username" className="block text-gray-700 text-sm font-bold mb-2 text-center">
-            Username 
+          <label
+            htmlFor="username"
+            className="block text-gray-700 text-sm font-bold mb-2 text-center"
+          >
+            Username
           </label>
           <InputPlaceholder
             id="username"
@@ -37,12 +50,22 @@ const LoginForm: React.FC<LoginFormProps> = ({ onSubmit, status, error }) => {
             className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
           />
           {errors?.username && (
-            <p className="text-red-500 text-xs italic mt-1">{errors.username}</p>
+            <p className="text-red-500 text-xs italic mt-1">
+              {errors.username}
+            </p>
+          )}
+          {details.username && (
+            <p className="text-red-500 text-xs italic mt-1">
+              {details.username[0]}
+            </p>
           )}
         </div>
         <div className="mb-6">
-          <label htmlFor="password" className="block text-gray-700 text-sm font-bold mb-2 text-center">
-            Password 
+          <label
+            htmlFor="password"
+            className="block text-gray-700 text-sm font-bold mb-2 text-center"
+          >
+            Password
           </label>
           <InputPlaceholder
             id="password"
@@ -55,8 +78,13 @@ const LoginForm: React.FC<LoginFormProps> = ({ onSubmit, status, error }) => {
           {errors?.password && (
             <p className="text-red-500 text-xs italic">{errors.password}</p>
           )}
+          {details.password && (
+            <p className="text-red-500 text-xs italic mt-1">
+              {details.password[0]}
+            </p>
+          )}
         </div>
-        
+
         <div className="flex items-center justify-center">
           <Button
             type="submit"
@@ -66,10 +94,19 @@ const LoginForm: React.FC<LoginFormProps> = ({ onSubmit, status, error }) => {
             {status === "loading" ? "Logging in..." : "Login"}
           </Button>
         </div>
-        
-        {error && <p className="text-red-500 text-xs italic mt-4 text-center">{error}</p>}
+
+        {error && (
+          <p className="text-red-500 text-xs italic mt-4 text-center">
+            {error}
+          </p>
+        )}
+        {details.non_field_errors && (
+          <p className="text-red-500 text-xs italic mt-4 text-center">
+            {details.non_field_errors[0]}
+          </p>
+        )}
       </form>
-      
+
       <div className="text-center mt-4">
         <p className="text-sm">
           Don't have an account?{" "}

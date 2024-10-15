@@ -6,6 +6,7 @@ from .serializers import UserProfileSerializer, UserSerializer
 from django.contrib.auth.hashers import make_password
 from django.contrib.auth import authenticate
 from rest_framework_simplejwt.tokens import RefreshToken
+from django.db import transaction
 
 @api_view(['GET'])
 def get_user_profile(request):
@@ -20,23 +21,38 @@ def get_user_profile(request):
     # Correct the serializer to use UserProfileSerializer, not UserSerializer
     serializer = UserProfileSerializer(user_profile)
     return Response(serializer.data, status=status.HTTP_200_OK)
+from rest_framework.decorators import api_view
+from rest_framework.response import Response
+from rest_framework import status
+from django.db import transaction
+from .serializers import UserProfileSerializer
 
 @api_view(['POST'])
 def create_user_profile(request):
-    # Debugging: Print out the incoming data
-    print(request.data)
+    serializer = UserProfileSerializer(data=request.data)
 
-    # Create the UserProfile using the serializer
-    serializer = UserProfileSerializer(data=request.data, context={'request': request})
-    
-    if serializer.is_valid():
-        user_profile = serializer.save()
-        print('UserProfile created:', user_profile)
-        return Response(UserProfileSerializer(user_profile).data, status=status.HTTP_201_CREATED)
-    
-    # Debugging: Print out validation errors
-    print(serializer.errors)
-    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    try:
+        with transaction.atomic():
+            if serializer.is_valid():
+                user_profile = serializer.save()
+                return Response({
+                    'message': 'User profile created successfully',
+                    'username': user_profile.user.username,
+                    'email': user_profile.user.email,
+                    'user_type': user_profile.user_type
+                }, status=status.HTTP_201_CREATED)
+            else:
+                # Return specific validation errors
+                return Response({
+                    'error': 'Validation failed',
+                    'details': serializer.errors
+                }, status=status.HTTP_400_BAD_REQUEST)
+    except Exception as e:
+        return Response({
+            'error': 'An unexpected error occurred',
+            'details': str(e)
+        }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        
 @api_view(['POST'])
 def login_user(request):
     username = request.data.get('username')
