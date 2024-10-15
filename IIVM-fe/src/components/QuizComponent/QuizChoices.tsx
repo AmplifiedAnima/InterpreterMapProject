@@ -22,7 +22,7 @@ const QuizChoices: React.FC<QuizChoicesProps> = ({
         <Button
           key={index}
           onClick={() => onChoiceSelect(choice)}
-          className={`p-2 rounded-lg ${
+          className={` rounded-lg w-full ${
             selectedChoice === choice
               ? "bg-blue-500 text-white"
               : "bg-gray-200 text-black"

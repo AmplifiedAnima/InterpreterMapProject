@@ -25,5 +25,8 @@ export interface AuthState {
   refreshedTokenState: string | null;
   isLoggedIn: boolean;
   status: "idle" | "loading" | "succeeded" | "failed";
-  error: string | null;
+  error: {
+    error: string;
+    details: Record<string, string[]>;
+  } | null;
 }

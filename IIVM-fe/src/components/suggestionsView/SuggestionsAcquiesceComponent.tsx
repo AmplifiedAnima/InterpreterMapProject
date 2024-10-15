@@ -1,123 +1,113 @@
-import React, { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
-import { VocabularyItemInterface } from "../../interfaces/vocabulary.interface";
-import { RootState } from "../../redux/store";
+import React, { useState, useCallback, useEffect } from "react";
+import { Button } from "../UI/Button";
 import {
   ExistingWordSuggestion,
   NewWordSuggestion,
 } from "../../interfaces/suggestion";
-import { ToolTipModal } from "../UI/ToolTipModal";
-import { ExistingWordSuggestionsComponent } from "./ExistingSuggestionWordComponent";
-import { NewWordSuggestionsComponent } from "./NewWordSuggestionComponent";
-import { Button } from "../UI/Button";
+import { VocabularyItemInterface } from "../../interfaces/vocabulary.interface";
+import { SuggestionCard } from "./SuggestionCard";
 
 interface SuggestionsAcquiesceComponentProps {
   existingWordSuggestions: ExistingWordSuggestion[];
   newWordSuggestions: NewWordSuggestion[];
-  vocabularyItems: VocabularyItemInterface[] | null;
+  vocabularyItems: VocabularyItemInterface[];
+  canApprove: boolean;
+  onLikeExisting: (id: number) => void;
+  onApproveExisting: (id: number) => Promise<void>;
+  onRejectExisting: (id: number) => Promise<void>;
+  onLikeNew: (id: number) => void;
+  onApproveNew: (id: number) => Promise<void>;
+  onRejectNew: (id: number) => Promise<void>;
 }
 
 export const SuggestionsAcquiesceComponent: React.FC<
   SuggestionsAcquiesceComponentProps
-> = ({ existingWordSuggestions, newWordSuggestions, vocabularyItems }) => {
-  const [modalContent, setModalContent] = useState<string | null>(null);
-  const [modalPosition, setModalPosition] = useState<{
-    top: number;
-    left: number;
-  } | null>(null);
+> = ({
+  existingWordSuggestions,
+  newWordSuggestions,
+  vocabularyItems,
+  canApprove,
+  onLikeExisting,
+  onApproveExisting,
+  onRejectExisting,
+  onLikeNew,
+  onApproveNew,
+  onRejectNew,
+}) => {
   const [showExistingSuggestions, setShowExistingSuggestions] = useState(true);
-
-  const userRole = useSelector(
-    (state: RootState) => state.authState.profile?.user_type
-  );
-
-  const canApprove = userRole === "overseer" || userRole === "superuser";
-
-  const handleShowModal = (
-    content: string,
-    event: React.MouseEvent<HTMLButtonElement>
-  ) => {
-    const { top, left, height } = event.currentTarget.getBoundingClientRect();
-    setModalPosition({ top: top + height + window.scrollY, left });
-    setModalContent(content);
-  };
-
-  const handleCloseModal = () => setModalContent(null);
-  const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
+  const [expandedCardId, setExpandedCardId] = useState<number | null>(null);
+  const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
-    const handleResize = () => {
-      setIsMobile(window.innerWidth < 768);
-    };
-
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
+    const checkIfMobile = () => setIsMobile(window.innerWidth < 768);
+    checkIfMobile();
+    window.addEventListener("resize", checkIfMobile);
+    return () => window.removeEventListener("resize", checkIfMobile);
   }, []);
 
-  if (!vocabularyItems || vocabularyItems.length === 0) {
-    console.warn("No vocabulary items available");
-    return (
-      <div className="flex flex-col h-full items-center justify-center text-gray-600">
-        <p className="text-lg font-medium">Vocabulary data is not available.</p>
-      </div>
-    );
-  }
+  const toggleSuggestionType = useCallback(() => {
+    setShowExistingSuggestions((prev) => !prev);
+    setExpandedCardId(null);
+  }, []);
 
-  const toggleSuggestionType = () => {
-    setShowExistingSuggestions(!showExistingSuggestions);
-  };
+  const toggleCardExpansion = useCallback((id: number) => {
+    setExpandedCardId((prevId) => (prevId === id ? null : id));
+  }, []);
 
-  const noSuggestionsMessage = (
-    <div className="flex flex-col h-full items-center justify-center text-gray-600">
-      <p className="text-lg font-medium">No suggestions available.</p>
-    </div>
-  );
+  const suggestions = showExistingSuggestions
+    ? existingWordSuggestions
+    : newWordSuggestions;
 
   return (
-    <div className="flex flex-col h-full">
-      <div className="flex justify-center m-2">
-        <Button
-          onClick={toggleSuggestionType}
-          className={`w-86 rounded-lg justify-center`}
-        >
+    <div className="p-6 max-w-5xl mx-auto">
+      <div className="flex flex-col sm:flex-row justify-between items-center mb-8 space-y-4 sm:space-y-0">
+        <h2 className="text-xl font-bold text-gray-800">
           {showExistingSuggestions
-            ? "Show New Word Suggestions"
-            : "Show Existing Word Suggestions"}
+            ? "Existing Word Suggestions"
+            : "New Word Suggestions"}
+        </h2>
+        <Button onClick={toggleSuggestionType}>
+          {showExistingSuggestions
+            ? "Show New Suggestions"
+            : "Show Existing Suggestions"}
         </Button>
       </div>
-
-      <div className="flex-grow overflow-hidden">
-        {existingWordSuggestions.length === 0 && newWordSuggestions.length === 0 ? (
-          noSuggestionsMessage
-        ) : showExistingSuggestions ? (
-          <ExistingWordSuggestionsComponent
-            existingWordSuggestions={existingWordSuggestions}
-            vocabularyItems={vocabularyItems}
+      <div className="space-y-6">
+        {suggestions.map((item) => (
+          <SuggestionCard
+            key={item.id}
+            item={item}
+            isExisting={showExistingSuggestions}
+            vocabularyItem={
+              showExistingSuggestions
+                ? vocabularyItems.find(
+                    (v) =>
+                      v.id === (item as ExistingWordSuggestion).vocabulary_item
+                  )
+                : undefined
+            }
+            onLike={() =>
+              showExistingSuggestions
+                ? onLikeExisting(item.id)
+                : onLikeNew(item.id)
+            }
+            onApprove={() =>
+              showExistingSuggestions
+                ? onApproveExisting(item.id)
+                : onApproveNew(item.id)
+            }
+            onReject={() =>
+              showExistingSuggestions
+                ? onRejectExisting(item.id)
+                : onRejectNew(item.id)
+            }
             canApprove={canApprove}
-            onShowModal={handleShowModal}
+            isExpanded={!isMobile || expandedCardId === item.id}
+            toggleExpand={() => toggleCardExpansion(item.id)}
             isMobile={isMobile}
           />
-        ) : (
-          <NewWordSuggestionsComponent
-            newWordSuggestions={newWordSuggestions}
-            canApprove={canApprove}
-            onShowModal={handleShowModal}
-            isMobile={isMobile}
-          />
-        )}
+        ))}
       </div>
-
-      {modalContent && (
-        <ToolTipModal
-          showModal={!!modalContent}
-          onClose={handleCloseModal}
-          position={modalPosition || { top: 0, left: 0 }}
-          title="Definition"
-          className="w-1/2"
-        >
-          {modalContent}
-        </ToolTipModal>
-      )}
     </div>
   );
 };

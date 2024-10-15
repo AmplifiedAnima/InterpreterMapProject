@@ -69,19 +69,19 @@ export const QuizComponent: React.FC<QuizComponentProps> = ({
   }
 
   return (
-    <div className="flex flex-col md:flex-row items-start justify-center p-4 md:p-8 bg-gray-100 min-h-screen">
+    <div className="flex flex-col md:flex-row items-start justify-start p-4 md:p-8 bg-gray-100 min-h-screen">
       {isMobile && (
         <div className="w-full mb-4">
           <Button
             onClick={toggleSidebar}
-            className="w-full bg-blue-500 text-white px-4 py-2 rounded-lg shadow-md"
+            className="w-full"
           >
             {showSidebar ? "Hide Vocabulary List" : "Show Vocabulary List"}
           </Button>
         </div>
       )}
 
-      <div className={`${showSidebar ? "block" : "hidden"}  w-full `}>
+      <div className={`${showSidebar ? "block" : "hidden"}  w-full`}>
         <VocabularyListSidebar
           filteredVocabulary={Object.values(filteredVocabularyItems)}
           groupedVocabulary={{
@@ -96,9 +96,9 @@ export const QuizComponent: React.FC<QuizComponentProps> = ({
       </div>
 
       <div
-        className={`w-full ${isMobile && showSidebar ? "hidden" : "block"} `}
+        className={`w-full ${isMobile && showSidebar ? "hidden" : "flex flex-col flex-grow"} `}
       >
-        <div className={`bg-white w-full max-w-lg ${isMobile ? "" : "mx-12"} p-8 rounded-lg shadow-lg`}>
+        <div className={`bg-white w-full max-w-lg mx-8 p-8 rounded-lg shadow-lg`}>
           <QuizQuestion term={currentWord?.term || ""} />
 
           <QuizChoices
@@ -112,7 +112,7 @@ export const QuizComponent: React.FC<QuizComponentProps> = ({
           {!showFeedback ? (
             <Button
               onClick={handleSubmit}
-              className="w-full"
+              className="w-full mt-4"
               disabled={selectedChoice === null}
             >
               Submit Answer
@@ -120,7 +120,7 @@ export const QuizComponent: React.FC<QuizComponentProps> = ({
           ) : (
             <Button
               onClick={handleNext}
-              className="w-full bg-green-500 text-white px-4 py-2 rounded-lg shadow-md"
+              className="w-full mt-4 bg-green-500 text-white px-4 py-2 rounded-lg shadow-md"
             >
               Next Question
             </Button>

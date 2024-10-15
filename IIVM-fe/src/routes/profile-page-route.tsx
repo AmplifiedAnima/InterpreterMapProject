@@ -5,7 +5,7 @@ import { logout } from "../redux/auth/authSlice";
 import { useNavigate } from "react-router-dom";
 import { ProfileDashboard } from "../components/ProfilePage/ProfilePageComponent";
 
-export const ProfilePage: React.FC = () => {
+export const ProfilePageRoute: React.FC = () => {
   const { isLoggedIn } = useSelector((state: RootState) => state.authState);
   const navigate = useNavigate();
   const dispatch = useDispatch<AppDispatch>();

@@ -5,7 +5,7 @@ import { AppDispatch, RootState } from "../redux/store";
 import { fetchVocabulary, fetchSavedVocabularyOfUser } from "../redux/vocabulary/vocabularyThunks";
 import FullPageSpinner from "../components/UI/FullPageSpinner";
 
-export const QuizPage: React.FC = () => {
+export const QuizPageRoute: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
   const savedVocabularyIds = useSelector((state: RootState) => state.vocabulary.savedVocabularyIds);
   const vocabularyItems = useSelector((state: RootState) => state.vocabulary.items);

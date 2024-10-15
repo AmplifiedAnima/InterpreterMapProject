@@ -4,7 +4,7 @@ import { useSelector } from "react-redux";
 import { RootState } from "../redux/store";
 import { Link } from "react-router-dom";
 
-const LandingPage: React.FC = () => {
+const LandingPageRoute: React.FC = () => {
   const isAuthenticated = useSelector(
     (state: RootState) => state.authState.isLoggedIn
   );
@@ -96,4 +96,4 @@ const FeatureCard: React.FC<FeatureCardProps> = ({
   );
 };
 
-export default LandingPage;
+export default LandingPageRoute;

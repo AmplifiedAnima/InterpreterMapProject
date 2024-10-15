@@ -8,7 +8,7 @@ import { useNavigate } from "react-router-dom";
 import { Toast } from "../components/UI/Toast";
 import { useAuthErrorCleaner } from "../utils/useAuthErrorCleaner";
 
-const LoginUserPage: React.FC = () => {
+const LoginUserRoute: React.FC = () => {
   const dispatch: AppDispatch = useDispatch();
   const { status, error, isLoggedIn } = useSelector(
     (state: RootState) => state.authState
@@ -61,4 +61,4 @@ const LoginUserPage: React.FC = () => {
   );
 };
 
-export default LoginUserPage;
+export default LoginUserRoute;

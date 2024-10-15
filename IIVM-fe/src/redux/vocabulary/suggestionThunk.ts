@@ -1,8 +1,11 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import { NewWordData } from "../../interfaces/wordSuggestionSchema";
+import {
+  NewWordData,
+  SuggestionData,
+} from "../../interfaces/wordSuggestionSchema";
 import { AllSuggestionsResponse } from "../../interfaces/suggestion";
 import { RootState } from "../store";
-import { SuggestionData } from "../../interfaces/wordSuggestionSchema";
+
 export const fetchSuggestionsForWord = createAsyncThunk(
   "vocabulary/fetchSuggestionsForWord",
   async (wordId: string, { rejectWithValue }) => {

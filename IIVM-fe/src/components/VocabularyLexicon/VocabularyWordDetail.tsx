@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { VocabularyItemInterface } from "../../interfaces/vocabulary.interface";
 import { Button } from "../UI/Button";
 import { RootState } from "../../redux/store";
-import { ArrowLeftCircle, ChevronDown, ChevronUp } from "lucide-react";
+import { ArrowLeftCircle, Book, ChevronDown, ChevronUp } from "lucide-react";
 
 interface VocabularyDetailProps {
   vocabularyItem?: VocabularyItemInterface | undefined;
@@ -20,8 +20,12 @@ const VocabularyWordDetail: React.FC<VocabularyDetailProps> = ({
   goBackInRwdFunction,
 }) => {
   const [isTranslationsExpanded, setIsTranslationsExpanded] = useState(false);
-  const savedVocabularyIds = useSelector((state: RootState) => state.vocabulary.savedVocabularyIds);
-  const currentLanguage = useSelector((state: RootState) => state.language.language);
+  const savedVocabularyIds = useSelector(
+    (state: RootState) => state.vocabulary.savedVocabularyIds
+  );
+  const currentLanguage = useSelector(
+    (state: RootState) => state.language.language
+  );
   const navigate = useNavigate();
   const isSmallDevice = deviceType === "mobile" || deviceType === "smallTablet";
 
@@ -41,29 +45,51 @@ const VocabularyWordDetail: React.FC<VocabularyDetailProps> = ({
   };
 
   return (
-    <div className={`bg-white shadow-lg rounded-lg w-full h-full flex flex-col ${isSmallDevice ? 'p-2' : 'p-4'}`}>
+    <div
+      className={`bg-white shadow-lg rounded-lg w-full h-full flex flex-col ${
+        isSmallDevice ? "p-2" : "p-4"
+      }`}
+    >
       <div className="flex flex-col h-full">
-        <h1 className={`mb-4 ${isSmallDevice ? 'text-md' : 'md:text-lg'} px-2 py-2 bg-[#5e67aa] text-white rounded-md`}>
-          {vocabularyItem ? vocabularyItem.term : "Select a word"}
-        </h1>
+        {vocabularyItem ? (
+          <h1
+            className={`mb-4 ${
+              isSmallDevice ? "text-md" : "md:text-lg"
+            } px-2 py-2 bg-[#5e67aa] text-white rounded-md`}
+          >
+            {vocabularyItem.term}
+          </h1>
+        ) : (
+          ""
+        )}
 
         {vocabularyItem && (
           <>
-            <div className={`mb-4 ${isSmallDevice ? 'text-sm' : 'text-base'}`}>
+            <div className={`mb-4 ${isSmallDevice ? "text-sm" : "text-base"}`}>
               <div className="flex justify-between items-center mb-2">
                 <h2 className="font-semibold text-gray-700">Translations:</h2>
                 {hasMultipleTranslations && (
                   <Button
                     onClick={toggleTranslationsExpand}
-                    className={`text-xs py-1 px-2 rounded-lg text-white hover:bg-[#8c8ac7] ${isSmallDevice ? 'text-xs' : 'text-sm'}`}
+                    className={`text-xs py-1 px-2 rounded-lg text-white hover:bg-[#8c8ac7] ${
+                      isSmallDevice ? "text-xs" : "text-sm"
+                    }`}
                   >
-                    {isTranslationsExpanded ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
+                    {isTranslationsExpanded ? (
+                      <ChevronUp size={16} />
+                    ) : (
+                      <ChevronDown size={16} />
+                    )}
                   </Button>
                 )}
               </div>
               {primaryTranslation && (
                 <div className="bg-gray-50 rounded-md p-3 mb-2">
-                  <span className={`font-semibold text-indigo-700 ${isSmallDevice ? 'text-base' : 'text-lg'}`}>
+                  <span
+                    className={`font-semibold text-indigo-700 ${
+                      isSmallDevice ? "text-base" : "text-lg"
+                    }`}
+                  >
                     {primaryTranslation.translation}
                   </span>
                   <span className="ml-2 text-xs bg-blue-100 text-blue-800 px-2 py-0.5 rounded-full">
@@ -79,7 +105,11 @@ const VocabularyWordDetail: React.FC<VocabularyDetailProps> = ({
                       .map((translation, index) => (
                         <li key={index} className="p-3 hover:bg-gray-50">
                           <div className="flex flex-col">
-                            <span className={`${isSmallDevice ? 'text-base' : 'text-lg'} text-gray-700`}>
+                            <span
+                              className={`${
+                                isSmallDevice ? "text-base" : "text-lg"
+                              } text-gray-700`}
+                            >
                               {translation.translation}
                             </span>
                             <div className="mt-1 flex flex-wrap gap-1">
@@ -102,30 +132,51 @@ const VocabularyWordDetail: React.FC<VocabularyDetailProps> = ({
               )}
             </div>
 
-            <div className={`flex-grow overflow-y-auto mb-4 ${isSmallDevice ? 'text-sm' : 'text-base'}`}>
+            <div
+              className={`flex-grow overflow-y-auto mb-4 ${
+                isSmallDevice ? "text-sm" : "text-base"
+              }`}
+            >
               {vocabularyItem.definition && (
                 <div className="mb-4">
-                  <h2 className="font-semibold text-gray-700 mb-1">Definition:</h2>
-                  <p className="bg-gray-50 p-2 rounded-md">{vocabularyItem.definition}</p>
+                  <h2 className="font-semibold text-gray-700 mb-1">
+                    Definition:
+                  </h2>
+                  <p className="bg-gray-50 p-2 rounded-md">
+                    {vocabularyItem.definition}
+                  </p>
                 </div>
               )}
               {vocabularyItem.category && (
                 <div>
-                  <h2 className="font-semibold text-gray-700 mb-1">Category:</h2>
-                  <p className="bg-gray-50 p-2 rounded-md">{vocabularyItem.category}</p>
+                  <h2 className="font-semibold text-gray-700 mb-1">
+                    Category:
+                  </h2>
+                  <p className="bg-gray-50 p-2 rounded-md">
+                    {vocabularyItem.category}
+                  </p>
                 </div>
               )}
             </div>
           </>
         )}
-
         {!vocabularyItem && (
-          <p className="text-gray-500 italic text-center">
-            Please select a vocabulary item from the list to see the details.
-          </p>
+          <div className="flex flex-col items-center justify-center h-full text-center ">
+            <Book className="w-24 h-24 text-[rgb(94,103,170)] mb-2 animate-pulse animate" />
+            <h1 className="text-2xl font-bold text-gray-700 mb-4">
+              Ready to learn?
+            </h1>
+            <p className="text-[#5e67aa] mb-4 text-3xl">
+              Select a word to get started.
+            </p>
+          </div>
         )}
 
-        <div className={`flex justify-center items-center w-full ${isSmallDevice ? 'space-x-2' : 'space-x-4'}`}>
+        <div
+          className={`flex justify-center items-center w-full ${
+            isSmallDevice ? "space-x-2" : "space-x-4"
+          }`}
+        >
           {isSmallDevice && goBackInRwdFunction && vocabularyItem && (
             <Button
               onClick={goBackInRwdFunction}
@@ -134,14 +185,19 @@ const VocabularyWordDetail: React.FC<VocabularyDetailProps> = ({
               <ArrowLeftCircle size={20} />
             </Button>
           )}
-          {vocabularyItem && !savedVocabularyIds.includes(vocabularyItem.id) && (
-            <Button
-              onClick={() => onAddToSaved(vocabularyItem.id)}
-              className={`flex-grow justify-center font-medium rounded-lg ${isSmallDevice ? 'text-xs px-2 py-1' : 'text-sm px-4 py-2'} text-white hover:bg-[#8c8ac7] ${isSmallDevice ? 'max-w-[100px]' : ''}`}
-            >
-              Learn
-            </Button>
-          )}
+          {vocabularyItem &&
+            !savedVocabularyIds.includes(vocabularyItem.id) && (
+              <Button
+                onClick={() => onAddToSaved(vocabularyItem.id)}
+                className={`flex-grow justify-center font-medium rounded-lg ${
+                  isSmallDevice ? "text-xs px-2 py-1" : "text-sm px-4 py-2"
+                } text-white hover:bg-[#8c8ac7] ${
+                  isSmallDevice ? "max-w-[100px]" : ""
+                }`}
+              >
+                Learn
+              </Button>
+            )}
           {vocabularyItem && (
             <Button
               onClick={() =>
@@ -155,7 +211,11 @@ const VocabularyWordDetail: React.FC<VocabularyDetailProps> = ({
                   },
                 })
               }
-              className={`flex-grow justify-center ${isSmallDevice ? 'text-xs py-1 px-2' : 'text-sm py-2 px-4'} rounded-lg text-white hover:bg-[#8c8ac7] ${isSmallDevice ? 'max-w-[100px]' : ''}`}
+              className={`flex-grow justify-center ${
+                isSmallDevice ? "text-xs py-1 px-2" : "text-sm py-2 px-4"
+              } rounded-lg text-white hover:bg-[#8c8ac7] ${
+                isSmallDevice ? "max-w-[100px]" : ""
+              }`}
             >
               Suggest
             </Button>

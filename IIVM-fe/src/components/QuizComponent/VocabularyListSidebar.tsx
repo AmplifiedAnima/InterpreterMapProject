@@ -27,7 +27,7 @@ const VocabularyItem: React.FC<{
     </span>
     <Button
       onClick={onRemove}
-      className="text-xs bg-red-500 text-white px-2 py-1 rounded hover:bg-red-600 transition-colors"
+
     >
       Remove
     </Button>
@@ -53,9 +53,9 @@ const VocabularyListSidebar: React.FC<VocabularyListProps> = ({
       </div>
       <div className="bg-gray-100 py-2 px-4 flex justify-between items-center border-b border-gray-200">
         <span className="text-sm font-medium text-purple-600">Word</span>
-        <span className="text-sm font-medium text-gray-600">Actions</span>
+        <span className="text-sm font-medium text-gray-600 mr-7">Actions</span>
       </div>
-      <ul className="max-h-[53vh] overflow-y-auto">
+      <ul className="max-h-[70vh] overflow-y-auto">
         {vocabularyToDisplay.map((item) => (
           <VocabularyItem
             key={item.id}
