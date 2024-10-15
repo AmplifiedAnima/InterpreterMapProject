@@ -10,8 +10,9 @@ import { GraphPage } from "../Graph-page";
 import { ProfilePage } from "../profile-page";
 import CreateUserProfilePage from "../create-user-profile-page";
 import LoginUserPage from "../login-user-page";
-import { AddWordPage } from "../add-word-page";
+import { AddNewWordRoute } from "../add-new-word-route";
 import { SuggestionAcquiesceRoute } from "../suggestions-acquiesce-route";
+import { AddSuggestionRoute } from "../add-new-suggestion-to-word-route";
 
 export const router = createBrowserRouter([
   {
@@ -34,7 +35,11 @@ export const router = createBrowserRouter([
       },
       {
         path: "add-word-page",
-        element: <AddWordPage />,
+        element: <AddNewWordRoute />,
+      },
+      {
+        path: "add-new-suggestion-to-word",
+        element: <AddSuggestionRoute />,
       },
       {
         path: "quiz-page",

@@ -8,6 +8,8 @@ import searchIcon from "../../assets/icons/search.svg";
 import saveIcon from "../../assets/icons/save.svg";
 import listIcon from "../../assets/icons/list.svg";
 import graphIcon from "../../assets/icons/bar-chart.svg";
+import plusCircleIcon from "../../assets/icons/plus-circle.svg";
+import { useNavigate } from "react-router-dom";
 
 interface VocabularyMapToolbarProps {
   isOpened: boolean;
@@ -48,7 +50,7 @@ export const VocabularyLexiconToolbar: React.FC<VocabularyMapToolbarProps> = ({
   const [suggestions, setSuggestions] = useState<string[]>([]);
   const [showSuggestions, setShowSuggestions] = useState(false);
   const suggestionsRef = useRef<HTMLDivElement>(null);
-
+  const navigate = useNavigate();
   const handleSearch = () => {
     onSearch(localSearchQuery);
     setShowSuggestions(false);
@@ -84,13 +86,13 @@ export const VocabularyLexiconToolbar: React.FC<VocabularyMapToolbarProps> = ({
 
   const ToolbarButton: React.FC<{
     onClick: () => void;
-    imageIcon: string;
+    imageIcon?: string;
     text?: string;
     disabled?: boolean;
   }> = ({ onClick, imageIcon, text, disabled = false }) => (
     <Button
       onClick={onClick}
-      className={`my-1 mx-1 bg-[#b9bbe8] text-blue-100 text-md flex items-center justify-center ${
+      className={`my-1 mx-1  text-blue-100 text-md flex items-center justify-center ${
         disabled ? "opacity-50 cursor-not-allowed" : ""
       }`}
       imageIcon={imageIcon}
@@ -126,6 +128,10 @@ export const VocabularyLexiconToolbar: React.FC<VocabularyMapToolbarProps> = ({
           )}
         </>
       )}
+      <ToolbarButton
+        onClick={() => navigate("/add-word-page")}
+        imageIcon={plusCircleIcon}
+      />
     </>
   );
 

@@ -145,7 +145,7 @@ const VocabularyWordDetail: React.FC<VocabularyDetailProps> = ({
           {vocabularyItem && (
             <Button
               onClick={() =>
-                navigate("/add-word-page", {
+                navigate("/add-new-suggestion-to-word", {
                   state: {
                     word: vocabularyItem.term,
                     id: vocabularyItem.id,

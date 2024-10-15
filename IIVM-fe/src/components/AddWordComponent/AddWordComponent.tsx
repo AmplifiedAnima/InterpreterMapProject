@@ -229,7 +229,6 @@ export const AddWordComponent: React.FC<AddWordComponentProps> = ({
           newWordErrors={newWordErrors ?? {}}
           handleChange={handleChange}
           handleSubmit={handleNewWordSubmit(handleNewWordFormSubmit)}
-          renderSuggestions={renderSuggestions}
           categoryOfItems={categoryOfItems}
           languageNames={languageNames}
           disabled={disabled}

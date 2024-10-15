@@ -10,24 +10,23 @@ interface AddWordFormProps {
     e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
   ) => void;
   handleSubmit: (e: FormEvent<HTMLFormElement>) => void;
-  renderSuggestions: () => React.ReactNode;
   categoryOfItems: string[];
   languageNames: ReadonlyArray<{ code: string; name: string }>;
   disabled: boolean;
 }
+
 export const AddWordForm: React.FC<AddWordFormProps> = ({
   newWordValues,
   newWordErrors,
   handleChange,
   handleSubmit,
-  renderSuggestions,
   categoryOfItems,
   languageNames,
   disabled,
 }) => {
   return (
     <form onSubmit={handleSubmit} className="space-y-6">
-      <div className="relative">
+      <div>
         <label
           htmlFor="new-term"
           className="block mb-2 font-medium text-gray-700"
@@ -44,7 +43,6 @@ export const AddWordForm: React.FC<AddWordFormProps> = ({
         {newWordErrors?.term && (
           <p className="text-red-600 text-sm mt-1">{newWordErrors.term}</p>
         )}
-        {renderSuggestions()}
       </div>
 
       <div>
@@ -114,6 +112,7 @@ export const AddWordForm: React.FC<AddWordFormProps> = ({
           <p className="text-red-600 text-sm mt-1">{newWordErrors.category}</p>
         )}
       </div>
+
       <div>
         <label
           htmlFor="language"
@@ -139,6 +138,7 @@ export const AddWordForm: React.FC<AddWordFormProps> = ({
           <p className="text-red-600 text-sm mt-1">{newWordErrors.language}</p>
         )}
       </div>
+
       <Button
         type="submit"
         className="w-full rounded-lg transition duration-300"

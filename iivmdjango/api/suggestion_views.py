@@ -7,9 +7,17 @@ from .serializers import VocabularyItemSerializer, NewWordSuggestionSerializer, 
 from .models import VocabularyItem, Translation, NewWordSuggestion, SuggestionToVocabularyItem
 import uuid
 
+
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
 def create_new_word_suggestion(request):
+    # Check if the word already exists in the VocabularyItem model
+    term = request.data.get('term')
+    if VocabularyItem.objects.filter(term=term).exists():
+        response = Response({'error': f'The word "{term}" already exists in the vocabulary.'}, status=status.HTTP_400_BAD_REQUEST)
+        print(response)
+        return response
+
     serializer = NewWordSuggestionSerializer(data=request.data)
     if serializer.is_valid():
         serializer.save()
