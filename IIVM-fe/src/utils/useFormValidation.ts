@@ -29,9 +29,7 @@ export const useFormValidation = <T>(schema: ZodSchema<T>, initialValues: Partia
     }
   };
 
-  const resetErrors = () => {
-    setErrors(null);
-  };
 
-  return { values, errors, handleChange, handleSubmit, resetErrors };
+
+  return { values, errors, handleChange, handleSubmit };
 };

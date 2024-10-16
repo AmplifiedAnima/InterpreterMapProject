@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { useFormValidation } from "../../utils/useFormValidation";
 import { userLoginSchema } from "../../interfaces/userLoginSchema";
 import { UserLoginData } from "../../redux/auth/authTypes";
@@ -19,15 +19,11 @@ const LoginForm: React.FC<LoginFormProps> = ({
   error,
   details,
 }) => {
-  const { values, errors, resetErrors, handleChange, handleSubmit } =
+  const { values, errors, handleChange, handleSubmit } =
     useFormValidation<UserLoginData>(userLoginSchema);
 
-  useEffect(() => {
-    resetErrors();
-  }, []);
-
   const navigate = useNavigate();
-
+  // status === "idle";
   return (
     <div className="w-full max-w-xs mx-auto my-8">
       <form
@@ -45,6 +41,7 @@ const LoginForm: React.FC<LoginFormProps> = ({
             id="username"
             type="text"
             name="username"
+            disabled={status === "succeeded"}
             value={values.username || ""}
             onChange={handleChange}
             className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
@@ -71,6 +68,7 @@ const LoginForm: React.FC<LoginFormProps> = ({
             id="password"
             type="password"
             name="password"
+            disabled={status === "succeeded"}
             value={values.password || ""}
             onChange={handleChange}
             className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline"
@@ -88,36 +86,42 @@ const LoginForm: React.FC<LoginFormProps> = ({
         <div className="flex items-center justify-center">
           <Button
             type="submit"
-            disabled={status === "loading"}
-            className="font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline w-full"
+            disabled={status === "loading" || status === "succeeded"}
+            className={`font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline w-full ${
+              status === "succeeded" &&
+              "bg-green-500 text-white hover:bg-green-400"
+            }`}
           >
-            {status === "loading" ? "Logging in..." : "Login"}
+            {(status === "loading" && "Logging in...") || status === "succeeded"
+              ? "Success"
+              : "Login"}
           </Button>
         </div>
-
+        {status !== "succeeded"}
         {error && (
           <p className="text-red-500 text-xs italic mt-4 text-center">
-            {error}
+            {/* {error} */}
           </p>
         )}
-        {details.non_field_errors && (
+        {status !== "succeeded" && details.non_field_errors && (
           <p className="text-red-500 text-xs italic mt-4 text-center">
             {details.non_field_errors[0]}
           </p>
         )}
       </form>
-
-      <div className="text-center mt-4">
-        <p className="text-sm">
-          Don't have an account?{" "}
-          <button
-            onClick={() => navigate("/create-user-profile")}
-            className="text-purple-600 hover:underline focus:outline-none font-bold"
-          >
-            Click here to sign up
-          </button>
-        </p>
-      </div>
+      {status !== "succeeded" && (
+        <div className="text-center mt-4">
+          <p className="text-sm">
+            Don't have an account?{" "}
+            <button
+              onClick={() => navigate("/create-user-profile")}
+              className="text-purple-600 hover:underline focus:outline-none font-bold"
+            >
+              Click here to sign up
+            </button>
+          </p>
+        </div>
+      )}
     </div>
   );
 };

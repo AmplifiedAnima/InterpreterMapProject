@@ -61,7 +61,7 @@ export const SuggestionsAcquiesceComponent: React.FC<
   return (
     <div className="p-6 max-w-5xl mx-auto">
       <div className="flex flex-col sm:flex-row justify-between items-center mb-8 space-y-4 sm:space-y-0">
-        <h2 className="text-xl font-bold text-gray-800">
+        <h2 className="text-2xl font-bold text-[#404670]">
           {showExistingSuggestions
             ? "Existing Word Suggestions"
             : "New Word Suggestions"}

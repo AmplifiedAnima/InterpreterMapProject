@@ -14,7 +14,7 @@ import { ToolTipModal } from "../UI/ToolTipModal";
 import { useSelector } from "react-redux";
 import { RootState } from "../../redux/store";
 
-export const VocabularyMapBoard: React.FC<{
+export const VocabularyLexicon: React.FC<{
   groupedVocabulary: GroupedVocabularyType;
   categoryLabels: string[];
   onCategorySelect: (category: string) => void;

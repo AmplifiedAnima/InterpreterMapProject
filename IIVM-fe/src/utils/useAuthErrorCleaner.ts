@@ -1,7 +1,7 @@
 // useAuthErrorCleaner.ts
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
-import { clearAuthErrors } from "../redux/auth/authSlice";
+import { clearAuthErrors, clearAuthStatus } from "../redux/auth/authSlice";
 
 export const useAuthErrorCleaner = () => {
   const dispatch = useDispatch();
@@ -9,6 +9,7 @@ export const useAuthErrorCleaner = () => {
   useEffect(() => {
     return () => {
       dispatch(clearAuthErrors());
+      dispatch(clearAuthStatus())
     };
   }, [dispatch]);
 };

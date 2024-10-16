@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../redux/store";
 import { logout } from "../redux/auth/authSlice";
 import { useNavigate } from "react-router-dom";
-import { ProfileDashboard } from "../components/ProfilePage/ProfilePageComponent";
+import { ProfilePageComponent } from "../components/ProfilePage/ProfilePageComponent";
 
 export const ProfilePageRoute: React.FC = () => {
   const { isLoggedIn } = useSelector((state: RootState) => state.authState);
@@ -47,12 +47,5 @@ export const ProfilePageRoute: React.FC = () => {
     );
   }
 
-  return (
-    <ProfileDashboard
-      data={data!}
-      onLogout={handleLogout}
-      savedVocabulary={savedVocabulary}
-      selectedLanguage={language}
-    />
-  );
+  return <ProfilePageComponent data={data!} onLogout={handleLogout} />;
 };

@@ -34,7 +34,9 @@ const LoginUserRoute: React.FC = () => {
 
   useEffect(() => {
     if (isLoggedIn) {
-      navigate("/");
+      setTimeout(() => {
+        navigate("/");
+      }, 2000);
     }
   }, [isLoggedIn, navigate]);
 

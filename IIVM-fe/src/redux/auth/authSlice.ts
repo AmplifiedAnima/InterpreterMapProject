@@ -18,6 +18,9 @@ const userAuthSlice = createSlice({
     clearAuthErrors: (state) => {
       state.error = null;
     },
+    clearAuthStatus: (state) => {
+      state.status = "idle";
+    },
     setTokens: (
       state,
       action: PayloadAction<{ accessToken: string; refreshToken: string }>
@@ -148,5 +151,6 @@ export const {
   setLoggedIn,
   setUserProfile,
   clearAuthErrors,
+  clearAuthStatus,
 } = userAuthSlice.actions;
 export const authSliceReducer = userAuthSlice.reducer;

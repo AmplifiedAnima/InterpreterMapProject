@@ -5,6 +5,7 @@ import { VocabularyItemInterface } from "../../interfaces/vocabulary.interface";
 import { Button } from "../UI/Button";
 import { RootState } from "../../redux/store";
 import { ArrowLeftCircle, Book, ChevronDown, ChevronUp } from "lucide-react";
+import { AnimatePresence, motion } from "framer-motion";
 
 interface VocabularyDetailProps {
   vocabularyItem?: VocabularyItemInterface | undefined;
@@ -71,9 +72,7 @@ const VocabularyWordDetail: React.FC<VocabularyDetailProps> = ({
                 {hasMultipleTranslations && (
                   <Button
                     onClick={toggleTranslationsExpand}
-                    className={`text-xs py-1 px-2 rounded-lg text-white hover:bg-[#8c8ac7] ${
-                      isSmallDevice ? "text-xs" : "text-sm"
-                    }`}
+                    className="text-sm py-1 px-2 rounded-lg text-white bg-[#5e67aa] hover:bg-[#4a5396] transition duration-300"
                   >
                     {isTranslationsExpanded ? (
                       <ChevronUp size={16} />
@@ -84,52 +83,72 @@ const VocabularyWordDetail: React.FC<VocabularyDetailProps> = ({
                 )}
               </div>
               {primaryTranslation && (
-                <div className="bg-gray-50 rounded-md p-3 mb-2">
+                <div className="bg-[#f0f4ff] rounded-md p-3 mb-2 border border-[#d0d4ff]">
                   <span
-                    className={`font-semibold text-indigo-700 ${
+                    className={`font-semibold text-[#5e67aa] ${
                       isSmallDevice ? "text-base" : "text-lg"
                     }`}
                   >
                     {primaryTranslation.translation}
                   </span>
-                  <span className="ml-2 text-xs bg-blue-100 text-blue-800 px-2 py-0.5 rounded-full">
+                  <span className="ml-2 text-xs bg-[#5e67aa] text-white px-2 py-0.5 rounded-full">
                     Primary
                   </span>
                 </div>
               )}
-              {isTranslationsExpanded && hasMultipleTranslations && (
-                <div className="mt-2 border border-gray-200 rounded-md">
-                  <ul className="divide-y divide-gray-200">
-                    {translations
-                      .filter((t) => !t.is_primary)
-                      .map((translation, index) => (
-                        <li key={index} className="p-3 hover:bg-gray-50">
-                          <div className="flex flex-col">
-                            <span
-                              className={`${
-                                isSmallDevice ? "text-base" : "text-lg"
-                              } text-gray-700`}
-                            >
-                              {translation.translation}
-                            </span>
-                            <div className="mt-1 flex flex-wrap gap-1">
-                              {translation.is_colloquial && (
-                                <span className="text-xs bg-green-100 text-green-800 px-2 py-0.5 rounded-full">
-                                  Colloquial
-                                </span>
-                              )}
-                              {translation.is_user_proposed && (
-                                <span className="text-xs bg-yellow-100 text-yellow-800 px-2 py-0.5 rounded-full">
-                                  User Proposed
-                                </span>
-                              )}
+              <AnimatePresence>
+                {isTranslationsExpanded && hasMultipleTranslations && (
+                  <motion.div
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
+                    transition={{ duration: 0.3 }}
+                    className="mt-2 border border-[#d0d4ff] rounded-md overflow-hidden"
+                  >
+                    <motion.ul
+                      initial={{ height: 0 }}
+                      animate={{ height: "auto" }}
+                      exit={{ height: 0 }}
+                      transition={{ duration: 0.3 }}
+                      className="divide-y divide-[#d0d4ff]"
+                    >
+                      {translations
+                        .filter((t) => !t.is_primary)
+                        .map((translation, index) => (
+                          <motion.li
+                            key={index}
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            transition={{ duration: 0.3, delay: index * 0.1 }}
+                            className="p-3 hover:bg-[#f0f4ff] transition duration-300"
+                          >
+                            <div className="flex flex-col">
+                              <span
+                                className={`${
+                                  isSmallDevice ? "text-base" : "text-lg"
+                                } text-[#5e67aa]`}
+                              >
+                                {translation.translation}
+                              </span>
+                              <div className="mt-1 flex flex-wrap gap-1">
+                                {translation.is_colloquial && (
+                                  <span className="text-sm bg-[#7986cb] text-white px-2 py-0.5 rounded-full">
+                                    Colloquial
+                                  </span>
+                                )}
+                                {translation.is_user_proposed && (
+                                  <span className="text-sm bg-[#ffb74d] text-gray-900 px-2 py-0.5 rounded-full">
+                                    User Proposed
+                                  </span>
+                                )}
+                              </div>
                             </div>
-                          </div>
-                        </li>
-                      ))}
-                  </ul>
-                </div>
-              )}
+                          </motion.li>
+                        ))}
+                    </motion.ul>
+                  </motion.div>
+                )}
+              </AnimatePresence>
             </div>
 
             <div

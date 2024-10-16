@@ -34,7 +34,11 @@ export const registerUser = createAsyncThunk<
     } catch (error) {
       return rejectWithValue({
         error: "An error occurred",
-        details: { non_field_errors: [error instanceof Error ? error.message : "Unknown error"] }
+        details: {
+          non_field_errors: [
+            error instanceof Error ? error.message : "Unknown error",
+          ],
+        },
       });
     }
   }
@@ -59,20 +63,19 @@ export const loginUser = createAsyncThunk<
         body: JSON.stringify(loginData),
       });
 
+      const data = await response.json();
+      
       if (!response.ok) {
-        const errorData = await response.json();
         return rejectWithValue({
-          error: "Login failed",
-          details: errorData.details || { non_field_errors: ["An error occurred"] }
+          error: data.error || "Login failed",
+          details: data.details || { non_field_errors: ["An error occurred"] },
         });
       }
-
-      const data = await response.json();
 
       if (!data.access || !data.refresh) {
         return rejectWithValue({
           error: "Missing access or refresh token",
-          details: { non_field_errors: ["Missing access or refresh token"] }
+          details: { non_field_errors: ["Missing access or refresh token"] },
         });
       }
 
@@ -89,7 +92,11 @@ export const loginUser = createAsyncThunk<
     } catch (error) {
       return rejectWithValue({
         error: "An unexpected error occurred",
-        details: { non_field_errors: [error instanceof Error ? error.message : "Unknown error"] }
+        details: {
+          non_field_errors: [
+            error instanceof Error ? error.message : "Unknown error",
+          ],
+        },
       });
     }
   }
@@ -115,7 +122,7 @@ export const refreshToken = createAsyncThunk<
           : "Token refresh failed.";
       return rejectWithValue({
         error: errorMessage,
-        details: { non_field_errors: [errorMessage] }
+        details: { non_field_errors: [errorMessage] },
       });
     }
 
@@ -125,7 +132,11 @@ export const refreshToken = createAsyncThunk<
   } catch (error) {
     return rejectWithValue({
       error: "An unexpected error occurred",
-      details: { non_field_errors: [error instanceof Error ? error.message : "An error occurred"] }
+      details: {
+        non_field_errors: [
+          error instanceof Error ? error.message : "An error occurred",
+        ],
+      },
     });
   }
 });

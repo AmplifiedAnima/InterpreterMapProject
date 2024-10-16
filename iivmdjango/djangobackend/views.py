@@ -58,32 +58,15 @@ def login_user(request):
     username = request.data.get('username')
     password = request.data.get('password')
 
-    # Print incoming data for debugging
-    print("Login request received. Username:", username)
-
     if not username or not password:
-        print("Missing username or password.")
-        return Response({'error': 'Username and password are required'}, status=status.HTTP_400_BAD_REQUEST)
+        return Response({'error': 'Username and password are required', 'details': {'non_field_errors': ['Both username and password are required.']}}, status=status.HTTP_400_BAD_REQUEST)
 
-    # Authenticate the user
     user = authenticate(username=username, password=password)
 
     if user is not None:
-        print("User authenticated successfully. Username:", user.username)
-
         try:
-            # Attempt to retrieve the user profile
             user_profile = UserProfile.objects.get(user=user)
-            print("UserProfile found for user:", user.username)
-        except UserProfile.DoesNotExist:
-            print("UserProfile not found for user:", user.username)
-            return Response({'error': 'UserProfile not found'}, status=status.HTTP_404_NOT_FOUND)
-
-        try:
-            # Generate JWT tokens
             refresh = RefreshToken.for_user(user)
-            print("JWT tokens generated successfully.")
-
             response_data = {
                 'refresh': str(refresh),
                 'access': str(refresh.access_token),
@@ -92,16 +75,13 @@ def login_user(request):
                 'user_type': user_profile.user_type,
                 'savedVocabulary': user_profile.savedVocabulary,
             }
-            print(response_data)
             return Response(response_data, status=status.HTTP_200_OK)
-
+        except UserProfile.DoesNotExist:
+            return Response({'error': 'UserProfile not found', 'details': {'non_field_errors': ['User profile not found.']}}, status=status.HTTP_404_NOT_FOUND)
         except Exception as e:
-            print("Error generating tokens or building response:", str(e))
-            return Response({'error': 'Token generation failed.'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
-
+            return Response({'error': 'Token generation failed.', 'details': {'non_field_errors': ['An error occurred during login.']}}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
     else:
-        print("Invalid credentials for username:", username)
-        return Response({'error': 'Invalid credentials'}, status=status.HTTP_401_UNAUTHORIZED)
+        return Response({'error': 'Invalid credentials', 'details': {'non_field_errors': ['The provided username or password is incorrect.']}}, status=status.HTTP_401_UNAUTHORIZED)
 
 @api_view(['GET'])
 def default_view(request):
