@@ -1,13 +1,18 @@
-import React, { useState, ChangeEvent } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../redux/store";
-import { useFormValidation } from "../utils/useFormValidation";
-import { NewWordData, newWordSchema } from "../interfaces/wordSuggestionSchema";
+import { NewWordData } from "../interfaces/wordSuggestionSchema";
 import { suggestNewWord } from "../redux/vocabulary/suggestionThunk";
 import { AddWordForm } from "../components/Forms/AddWordForm";
 import { Toast } from "../components/UI/Toast";
+import { fetchCategoryLabelsOnly } from "../redux/vocabulary/vocabularyThunks";
 
+interface RejectedPayload {
+  errors?: Partial<Record<keyof NewWordData, string>>;
+  error?: string;
+  field?: keyof NewWordData;
+}
 const languageNames = [
   { code: "pl", name: "Polish" },
   { code: "es", name: "Spanish" },
@@ -19,30 +24,21 @@ const languageNames = [
 export const AddNewWordRoute: React.FC = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch<AppDispatch>();
-  const categoryOfItems = useSelector((state: RootState) => state.vocabulary.categoryLabels);
+  const categoryOfItems = useSelector(
+    (state: RootState) => state.vocabulary.categoryLabels
+  );
 
   const [toast, setToast] = useState<{
     message: string;
     type: "success" | "error" | "info" | "default";
   } | null>(null);
   const [disabled, setIsDisabled] = useState(false);
-
-  const {
-    values: newWordValues,
-    errors: newWordErrors,
-    handleChange: handleNewWordChangeOriginal,
-    handleSubmit: handleNewWordSubmit,
-  } = useFormValidation<NewWordData>(newWordSchema);
-
-  // Create a new handleChange function that can handle all input types
-  const handleNewWordChange = (
-    e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
-  ) => {
-    handleNewWordChangeOriginal(e as ChangeEvent<HTMLInputElement>);
-  };
-
-  const handleNewWordFormSubmit = async (data: NewWordData) => {
+  const [backendErrors, setBackendErrors] = useState<
+    Partial<Record<keyof NewWordData, string>>
+  >({});
+  const handleNewWordFormSubmit = async (data: NewWordData): Promise<void> => {
     console.log("Submitting new word suggestion:", data);
+    setBackendErrors({});
     const resultAction = await dispatch(suggestNewWord(data));
 
     if (suggestNewWord.fulfilled.match(resultAction)) {
@@ -52,13 +48,26 @@ export const AddNewWordRoute: React.FC = () => {
       });
       setIsDisabled(true);
       setTimeout(() => navigate("/vocabulary-map"), 3000);
-    } else {
-      setToast({
-        message: "Failed to submit word suggestion. Please try again.",
-        type: "error",
-      });
+    } else if (suggestNewWord.rejected.match(resultAction)) {
+      const payload = resultAction.payload as RejectedPayload;
+      if (payload && payload.errors) {
+        setBackendErrors(payload.errors);
+      } else if (payload && payload.error && payload.field) {
+        setBackendErrors({ [payload.field]: payload.error });
+      } else {
+        setToast({
+          message: "Failed to submit word suggestion. Please try again.",
+          type: "error",
+        });
+      }
     }
   };
+
+  useEffect(() => {
+    if (categoryOfItems.length === 0) {
+      dispatch(fetchCategoryLabelsOnly());
+    }
+  }, [dispatch, categoryOfItems.length]);
 
   return (
     <div className="max-w-xl mx-auto mt-10 p-8 bg-white rounded-lg shadow-lg relative">
@@ -66,13 +75,11 @@ export const AddNewWordRoute: React.FC = () => {
         Add New Word
       </h2>
       <AddWordForm
-        newWordValues={newWordValues}
-        newWordErrors={newWordErrors ?? {}}
-        handleChange={handleNewWordChange}
-        handleSubmit={handleNewWordSubmit(handleNewWordFormSubmit)}
+        onSubmit={handleNewWordFormSubmit}
         categoryOfItems={categoryOfItems}
         languageNames={languageNames}
         disabled={disabled}
+        backendErrors={backendErrors}
       />
       {toast && (
         <Toast

@@ -11,15 +11,6 @@ export const ProfilePageRoute: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
 
   const data = useSelector((state: RootState) => state.authState.profile);
-  const language = useSelector((state: RootState) => state.language.language);
-  const savedVocabularyIds = useSelector(
-    (state: RootState) => state.vocabulary.savedVocabularyIds
-  );
-  const vocabularyItems = useSelector(
-    (state: RootState) => state.vocabulary.items
-  );
-
-  const savedVocabulary = savedVocabularyIds.map((id) => vocabularyItems[id]);
 
   const handleLogout = () => {
     dispatch(logout());
@@ -47,5 +38,5 @@ export const ProfilePageRoute: React.FC = () => {
     );
   }
 
-  return <ProfilePageComponent data={data!} onLogout={handleLogout} />;
+  return <ProfilePageComponent data={data!} onLogout={handleLogout} onChangePassword={()=>{}}/>;
 };

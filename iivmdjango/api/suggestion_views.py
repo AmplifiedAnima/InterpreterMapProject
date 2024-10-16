@@ -7,23 +7,40 @@ from .serializers import VocabularyItemSerializer, NewWordSuggestionSerializer, 
 from .models import VocabularyItem, Translation, NewWordSuggestion, SuggestionToVocabularyItem
 import uuid
 
-
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
 def create_new_word_suggestion(request):
-    # Check if the word already exists in the VocabularyItem model
-    term = request.data.get('term')
-    if VocabularyItem.objects.filter(term=term).exists():
-        response = Response({'error': f'The word "{term}" already exists in the vocabulary.'}, status=status.HTTP_400_BAD_REQUEST)
-        print(response)
-        return response
+    term = request.data.get('term', '').lower()  # Convert to lowercase
 
-    serializer = NewWordSuggestionSerializer(data=request.data)
+    # Check if the word already exists in the VocabularyItem model (case-insensitive)
+    if VocabularyItem.objects.filter(term__iexact=term).exists():
+        return Response({
+            'error': f'The word "{term}" already exists in the vocabulary.',
+            'field': 'term'
+        }, status=status.HTTP_400_BAD_REQUEST)
+
+    # Check if the suggestion already exists (case-insensitive)
+    if NewWordSuggestion.objects.filter(term__iexact=term).exists():
+        return Response({
+            'error': f'A suggestion for "{term}" already exists.',
+            'field': 'term'
+        }, status=status.HTTP_400_BAD_REQUEST)
+
+    # Create a new dictionary with lowercase 'term'
+    lowercase_data = request.data.copy()
+    lowercase_data['term'] = term
+
+    serializer = NewWordSuggestionSerializer(data=lowercase_data)
     if serializer.is_valid():
         serializer.save()
         return Response(serializer.data, status=status.HTTP_201_CREATED)
-    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+    # If the serializer is not valid, return detailed error messages
+    error_messages = {}
+    for field, errors in serializer.errors.items():
+        error_messages[field] = errors[0]  # Get the first error message for each field
+
+    return Response({'errors': error_messages}, status=status.HTTP_400_BAD_REQUEST)
 
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])

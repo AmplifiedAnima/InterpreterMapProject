@@ -108,14 +108,20 @@ export const suggestNewWord = createAsyncThunk(
         body: JSON.stringify(newWordData),
       });
 
+      const data = await response.json();
+      console.log("Response data:", data);
+
       if (!response.ok) {
-        throw new Error("Failed to suggest new word");
+        console.log("Error response:", data);
+        return rejectWithValue(data);
       }
 
-      const data = await response.json();
       return data;
     } catch (error) {
-      return rejectWithValue(error);
+      console.error("Fetch error:", error);
+      return rejectWithValue(
+        error instanceof Error ? error.message : "An unknown error occurred"
+      );
     }
   }
 );

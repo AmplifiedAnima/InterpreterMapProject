@@ -150,7 +150,7 @@ export const VocabularyLexicon: React.FC<{
   );
 
   const renderCategoryList = () => (
-    <div className="flex flex-col items-center justify-center p-4 overflow-y-auto ">
+    <div className="flex flex-col items-center justify-center p-1 m-4 overflow-y-auto ">
       {categoryLabels.map((category) => (
         <Button
           key={category}
@@ -158,18 +158,21 @@ export const VocabularyLexicon: React.FC<{
             onCategorySelect(category);
             if (deviceType === "mobile") setActiveTab("list");
           }}
-          className={`text-center mb-2 items-center justify-center w-48 ${
+          className={`${
+            (deviceType === "desktop" && "w-56") ||
+            (deviceType === "largeTablet" && "w-56") ||
+            (deviceType === "mobile" && "w-72")
+          } ${
             selectedCategory === category
-              ? "bg-slate-300 text-white"
+              ? "bg-[#555585] text-white"
               : "text-white"
-          } text-xs transition duration-300 ease-in-out hover:bg-slate-200`}
+          } my-1 justify-start text-sm text-white hover:bg-[#8b8ad6] transition-colors duration-200 font-sans font-medium tracking-wide`}
         >
-          {category}
+          {category.toUpperCase()}
         </Button>
       ))}
     </div>
   );
-
   const renderVocabularyList = () => (
     <div className="overflow-y-auto h-full">
       <VocabularyList
@@ -238,33 +241,39 @@ export const VocabularyLexicon: React.FC<{
           showModal={activeToolTip}
           onClose={() => setActiveToolTip(false)}
           children={
-            <div className="mx-2">
-              <p>
-                selected words:{" "}
-                <span className="text-[#00FF00] font-bold">
+            <div className="space-y-2">
+              <div className="flex items-center">
+                <span className="font-semibold text-gray-700">
+                  Selected words:
+                </span>
+                <span className="ml-2 font-bold text-[#5e67aa]">
                   {selectedWordsInCategory.length !== 0
                     ? selectedWordsInCategory.length
                     : "NONE"}
                 </span>
-              </p>
-              <p>
-                word remaining:{" "}
-                <span className="text-[#042f66] font-bold">
+              </div>
+              <div className="flex items-center">
+                <span className="font-semibold text-gray-700">
+                  Words remaining:
+                </span>
+                <span className="ml-2 font-bold text-[#5e67aa]">
                   {remainingWords} / {wordsInCategory.length}
                 </span>
-              </p>
-              <p>
-                selected word:{" "}
-                <span className="text-[#ff6347] font-bold">
+              </div>
+              <div className="flex items-center">
+                <span className="font-semibold text-gray-700">
+                  Selected word:
+                </span>
+                <span className="ml-2 font-bold text-[#f59e0b]">
                   {selectedWord?.term ?? "NONE"}
                 </span>
-              </p>
+              </div>
             </div>
           }
         />
         <div
           ref={mapRef}
-          className="w-[200vw] h-[300vh] "
+          className="w-[2800px] h-[300vh] "
           style={{
             transform: `translate(${position.x}px, ${position.y}px) scale(${scale})`,
             transition: isDragging ? "none" : "transform 0.1s ease-out",

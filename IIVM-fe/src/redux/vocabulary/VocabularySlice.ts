@@ -7,6 +7,7 @@ import {
   saveVocabularyForUser,
   removeSavedVocabularyForUser,
   saveVocabularyItem,
+  fetchCategoryLabelsOnly,
 } from "./vocabularyThunks";
 import {
   GroupedVocabularyType,
@@ -153,6 +154,12 @@ const vocabularySlice = createSlice({
             state.categoryLabels.push(newItem.category);
           }
         }
+      })
+      .addCase(fetchCategoryLabelsOnly.fulfilled, (state, action) => {
+        state.categoryLabels = action.payload.categories;
+      })
+      .addCase(fetchCategoryLabelsOnly.rejected, (state, action) => {
+        state.error = action.error.message || "Failed to fetch category labels";
       });
   },
 });

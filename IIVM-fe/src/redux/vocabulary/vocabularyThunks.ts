@@ -2,6 +2,10 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 import { VocabularyItemInterface } from "../../interfaces/vocabulary.interface";
 import { RootState } from "../store";
 
+interface CategoryLabelsResponse {
+  categories: string[];
+}
+
 export const fetchVocabulary = createAsyncThunk<
   VocabularyItemInterface[],
   undefined,
@@ -25,14 +29,14 @@ export const fetchVocabulary = createAsyncThunk<
   }
 
   const data = await response.json();
-  
-  if (typeof data === 'object' && !Array.isArray(data) && data !== null) {
+
+  if (typeof data === "object" && !Array.isArray(data) && data !== null) {
     // If data is an object, assume it's in the format { [id: string]: VocabularyItemInterface }
     return Object.values(data);
   } else if (Array.isArray(data)) {
     return data;
   } else {
-    throw new Error('Received data is in an unexpected format');
+    throw new Error("Received data is in an unexpected format");
   }
 });
 
@@ -62,6 +66,44 @@ export const fetchVocabularyByCategory = createAsyncThunk<
   return await response.json();
 });
 
+export const fetchCategoryLabelsOnly = createAsyncThunk<
+  CategoryLabelsResponse,
+  void,
+  { state: RootState }
+>("vocabulary/fetchCategoryLabelsOnly", async (_, { getState }) => {
+  const state = getState();
+
+  // Check if we already have category labels in the state
+  if (state.vocabulary.categoryLabels.length > 0) {
+    return {
+      categories: state.vocabulary.categoryLabels,
+    };
+  }
+
+  // If not, fetch from the API
+  try {
+    const response = await fetch(
+      `http://127.0.0.1:8000/vocabulary-items/category/all-category-labels`,
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+
+    const data: CategoryLabelsResponse = await response.json();
+    return data;
+  } catch (error) {
+    throw new Error(
+      error instanceof Error ? error.message : "An unknown error occurred"
+    );
+  }
+});
 export const saveVocabularyItem = createAsyncThunk<
   VocabularyItemInterface,
   Omit<VocabularyItemInterface, "id">
@@ -160,7 +202,9 @@ export const fetchSavedVocabularyOfUser = createAsyncThunk<
 
     return await response.json();
   } catch (error) {
-    return rejectWithValue(error instanceof Error ? error.message : "An error occurred");
+    return rejectWithValue(
+      error instanceof Error ? error.message : "An error occurred"
+    );
   }
 });
 
@@ -188,7 +232,9 @@ export const saveVocabularyForUser = createAsyncThunk<
 
     await response.json();
   } catch (error) {
-    return rejectWithValue(error instanceof Error ? error.message : "An error occurred");
+    return rejectWithValue(
+      error instanceof Error ? error.message : "An error occurred"
+    );
   }
 });
 
@@ -196,26 +242,31 @@ export const removeSavedVocabularyForUser = createAsyncThunk<
   void,
   string[],
   { state: RootState }
->("removeSavedVocabularyForUser", async (vocabularyIds, { rejectWithValue }) => {
-  try {
-    const token = localStorage.getItem("accessToken");
-    const url = "http://127.0.0.1:8000/remove-saved-vocabulary-user/";
+>(
+  "removeSavedVocabularyForUser",
+  async (vocabularyIds, { rejectWithValue }) => {
+    try {
+      const token = localStorage.getItem("accessToken");
+      const url = "http://127.0.0.1:8000/remove-saved-vocabulary-user/";
 
-    const response = await fetch(url, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-      body: JSON.stringify({ vocabulary_ids: vocabularyIds }),
-    });
+      const response = await fetch(url, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({ vocabulary_ids: vocabularyIds }),
+      });
 
-    if (!response.ok) {
-      throw new Error(`Response status: ${response.status}`);
+      if (!response.ok) {
+        throw new Error(`Response status: ${response.status}`);
+      }
+
+      await response.json();
+    } catch (error) {
+      return rejectWithValue(
+        error instanceof Error ? error.message : "An error occurred"
+      );
     }
-
-    await response.json();
-  } catch (error) {
-    return rejectWithValue(error instanceof Error ? error.message : "An error occurred");
   }
-});
+);

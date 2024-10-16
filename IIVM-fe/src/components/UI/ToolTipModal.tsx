@@ -38,7 +38,7 @@ export const ToolTipModal: React.FC<ToolTipModalProps> = ({
         <h2 className="font-semibold text-lg text-[#5e67aa]">{title}</h2>
         <Button
           onClick={onClose}
-          className="p-1 bg-transparent hover:bg-gray-100 text-gray-600"
+          className="p-1 bg-transparent hover:bg-[#f0f4ff] text-[#5e67aa] rounded-full"
           imageIcon={closeIcon}
         />
       </div>
@@ -46,7 +46,7 @@ export const ToolTipModal: React.FC<ToolTipModalProps> = ({
         className="overflow-y-auto max-h-[300px] pr-2"
         style={{
           scrollbarWidth: "thin",
-          scrollbarColor: "#5e67aa #e5e7eb",
+          scrollbarColor: "#8b8ad6 #e5e7eb",
         }}
       >
         {children}

@@ -7,7 +7,6 @@ from .serializers import VocabularyItemSerializer
 from .models import VocabularyItem, Translation
 from djangobackend.models import UserProfile
 
-
 @api_view(['GET'])
 def getAllVocabularyItems(request):
     queryset = VocabularyItem.objects.all().prefetch_related('translations')
@@ -15,6 +14,11 @@ def getAllVocabularyItems(request):
         return Response({'detail': 'Vocabulary has not been fetched'}, status=404)
     serializer = VocabularyItemSerializer(queryset, many=True)
     return Response(serializer.data)
+
+@api_view(['GET'])
+def getCategoryLabels(request):
+    categories = list(VocabularyItem.objects.values_list('category', flat=True).distinct())
+    return Response(categories, status=status.HTTP_200_OK)
 
 @api_view(['GET'])
 def getSpecificVocabularyItem(request, pk):
@@ -46,10 +50,7 @@ def getVocabularyByGroup(request, category):
         'categories': categories
     })
 
-@api_view(['GET'])
-def getCategoryLabels(request):
-    categories = list(VocabularyItem.objects.values_list('category', flat=True).distinct())
-    return Response(categories, status=status.HTTP_200_OK)
+
 
 @api_view(['GET'])
 def searchVocabulary(request):
