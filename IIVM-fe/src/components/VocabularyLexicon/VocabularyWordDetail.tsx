@@ -4,7 +4,13 @@ import { useNavigate } from "react-router-dom";
 import { VocabularyItemInterface } from "../../interfaces/vocabulary.interface";
 import { Button } from "../UI/Button";
 import { RootState } from "../../redux/store";
-import { ArrowLeftCircle, Book, ChevronDown, ChevronUp } from "lucide-react";
+import {
+  ArrowLeftCircle,
+  Book,
+  ChevronDown,
+  ChevronUp,
+  PlusCircle,
+} from "lucide-react";
 import { AnimatePresence, motion } from "framer-motion";
 
 interface VocabularyDetailProps {
@@ -49,44 +55,49 @@ const VocabularyWordDetail: React.FC<VocabularyDetailProps> = ({
     <div className="bg-white shadow-lg rounded-lg p-4  flex flex-col">
       {vocabularyItem ? (
         <>
-        
-      <div className="mt-auto flex justify-center space-x-2">
-        {isSmallDevice && goBackInRwdFunction && vocabularyItem && (
-          <Button
-            onClick={goBackInRwdFunction}
-            className="w-10 h-10 rounded-full bg-[#a09edd] hover:bg-[#8c8ac7] flex items-center justify-center"
-          >
-            <ArrowLeftCircle size={20} />
-          </Button>
-        )}
-        {vocabularyItem && !savedVocabularyIds.includes(vocabularyItem.id) && (
-          <Button
-            onClick={() => onAddToSaved(vocabularyItem.id)}
-            className="px-4 py-2 rounded-md bg-[#5e67aa] text-white hover:bg-[#4c4e8f]"
-          >
-            Learn
-          </Button>
-        )}
-        {vocabularyItem && (
-          <Button
-            onClick={() =>
-              navigate("/add-new-suggestion-to-word", {
-                state: {
-                  word: vocabularyItem.term,
-                  id: vocabularyItem.id,
-                  translations: vocabularyItem.translations.filter(
-                    (t) => t.language === currentLanguage.toLowerCase()
-                  ),
-                },
-              })
-            }
-            className="px-4 py-2 rounded-md bg-[#a09edd] text-white hover:bg-[#8c8ac7]"
-          >
-            Suggest
-          </Button>
-        )}
-      </div>
-          <h1 className="text-xl font-bold mb-4 text-[#5e67aa]">
+          <div className="mt-auto flex justify-center space-x-2">
+            {isSmallDevice && goBackInRwdFunction && vocabularyItem && (
+              <Button
+                onClick={goBackInRwdFunction}
+                className="w-10 h-10 rounded-full bg-[#a09edd] hover:bg-[#8c8ac7] flex items-center justify-center"
+              >
+                <ArrowLeftCircle size={20} />
+              </Button>
+            )}
+            {vocabularyItem &&
+              !savedVocabularyIds.includes(vocabularyItem.id) && (
+                <Button
+                  onClick={() => onAddToSaved(vocabularyItem.id)}
+                  className="px-4 py-2 rounded-md bg-[#5e67aa] text-white hover:bg-[#4c4e8f]"
+                >
+                  Learn
+                  <PlusCircle className="h-4 ml-1  text-white" />
+                </Button>
+              )}
+            <Button
+              onClick={() => navigate("/add-word-page")}
+              label="Add New Word"
+            />
+            {vocabularyItem && (
+              <Button
+                onClick={() =>
+                  navigate("/add-new-suggestion-to-word", {
+                    state: {
+                      word: vocabularyItem.term,
+                      id: vocabularyItem.id,
+                      translations: vocabularyItem.translations.filter(
+                        (t) => t.language === currentLanguage.toLowerCase()
+                      ),
+                    },
+                  })
+                }
+                className="px-4 py-2 rounded-md bg-[#a09edd] text-white hover:bg-[#8c8ac7]"
+              >
+                Suggest
+              </Button>
+            )}
+          </div>
+          <h1 className="text-xl font-bold mb-4 text-[#5e67aa] my-4">
             {vocabularyItem.term}
           </h1>
           <div className="mb-6">
@@ -163,19 +174,15 @@ const VocabularyWordDetail: React.FC<VocabularyDetailProps> = ({
                 <p className="text-gray-700">{vocabularyItem.definition}</p>
               </div>
             )}
-           
           </div>
         </>
       ) : (
         <div className="flex-grow flex flex-col items-center justify-center text-center space-y-4">
           <Book className="w-16 h-16 text-[#5e67aa]" />
-          <h2 className="text-2xl font-bold text-[#5e67aa]">
-            Ready to learn?
-          </h2>
+          <h2 className="text-2xl font-bold text-[#5e67aa]">Ready to learn?</h2>
           <p className="text-gray-700">Select a word to get started.</p>
         </div>
       )}
-
     </div>
   );
 };

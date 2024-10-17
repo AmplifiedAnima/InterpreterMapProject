@@ -1,18 +1,20 @@
-import React, { useEffect } from "react";
+import React from "react";
 import {
   GroupedVocabularyType,
   VocabularyItemInterface,
 } from "../../interfaces/vocabulary.interface";
 import { Button } from "../UI/Button";
 import { SavedVocabularyModal } from "./ModalForSavingVocabulary/ModalForSavingVocabulary";
-import { useVocabularyMapHook } from "../../utils/useVocabularyMapHook";
+import { useVocabularyLexiconHook } from "../../utils/useVocabularyLexiconHook";
 import { VocabularyLexiconToolbar } from "./VocabularyLexiconToolbar";
-import { NetworkGraph } from "./GraphsComponents/NetworkGraph";
+import NetworkGraph from "./GraphsComponents/NetworkGraph";
 import VocabularyList from "./VocabularyList";
 import VocabularyWordDetail from "./VocabularyWordDetail";
 import { ToolTipModal } from "../UI/ToolTipModal";
+import { CheckCircle, PlusCircle } from "lucide-react";
 import { useSelector } from "react-redux";
 import { RootState } from "../../redux/store";
+import { motion, AnimatePresence } from "framer-motion";
 
 export const VocabularyLexicon: React.FC<{
   groupedVocabulary: GroupedVocabularyType;
@@ -31,32 +33,26 @@ export const VocabularyLexicon: React.FC<{
 }) => {
   const {
     deviceType,
-    setDeviceType,
     activeTab,
     setActiveTab,
     activeToolTip,
     setActiveToolTip,
     searchQuery,
-    setSearchQuery,
+    handleSearch,
     showGraph,
     setShowGraph,
-    scale,
     showSavedVocabularyModal,
-    mapRef,
     graphIsOpened,
-    position,
-    handleZoomIn,
-    handleZoomOut,
-    handleMapReset,
+    setIsGraphFullScreen,
     setShowSavedVocabularyModal,
-    isDragging,
-    centerGraph,
-    handleMouseDown,
-    handleTouchStart,
-    handleMouseUpOrTouchEnd,
+    handleToggleGraph,
     setGraphIsOpened,
     handleAddVocabulary,
-  } = useVocabularyMapHook();
+
+    isGraphFullScreen,
+
+    isGraphRendered,
+  } = useVocabularyLexiconHook();
 
   const vocabularyItems = useSelector(
     (state: RootState) => state.vocabulary.items
@@ -71,48 +67,11 @@ export const VocabularyLexicon: React.FC<{
       )
     : [];
 
-  const selectedWordsInCategory = savedVocabularyIds.filter((id) =>
-    wordsInCategory.some((word) => word.id === id)
+  const remainingWordsInCategory = wordsInCategory.filter(
+    (word) => !savedVocabularyIds.includes(word.id)
   );
 
-  const remainingWords =
-    wordsInCategory.length - selectedWordsInCategory.length;
-
-  useEffect(() => {
-    const handleResize = () => {
-      if (window.innerWidth <= 768) {
-        setDeviceType("mobile");
-      } else if (window.innerWidth <= 960) {
-        setDeviceType("smallTablet");
-      } else if (window.innerWidth <= 1024) {
-        setDeviceType("largeTablet");
-      } else {
-        setDeviceType("desktop");
-      }
-    };
-    handleResize();
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
-  }, [setDeviceType]);
-
-  useEffect(() => {
-    if (deviceType === "mobile") {
-      if (selectedWord) setActiveTab("detail");
-      else if (selectedCategory) setActiveTab("list");
-      else setActiveTab("categories");
-    }
-  }, [selectedCategory, selectedWord, deviceType, setActiveTab]);
-
-  const handleSearch = (query: string) => setSearchQuery(query);
-
-  const handleToggleGraph = () => {
-    if (selectedCategory && deviceType !== "mobile") {
-      setShowGraph(!showGraph);
-      setGraphIsOpened(!showGraph);
-      centerGraph();
-      if (!showGraph) handleMapReset();
-    }
-  };
+  const remainingWordsCount = remainingWordsInCategory.length;
 
   const handleWordSelectInternal = (word: VocabularyItemInterface) => {
     onWordSelect(word);
@@ -124,20 +83,22 @@ export const VocabularyLexicon: React.FC<{
     onWordSelect(null as unknown as VocabularyItemInterface);
   };
 
+  const handleExitFullScreenGraph = () => {
+    setIsGraphFullScreen(false);
+    setShowGraph(false);
+    setGraphIsOpened(false);
+  };
+
   const renderToolbar = () => (
     <VocabularyLexiconToolbar
       isListModeOpen={activeTab === "list"}
       isOpened={graphIsOpened}
-      onZoomIn={handleZoomIn}
-      onZoomOut={handleZoomOut}
-      onReset={handleMapReset}
       onShowSavedVocabulary={() => setShowSavedVocabularyModal(true)}
       searchQuery={searchQuery}
       setListMode={() =>
         setActiveTab(activeTab === "list" ? "categories" : "list")
       }
       onSearch={handleSearch}
-      scale={scale}
       vocabularyList={Object.values(groupedVocabulary)
         .flat()
         .map((item) => item.term)}
@@ -161,6 +122,7 @@ export const VocabularyLexicon: React.FC<{
           className={`${
             (deviceType === "desktop" && "w-56") ||
             (deviceType === "largeTablet" && "w-56") ||
+            (deviceType === "smallTablet" && "w-56") ||
             (deviceType === "mobile" && "w-72")
           } ${
             selectedCategory === category
@@ -173,6 +135,7 @@ export const VocabularyLexicon: React.FC<{
       ))}
     </div>
   );
+
   const renderVocabularyList = () => (
     <div className="overflow-y-auto h-full">
       <VocabularyList
@@ -187,6 +150,7 @@ export const VocabularyLexicon: React.FC<{
       />
     </div>
   );
+
   const renderWordDetail = () => (
     <div className="h-full w-full">
       {selectedWord && (
@@ -221,73 +185,133 @@ export const VocabularyLexicon: React.FC<{
   );
 
   const renderGraph = () => {
-    if (!selectedCategory) {
-      return <div>Please select a category to view the graph.</div>;
-    }
+    const vocabularyArray = Object.values(vocabularyItems);
+
+    const buttonVariants = {
+      hover: { scale: 1.1 },
+      tap: { scale: 0.95 },
+    };
+
+    const wordVariants = {
+      initial: { opacity: 0, y: 20 },
+      animate: { opacity: 1, y: 0 },
+      exit: { opacity: 0, y: -20 },
+    };
 
     return (
       <div
         id="vocabulary-map-board"
-        className={`border-2 border-black h-full overflow-hidden relative ${
-          isDragging ? "cursor-grabbing" : "cursor-grab"
-        }`}
-        onMouseDown={handleMouseDown}
-        onTouchStart={handleTouchStart}
-        onMouseUp={handleMouseUpOrTouchEnd}
-        onTouchEnd={handleMouseUpOrTouchEnd}
-        style={{ touchAction: "none" }}
+        className="border-2 border-black h-full overflow-hidden relative"
       >
-        <ToolTipModal
-          showModal={activeToolTip}
-          onClose={() => setActiveToolTip(false)}
-          children={
-            <div className="space-y-2">
-              <div className="flex items-center">
-                <span className="font-semibold text-gray-700">
-                  Selected words:
-                </span>
-                <span className="ml-2 font-bold text-[#5e67aa]">
-                  {selectedWordsInCategory.length !== 0
-                    ? selectedWordsInCategory.length
-                    : "NONE"}
-                </span>
+        {isGraphFullScreen && (
+          <Button
+            onClick={handleExitFullScreenGraph}
+            className="absolute top-4 right-4 z-10"
+          >
+            Exit
+          </Button>
+        )}
+        <div className="absolute top-4 left-4 z-10">
+          <ToolTipModal
+            showModal={activeToolTip}
+            onClose={() => setActiveToolTip(false)}
+          >
+            <div className="space-y-4 pt-2 text-sm">
+              <div className="flex justify-between items-center">
+                <span className="text-gray-600">Selected words:</span>
+                <motion.span
+                  className="font-semibold text-indigo-600"
+                  key={savedVocabularyIds.length}
+                  initial={{ scale: 1.2 }}
+                  animate={{ scale: 1 }}
+                  transition={{ type: "spring", stiffness: 300, damping: 10 }}
+                >
+                  {savedVocabularyIds.length}
+                </motion.span>
               </div>
-              <div className="flex items-center">
-                <span className="font-semibold text-gray-700">
-                  Words remaining:
-                </span>
-                <span className="ml-2 font-bold text-[#5e67aa]">
-                  {remainingWords} / {wordsInCategory.length}
-                </span>
+              <div className="flex justify-between items-center">
+                <span className="text-gray-600">Words remaining:</span>
+                <motion.span
+                  className="font-semibold text-indigo-600"
+                  key={remainingWordsCount}
+                  initial={{ scale: 1.2 }}
+                  animate={{ scale: 1 }}
+                  transition={{ type: "spring", stiffness: 300, damping: 10 }}
+                >
+                  {remainingWordsCount} / {wordsInCategory.length}
+                </motion.span>
               </div>
-              <div className="flex items-center">
-                <span className="font-semibold text-gray-700">
-                  Selected word:
-                </span>
-                <span className="ml-2 font-bold text-[#f59e0b]">
-                  {selectedWord?.term ?? "NONE"}
-                </span>
+              <div className="space-y-2">
+                <div className="flex justify-between items-center">
+                  <span className="text-gray-600">Selected word:</span>
+                  {selectedWord && (
+                    <motion.button
+                      onClick={() =>
+                        handleAddVocabulary(selectedWord, () => {})
+                      }
+                      className="ml-2 p-1 rounded-full"
+                      disabled={savedVocabularyIds.includes(selectedWord.id)}
+                      variants={buttonVariants}
+                      whileHover="hover"
+                      whileTap="tap"
+                    >
+                      {savedVocabularyIds.includes(selectedWord.id) ? (
+                        <CheckCircle className="w-6 h-6 text-green-500" />
+                      ) : (
+                        <PlusCircle className="w-6 h-6 text-blue-500" />
+                      )}
+                    </motion.button>
+                  )}
+                </div>
+                <AnimatePresence mode="wait">
+                  {selectedWord ? (
+                    <motion.div
+                      key={selectedWord.id}
+                      className="font-semibold text-orange-400 break-words"
+                      variants={wordVariants}
+                      initial="initial"
+                      animate="animate"
+                      exit="exit"
+                      transition={{
+                        type: "spring",
+                        stiffness: 300,
+                        damping: 20,
+                      }}
+                    >
+                      {selectedWord.term}
+                    </motion.div>
+                  ) : (
+                    <motion.div
+                      key="none"
+                      className="font-semibold text-gray-400"
+                      variants={wordVariants}
+                      initial="initial"
+                      animate="animate"
+                      exit="exit"
+                      transition={{
+                        type: "spring",
+                        stiffness: 300,
+                        damping: 20,
+                      }}
+                    >
+                      NONE
+                    </motion.div>
+                  )}
+                </AnimatePresence>
               </div>
             </div>
-          }
-        />
-        <div
-          ref={mapRef}
-          className="w-[2800px] h-[300vh] "
-          style={{
-            transform: `translate(${position.x}px, ${position.y}px) scale(${scale})`,
-            transition: isDragging ? "none" : "transform 0.1s ease-out",
-          }}
-        >
+          </ToolTipModal>
+        </div>
+        {(isGraphRendered || showGraph) && (
           <NetworkGraph
-            category={selectedCategory}
-            words={groupedVocabulary[selectedCategory] || []}
-            isOpened={true}
+            vocabulary={vocabularyArray}
+            isOpened={graphIsOpened}
             selectedWordId={selectedWord?.id || null}
             searchTerm={searchQuery}
-            onWordSelect={onWordSelect}
+            onWordSelect={handleWordSelectInternal}
+            selectedCategory={selectedCategory}
           />
-        </div>
+        )}
       </div>
     );
   };
@@ -324,51 +348,55 @@ export const VocabularyLexicon: React.FC<{
       </div>
     </div>
   );
-  const renderSmallTabletView = () => (
-    <div className="flex flex-col h-[90vh]">
-      {renderToolbar()}
-      <div className="flex h-[85vh]">
-        <div className="">{renderCategoryList()}</div>
-        <div className="w-[100vw] flex flex-col">
-          <div className="h-[50vh]">{renderVocabularyList()}</div>
-          <div className="h-[35vh] mx-8">{renderWordDetail()}</div>
-        </div>
-      </div>
-    </div>
-  );
 
-  const renderLargeTabletView = () => (
+  const renderTabletView = () => (
     <div className="flex flex-col h-[90vh]">
       {renderToolbar()}
-      <div className="flex h-[77vh]">
-        <div className="w-1/4 overflow-y-auto">{renderCategoryList()}</div>
-        <div className="w-3/4 flex">
-          <div className="w-1/2 overflow-y-auto">
-            {showGraph ? renderGraph() : renderVocabularyList()}
+      {isGraphFullScreen ? (
+        renderGraph()
+      ) : (
+        <div className="flex h-[85vh]">
+          <div
+            className={`${
+              (deviceType === "smallTablet" && "w-1/3") ||
+              (deviceType === "largeTablet" && "w-1/4")
+            } overflow-y-auto mr-2`}
+          >
+            {renderCategoryList()}
           </div>
-          <div className="w-1/2 overflow-y-auto ">{renderWordDetail()}</div>
+          <div className="w-3/4 flex">
+            <div className="w-1/2 overflow-y-auto">
+              {showGraph ? renderGraph() : renderVocabularyList()}
+            </div>
+            <div className="w-1/2 overflow-y-auto ">{renderWordDetail()}</div>
+          </div>
         </div>
-      </div>
+      )}
     </div>
   );
 
   const renderDesktopView = () => (
     <div className="flex flex-col h-[90vh]">
       {renderToolbar()}
-      <div className="grid grid-cols-[auto,1fr,1fr] gap-4 h-[80vh]">
-        <div className="overflow-y-auto">{renderCategoryList()}</div>
-        <div className="overflow-y-auto">
-          {showGraph ? renderGraph() : renderVocabularyList()}
+      {isGraphFullScreen ? (
+        renderGraph()
+      ) : (
+        <div className="grid grid-cols-[auto,1fr,1fr] gap-4 h-[80vh]">
+          <div className="overflow-y-auto">{renderCategoryList()}</div>
+          <div className="overflow-y-auto">
+            {showGraph ? renderGraph() : renderVocabularyList()}
+          </div>
+          <div className="overflow-y-auto">{renderWordDetail()}</div>
         </div>
-        <div className="overflow-y-auto">{renderWordDetail()}</div>
-      </div>
+      )}
     </div>
   );
+
   return (
     <>
       {deviceType === "mobile" && renderMobileView()}
-      {deviceType === "smallTablet" && renderSmallTabletView()}
-      {deviceType === "largeTablet" && renderLargeTabletView()}
+      {(deviceType === "smallTablet" || deviceType === "largeTablet") &&
+        renderTabletView()}
       {deviceType === "desktop" && renderDesktopView()}
       <SavedVocabularyModal
         showModal={showSavedVocabularyModal}

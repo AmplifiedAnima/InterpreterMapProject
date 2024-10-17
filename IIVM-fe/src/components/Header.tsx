@@ -8,6 +8,8 @@ import iconWhite from "../assets/icons/home_white.svg";
 import mapWhite from "../assets/icons/map_white.svg";
 import questionMarkWhite from "../assets/icons/help-circle_white.svg";
 import menuIcon from "../assets/icons/menu.svg";
+import listIcon from "../assets/icons/clipboard_white.svg";
+import userIcon from "../assets/icons/user.svg";
 import "/node_modules/flag-icons/css/flag-icons.min.css";
 
 export const Header = () => {
@@ -29,7 +31,8 @@ export const Header = () => {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-  const buttonStylingSpecificForHeader = "px-4 mx-[4px] justify-start text-sm text-white hover:bg-[#8b8ad6] transition-colors duration-200 font-sans font-medium tracking-wide";
+  const buttonStylingSpecificForHeader =
+    "px-4 mx-[4px] justify-start text-sm text-white hover:bg-[#8b8ad6] transition-colors duration-200 font-sans font-medium tracking-wide";
 
   const toggleDropdown = () => setIsDropdownOpen((prev) => !prev);
   const toggleMobileMenu = () => setIsMobileMenuOpen((prev) => !prev);
@@ -44,31 +47,33 @@ export const Header = () => {
     ...(isLoggedIn
       ? [
           {
-            label: 'Lexicon',
+            label: "Lexicon",
             icon: mapWhite,
             onClick: () => navigate("/vocabulary-map"),
           },
           {
             label: "Suggestions",
+            icon: questionMarkWhite,
             onClick: () => navigate("suggestion-acquiesce"),
           },
           {
-            label: 'Learn',
-            icon: questionMarkWhite,
+            label: "Learn",
+            icon: listIcon,
             onClick: () => navigate("/quiz-page"),
           },
         ]
       : []),
     {
       label: isLoggedIn ? "Profile" : "Login",
+      icon: userIcon,
       onClick: isLoggedIn
         ? () => navigate("profile-page")
         : () => navigate("login-user"),
     },
-  ]
+  ];
   return (
     <div className="flex justify-between items-center bg-[#7d7cc7] py-2 px-4 font-sans">
-      <div className="text-white text-xl font-bold">Interpreter</div>
+      <div className="text-white text-xl font-bold">Interpreter Lexicon</div>
       <div className="flex items-center space-x-2">
         <div className="relative">
           <Button
@@ -76,7 +81,9 @@ export const Header = () => {
             onClick={toggleDropdown}
             label={
               <div className="flex items-center">
-                <i className={`fi fi-${language === "es" ? "es" : "pl"} mr-2`}></i>
+                <i
+                  className={`fi fi-${language === "es" ? "es" : "pl"} mr-2`}
+                ></i>
                 <span className="uppercase">{language}</span>
               </div>
             }

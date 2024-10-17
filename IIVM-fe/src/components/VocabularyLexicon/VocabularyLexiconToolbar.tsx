@@ -1,28 +1,18 @@
 import React, { useState, KeyboardEvent } from "react";
 import { Button } from "../UI/Button";
 import { Input } from "../UI/InputPlaceholder";
-import zoomIn from "../../assets/icons/zoom-in.svg";
-import zoomOut from "../../assets/icons/zoom-out.svg";
-import anchor from "../../assets/icons/anchor.svg";
 import searchIcon from "../../assets/icons/search.svg";
 import saveIcon from "../../assets/icons/save.svg";
-// import listIcon from "../../assets/icons/list.svg";
-// import graphIcon from "../../assets/icons/bar-chart.svg";
-import plusCircleIcon from "../../assets/icons/plus-circle.svg";
-import { useNavigate } from "react-router-dom";
+
 
 interface VocabularyMapToolbarProps {
   isOpened: boolean;
-  onZoomIn: () => void;
-  onZoomOut: () => void;
-  onReset: () => void;
   setListMode: () => void;
   onToolTipLegendOpen: boolean;
   setOnToolTipLegendOpen: () => void;
   onShowSavedVocabulary: () => void;
   onSearch: (query: string) => void;
   searchQuery: string;
-  scale?: number;
   vocabularyList: string[];
   isListModeOpen: boolean;
   showGraph: boolean;
@@ -31,9 +21,6 @@ interface VocabularyMapToolbarProps {
 }
 
 export const VocabularyLexiconToolbar: React.FC<VocabularyMapToolbarProps> = ({
-  onZoomIn,
-  onZoomOut,
-  onReset,
   onSearch,
   onShowSavedVocabulary,
   onToolTipLegendOpen,
@@ -50,7 +37,6 @@ export const VocabularyLexiconToolbar: React.FC<VocabularyMapToolbarProps> = ({
   const [suggestions, setSuggestions] = useState<string[]>([]);
   const [showSuggestions, setShowSuggestions] = useState(false);
   // const suggestionsRef = useRef<HTMLDivElement>(null);
-  const navigate = useNavigate();
   const handleSearch = () => {
     onSearch(localSearchQuery);
     setShowSuggestions(false);
@@ -113,23 +99,18 @@ export const VocabularyLexiconToolbar: React.FC<VocabularyMapToolbarProps> = ({
       )}
       {showGraph && selectedCategory && (
         <>
-          <ToolbarButton onClick={onZoomIn} imageIcon={zoomIn} />
-          <ToolbarButton onClick={onZoomOut} imageIcon={zoomOut} />
-          <ToolbarButton onClick={onReset} imageIcon={anchor} />
+     
           {!onToolTipLegendOpen && (
             <ToolbarButton onClick={setOnToolTipLegendOpen} text="Legend" />
           )}
         </>
       )}
-      <ToolbarButton
-        onClick={() => navigate("/add-word-page")}
-        imageIcon={plusCircleIcon}
-      />
+
     </>
   );
 
   return (
-    <div className="flex items-center justify-center space-x-2 p-2 bg-white rounded-lg shadow-sm">
+    <div className="flex items-center justify-center space-x-2 p-2 bg-white rounded-lg shadow-sm my-2">
       <div className="relative flex items-center">
         <Input
           className="h-10  pr-2 rounded-l-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#a09edd]"
