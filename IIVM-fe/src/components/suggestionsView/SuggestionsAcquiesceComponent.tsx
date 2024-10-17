@@ -34,7 +34,7 @@ export const SuggestionsAcquiesceComponent: React.FC<
   onApproveNew,
   onRejectNew,
 }) => {
-  const [showExistingSuggestions, setShowExistingSuggestions] = useState(true);
+  const [showExistingSuggestions, setShowExistingSuggestions] = useState(false);
   const [expandedCardId, setExpandedCardId] = useState<number | null>(null);
   const [isMobile, setIsMobile] = useState(false);
 
@@ -54,9 +54,21 @@ export const SuggestionsAcquiesceComponent: React.FC<
     setExpandedCardId((prevId) => (prevId === id ? null : id));
   }, []);
 
+  const sortSuggestions = <T extends { status: string }>(suggestions: T[]): T[] => {
+    const statusOrder = { pending: 0, accepted: 1, rejected: 2 };
+    return [...suggestions].sort(
+      (a, b) =>
+        statusOrder[a.status as keyof typeof statusOrder] -
+        statusOrder[b.status as keyof typeof statusOrder]
+    );
+  };
+
+  const sortedExistingSuggestions = sortSuggestions(existingWordSuggestions);
+  const sortedNewSuggestions = sortSuggestions(newWordSuggestions);
+
   const suggestions = showExistingSuggestions
-    ? existingWordSuggestions
-    : newWordSuggestions;
+    ? sortedExistingSuggestions
+    : sortedNewSuggestions;
 
   return (
     <div className="p-6 max-w-5xl mx-auto">

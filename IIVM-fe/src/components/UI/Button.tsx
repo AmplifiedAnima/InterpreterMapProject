@@ -6,7 +6,7 @@ interface ButtonProps {
   className?: string;
   imageIcon?: string;
   disabled?: boolean;
-  onClick?: (e: React.MouseEvent<HTMLButtonElement> | string) => void;
+  onClick?: (e: React.MouseEvent<HTMLButtonElement>) => void;
   type?: "button" | "submit" | "reset";
   children?: React.ReactNode;
   variant?: "primary" | "secondary" | "outline";

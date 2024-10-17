@@ -9,7 +9,7 @@ import {
   Book,
   ChevronDown,
   ChevronUp,
-  PlusCircle,
+  Heart,
 } from "lucide-react";
 import { AnimatePresence, motion } from "framer-motion";
 
@@ -27,6 +27,7 @@ const VocabularyWordDetail: React.FC<VocabularyDetailProps> = ({
   goBackInRwdFunction,
 }) => {
   const [isTranslationsExpanded, setIsTranslationsExpanded] = useState(false);
+  const [isLearning, setIsLearning] = useState(false);
   const savedVocabularyIds = useSelector(
     (state: RootState) => state.vocabulary.savedVocabularyIds
   );
@@ -51,8 +52,16 @@ const VocabularyWordDetail: React.FC<VocabularyDetailProps> = ({
     setIsTranslationsExpanded(!isTranslationsExpanded);
   };
 
+  const handleLearnClick = () => {
+    if (vocabularyItem) {
+      setIsLearning(true);
+      onAddToSaved(vocabularyItem.id);
+      setTimeout(() => setIsLearning(false), 500);
+    }
+  };
+
   return (
-    <div className="bg-white shadow-lg rounded-lg p-4  flex flex-col">
+    <div className="bg-white shadow-lg rounded-lg p-4 flex flex-col">
       {vocabularyItem ? (
         <>
           <div className="mt-auto flex justify-center space-x-2">
@@ -64,16 +73,42 @@ const VocabularyWordDetail: React.FC<VocabularyDetailProps> = ({
                 <ArrowLeftCircle size={20} />
               </Button>
             )}
-            {vocabularyItem &&
-              !savedVocabularyIds.includes(vocabularyItem.id) && (
-                <Button
-                  onClick={() => onAddToSaved(vocabularyItem.id)}
-                  className="px-4 py-2 rounded-md bg-[#5e67aa] text-white hover:bg-[#4c4e8f]"
-                >
-                  Learn
-                  <PlusCircle className="h-4 ml-1  text-white" />
-                </Button>
-              )}
+            <AnimatePresence>
+              {vocabularyItem &&
+                !savedVocabularyIds.includes(vocabularyItem.id) && (
+                  <motion.div
+                    initial={{ opacity: 1, scale: 1 }}
+                    animate={isLearning ? { opacity: 0, scale: 0.8 } : {}}
+                    exit={{ opacity: 0, scale: 0.8 }}
+                    transition={{ duration: 0.5, ease: "easeInOut" }}
+                  >
+                    <motion.button
+                      onClick={handleLearnClick}
+                      className="px-4 py-2 rounded-md bg-[#5e67aa] text-white hover:bg-[#4c4e8f] overflow-hidden inline-flex items-center"
+                      whileHover={{ scale: 1.05 }}
+                      whileTap={{ scale: 0.95 }}
+                      animate={isLearning ? { backgroundColor: "#4CAF50" } : {}}
+                    >
+                      <motion.span
+                        className="inline-block align-middle"
+                        initial={{ opacity: 1 }}
+                        animate={isLearning ? { opacity: 0, y: -20 } : {}}
+                        transition={{ duration: 0.3 }}
+                      >
+                        Learn
+                      </motion.span>
+                      <motion.span
+                        className="ml-1 inline-block relative w-4 h-4"
+                        initial={{ opacity: 1 }}
+                        animate={isLearning ? { opacity: 0, y: -20 } : {}}
+                        transition={{ duration: 0.3, delay: 0.1 }}
+                      >
+                        <Heart className="h-4 w-4 text-white absolute top-[0.5px] left-0.5" />
+                      </motion.span>
+                    </motion.button>
+                  </motion.div>
+                )}
+            </AnimatePresence>
             <Button
               onClick={() => navigate("/add-word-page")}
               label="Add New Word"
@@ -166,7 +201,6 @@ const VocabularyWordDetail: React.FC<VocabularyDetailProps> = ({
               </>
             )}
           </div>
-
           <div className="mb-6">
             {vocabularyItem.definition && (
               <div className="mb-4">

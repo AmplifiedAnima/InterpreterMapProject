@@ -3,6 +3,7 @@ import { VocabularyItemInterface } from "../../interfaces/vocabulary.interface";
 import { useSelector } from "react-redux";
 import { RootState } from "../../redux/store";
 import { Heart } from "lucide-react";
+import { AnimatePresence, motion } from "framer-motion";
 
 interface VocabularyListProps {
   groupedVocabulary?: { [category: string]: VocabularyItemInterface[] };
@@ -27,19 +28,19 @@ const VocabularyList: React.FC<VocabularyListProps> = ({
 
   useEffect(() => {
     const handleScroll = () => {
-      const headers = listRef.current?.querySelectorAll('.category-header');
+      const headers = listRef.current?.querySelectorAll(".category-header");
       headers?.forEach((header) => {
         const rect = header.getBoundingClientRect();
         if (rect.top <= 0) {
-          header.classList.add('shadow-md');
+          header.classList.add("shadow-md");
         } else {
-          header.classList.remove('shadow-md');
+          header.classList.remove("shadow-md");
         }
       });
     };
 
-    listRef.current?.addEventListener('scroll', handleScroll);
-    return () => listRef.current?.removeEventListener('scroll', handleScroll);
+    listRef.current?.addEventListener("scroll", handleScroll);
+    return () => listRef.current?.removeEventListener("scroll", handleScroll);
   }, []);
 
   const filterVocabulary = (items: VocabularyItemInterface[]) => {
@@ -61,15 +62,24 @@ const VocabularyList: React.FC<VocabularyListProps> = ({
         <div className="category-header sticky top-0 bg-gradient-to-r from-[#5e67aa] to-[#7c85c7] text-left px-3 py-1.5 font-semibold text-white text-sm md:text-base rounded-t-md shadow-sm">
           {category.toUpperCase()}
         </div>
-        {filteredItems.map((item) => (
-          <VocabularyItem
-            key={item.id}
-            item={item}
-            onClick={() => onWordSelect(item)}
-            isSelected={selectedWord?.id === item.id}
-            isOnSavedVocabularyList={savedVocabularyIds.includes(item.id)}
-          />
-        ))}
+        <AnimatePresence>
+          {filteredItems.map((item) => (
+            <motion.div
+              key={item.id}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -20 }}
+              transition={{ duration: 0.3 }}
+            >
+              <VocabularyItem
+                item={item}
+                onClick={() => onWordSelect(item)}
+                isSelected={selectedWord?.id === item.id}
+                isOnSavedVocabularyList={savedVocabularyIds.includes(item.id)}
+              />
+            </motion.div>
+          ))}
+        </AnimatePresence>
       </div>
     );
   };

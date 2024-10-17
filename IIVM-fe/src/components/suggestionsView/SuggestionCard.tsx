@@ -133,8 +133,8 @@ export const SuggestionCard: React.FC<{
                     disabled={item.status !== "pending"}
                     className="text-sm bg-[#5e67aa] text-white hover:bg-[#7a7fa0] py-2 px-4 flex items-center space-x-1"
                   >
-                    <ThumbsUp size={14} />
                     <span>{item.like_count}</span>
+                    <ThumbsUp size={14} className="ml-2 -top-[0.25px] relative" />
                   </Button>
                 </motion.div>
                 {canApprove && item.status === "pending" && (

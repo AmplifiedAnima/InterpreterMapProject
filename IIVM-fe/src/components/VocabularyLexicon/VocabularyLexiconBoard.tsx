@@ -109,31 +109,39 @@ export const VocabularyLexicon: React.FC<{
       onToolTipLegendOpen={activeToolTip}
     />
   );
-
   const renderCategoryList = () => (
-    <div className="flex flex-col items-center justify-center p-1 m-4 overflow-y-auto ">
-      {categoryLabels.map((category) => (
-        <Button
-          key={category}
-          onClick={() => {
-            onCategorySelect(category);
-            if (deviceType === "mobile") setActiveTab("list");
-          }}
-          className={`${
-            (deviceType === "desktop" && "w-56") ||
-            (deviceType === "largeTablet" && "w-56") ||
-            (deviceType === "smallTablet" && "w-56") ||
-            (deviceType === "mobile" && "w-72")
-          } ${
-            selectedCategory === category
-              ? "bg-[#555585] text-white"
-              : "text-white"
-          } my-1 justify-start text-sm text-white hover:bg-[#8b8ad6] transition-colors duration-200 font-sans font-medium tracking-wide`}
-        >
-          {category.toUpperCase()}
-        </Button>
-      ))}
-    </div>
+    <AnimatePresence>
+      <div className="flex flex-col items-center justify-center p-1 m-4 overflow-y-auto">
+        {categoryLabels.map((category) => (
+          <motion.div
+            key={category}
+            initial={{ opacity: 0, x: -20 }}
+            animate={{ opacity: 1, x: 0 }}
+            exit={{ opacity: 0, x: 20 }}
+            transition={{ duration: 0.3 }}
+          >
+            <Button
+              onClick={() => {
+                onCategorySelect(category);
+                if (deviceType === "mobile") setActiveTab("list");
+              }}
+              className={`${
+                (deviceType === "desktop" && "w-56") ||
+                (deviceType === "largeTablet" && "w-56") ||
+                (deviceType === "smallTablet" && "w-56") ||
+                (deviceType === "mobile" && "w-72")
+              } ${
+                selectedCategory === category
+                  ? "bg-[#555585] text-white"
+                  : "text-white"
+              } my-1 justify-start text-sm text-white hover:bg-[#8b8ad6] transition-colors duration-200 font-sans font-medium tracking-wide`}
+            >
+              {category.toUpperCase()}
+            </Button>
+          </motion.div>
+        ))}
+      </div>
+    </AnimatePresence>
   );
 
   const renderVocabularyList = () => (
@@ -152,10 +160,17 @@ export const VocabularyLexicon: React.FC<{
   );
 
   const renderWordDetail = () => (
-    <div className="h-full w-full">
-      {selectedWord && (
+    <AnimatePresence mode="wait">
+      <motion.div
+        key={selectedWord ? selectedWord.id : "no-word"}
+        className="h-full w-full"
+        initial={{ opacity: 0, y: 80 }}
+        animate={{ opacity: 1, y: 0 }}
+        exit={{ opacity: 0, y: 80 }}
+        transition={{ duration: 0.4, ease: "easeInOut" }}
+      >
         <VocabularyWordDetail
-          vocabularyItem={selectedWord}
+          vocabularyItem={selectedWord || undefined}
           onAddToSaved={(id: string) =>
             handleAddVocabulary(vocabularyItems[id], () => {})
           }
@@ -166,22 +181,8 @@ export const VocabularyLexicon: React.FC<{
               : undefined
           }
         />
-      )}
-      {!selectedWord && (
-        <VocabularyWordDetail
-          vocabularyItem={undefined}
-          onAddToSaved={(id: string) =>
-            handleAddVocabulary(vocabularyItems[id], () => {})
-          }
-          deviceType={deviceType}
-          goBackInRwdFunction={
-            deviceType === "mobile" || deviceType === "smallTablet"
-              ? handleGoBackInRwd
-              : undefined
-          }
-        />
-      )}
-    </div>
+      </motion.div>
+    </AnimatePresence>
   );
 
   const renderGraph = () => {
@@ -196,6 +197,11 @@ export const VocabularyLexicon: React.FC<{
       initial: { opacity: 0, y: 20 },
       animate: { opacity: 1, y: 0 },
       exit: { opacity: 0, y: -20 },
+    };
+    const graphVariants = {
+      initial: { opacity: 0, scale: 0.9 },
+      animate: { opacity: 1, scale: 1 },
+      exit: { opacity: 0, scale: 0.9 },
     };
 
     return (
@@ -303,14 +309,27 @@ export const VocabularyLexicon: React.FC<{
           </ToolTipModal>
         </div>
         {(isGraphRendered || showGraph) && (
-          <NetworkGraph
-            vocabulary={vocabularyArray}
-            isOpened={graphIsOpened}
-            selectedWordId={selectedWord?.id || null}
-            searchTerm={searchQuery}
-            onWordSelect={handleWordSelectInternal}
-            selectedCategory={selectedCategory}
-          />
+          <AnimatePresence>
+            {" "}
+            <motion.div
+              key="network-graph"
+              variants={graphVariants}
+              initial="initial"
+              animate="animate"
+              exit="exit"
+              transition={{ duration: 0.5, ease: "easeOut" }}
+              className="w-full h-full"
+            >
+              <NetworkGraph
+                vocabulary={vocabularyArray}
+                isOpened={graphIsOpened}
+                selectedWordId={selectedWord?.id || null}
+                searchTerm={searchQuery}
+                onWordSelect={handleWordSelectInternal}
+                selectedCategory={selectedCategory}
+              />
+            </motion.div>
+          </AnimatePresence>
         )}
       </div>
     );
