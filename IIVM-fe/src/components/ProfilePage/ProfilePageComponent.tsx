@@ -1,6 +1,10 @@
 import React, { useState } from "react";
 import { User, Briefcase, Lock } from "lucide-react";
 import { Button } from "../UI/Button";
+import { useFormValidation } from "../../utils/useFormValidation"; // Ensure this path is correct
+import { passwordChangeSchema } from "../../interfaces/passwordChangeSchema"; // Ensure this path is correct
+import { Input } from "../UI/InputPlaceholder";
+import { motion } from "framer-motion"; // Importing motion from framer-motion
 
 interface ProfileData {
   username: string;
@@ -20,14 +24,28 @@ export const ProfilePageComponent: React.FC<ProfileDashboardProps> = ({
   onChangePassword,
 }) => {
   const [isChangingPassword, setIsChangingPassword] = useState(false);
-  const [currentPassword, setCurrentPassword] = useState("");
-  const [newPassword, setNewPassword] = useState("");
+
+  // Use the validation hook with the defined schema
+  const { values, errors, handleChange, handleSubmit } = useFormValidation(
+    passwordChangeSchema,
+    { currentPassword: "", newPassword: "", confirmPassword: "" }
+  );
 
   const handleChangePassword = () => {
-    onChangePassword(currentPassword, newPassword);
+    // Call the password change function
+    onChangePassword(values.currentPassword, values.newPassword);
     setIsChangingPassword(false);
-    setCurrentPassword("");
-    setNewPassword("");
+
+    // Reset values after change
+    handleChange({
+      target: { name: "currentPassword", value: "" },
+    } as React.ChangeEvent<HTMLInputElement>);
+    handleChange({
+      target: { name: "newPassword", value: "" },
+    } as React.ChangeEvent<HTMLInputElement>);
+    handleChange({
+      target: { name: "confirmPassword", value: "" },
+    } as React.ChangeEvent<HTMLInputElement>);
   };
 
   return (
@@ -54,56 +72,87 @@ export const ProfilePageComponent: React.FC<ProfileDashboardProps> = ({
               <Lock className="mr-2" /> Change Password
             </h2>
             {isChangingPassword ? (
-              <div>
-                <div className="mb-4">
+              <motion.form
+                onSubmit={handleSubmit(handleChangePassword)}
+                className="w-1/4 mx-auto flex flex-col items-center"
+                initial={{ opacity: 0, y: -20 }} // Initial state
+                animate={{ opacity: 1, y: 0 }} // Animate to this state
+                exit={{ opacity: 0, y: -20 }} // State when exiting
+                transition={{ duration: 0.3 }} // Transition duration
+              >
+                <div className="mb-4 w-full">
                   <label
                     htmlFor="currentPassword"
                     className="block text-gray-700 font-semibold mb-2"
                   >
                     Current Password
                   </label>
-                  <input
+                  <Input
                     type="password"
-                    id="currentPassword"
-                    value={currentPassword}
-                    onChange={(e) => setCurrentPassword(e.target.value)}
-                    className="w-full px-4 py-2 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#7c85c7]"
+                    name="currentPassword"
+                    value={values.currentPassword}
+                    onChange={handleChange}
+                    className={`w-full px-4 py-2 rounded-md border focus:outline-none focus:ring-2 focus:ring-[#7c85c7]`}
                   />
+                  {errors?.currentPassword && (
+                    <p className="text-red-600">{errors.currentPassword}</p>
+                  )}
                 </div>
-                <div className="mb-6">
+                <div className="mb-4 w-full">
                   <label
                     htmlFor="newPassword"
                     className="block text-gray-700 font-semibold mb-2"
                   >
                     New Password
                   </label>
-                  <input
+                  <Input
                     type="password"
-                    id="newPassword"
-                    value={newPassword}
-                    onChange={(e) => setNewPassword(e.target.value)}
-                    className="w-full px-4 py-2 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#7c85c7]"
+                    name="newPassword"
+                    value={values.newPassword}
+                    onChange={handleChange}
+                    className={`w-full px-4 py-2 rounded-md border focus:outline-none focus:ring-2 focus:ring-[#7c85c7]`}
                   />
+                  {errors?.newPassword && (
+                    <p className="text-red-600">{errors.newPassword}</p>
+                  )}
                 </div>
-                <div className="flex justify-end space-x-4">
+                <div className="mb-6 w-full">
+                  <label
+                    htmlFor="confirmPassword"
+                    className="block text-gray-700 font-semibold mb-2"
+                  >
+                    Confirm New Password
+                  </label>
+                  <Input
+                    type="password"
+                    name="confirmPassword"
+                    value={values.confirmPassword}
+                    onChange={handleChange}
+                    className={`w-full px-4 py-2 rounded-md border focus:outline-none focus:ring-2 focus:ring-[#7c85c7]`}
+                  />
+                  {errors?.confirmPassword && (
+                    <p className="text-red-600">{errors.confirmPassword}</p>
+                  )}
+                </div>
+                <div className="flex justify-end space-x-4 w-full">
                   <Button
+                    type="button"
                     onClick={() => setIsChangingPassword(false)}
                     label="Cancel"
                     className="bg-gray-200 text-gray-700 hover:bg-gray-300"
                   />
                   <Button
-                    onClick={handleChangePassword}
+                    type="submit"
                     label="Save"
                     className="bg-[#7c85c7] text-white hover:bg-[#6c75b7]"
                   />
                 </div>
-              </div>
+              </motion.form>
             ) : (
               <Button
                 onClick={() => setIsChangingPassword(true)}
                 label="Change Password"
                 className="bg-[#7c85c7] text-white hover:bg-[#6c75b7]"
-                disabled={true}
               />
             )}
           </div>

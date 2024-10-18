@@ -4,6 +4,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../redux/store";
 import { useFormValidation } from "../utils/useFormValidation";
 import {
+  LocationStateSuggestionExistingWordForm,
+  RejectedPayloadForSuggestionForms,
   SuggestionData,
   suggestionSchema,
 } from "../interfaces/wordSuggestionSchema";
@@ -11,21 +13,11 @@ import { submitExistingWordSuggestionToBackend } from "../redux/suggestion/sugge
 import { AddSuggestionForm } from "../components/Forms/AddSugestionForm";
 import { Toast } from "../components/UI/Toast";
 import {
-
   clearSuggestionErrors,
   selectExistingWordError,
   selectExistingWordStatus,
 } from "../redux/suggestion/SuggestionSlice";
-interface LocationState {
-  word?: string;
-  translations?: Record<string, string>;
-}
 
-// interface RejectedPayload {
-//   errors?: Partial<Record<keyof SuggestionData, string>>;
-//   error?: string;
-//   field?: keyof SuggestionData;
-// }
 const languageNames = [
   { code: "pl", name: "Polish" },
   { code: "es", name: "Spanish" },
@@ -53,8 +45,8 @@ export const AddSuggestionRoute: React.FC = () => {
   const [disabled, setIsDisabled] = useState(false);
 
   const suggestionsRef = useRef<HTMLDivElement>(null);
+  const locationState = location.state as LocationStateSuggestionExistingWordForm | undefined;
 
-  const locationState = location.state as LocationState | undefined;
   const initialSuggestionValues: Partial<SuggestionData> = {
     term: locationState?.word || "",
     suggestionType: "translation",
@@ -122,43 +114,64 @@ export const AddSuggestionRoute: React.FC = () => {
     },
     [handleSuggestionChange]
   );
+
   const handleSuggestionFormSubmit = useCallback(
     async (data: SuggestionData) => {
       console.log("Submitting suggestion:", data);
       dispatch(clearSuggestionErrors()); // Clear previous errors
 
       try {
-        const resultAction = await dispatch(submitExistingWordSuggestionToBackend(data));
+        const resultAction = await dispatch(
+          submitExistingWordSuggestionToBackend(data)
+        );
 
-        if (submitExistingWordSuggestionToBackend.fulfilled.match(resultAction)) {
+        if (
+          submitExistingWordSuggestionToBackend.fulfilled.match(resultAction)
+        ) {
           setToast({
             message: "Suggestion submitted successfully!",
             type: "success",
           });
           setIsDisabled(true);
           setTimeout(() => navigate("/vocabulary-map"), 3000);
-        } else if (submitExistingWordSuggestionToBackend.rejected.match(resultAction)) {
-          // Handle the specific error message from the backend
-          let errorMessage = "Failed to submit suggestion. Please try again.";
-          if (
-            resultAction.payload &&
-            typeof resultAction.payload === "object" &&
-            "message" in resultAction.payload
-          ) {
-            errorMessage = resultAction.payload.message as string;
-          } else if (
-            resultAction.error &&
-            typeof resultAction.error.message === "string"
-          ) {
-            errorMessage = resultAction.error.message;
+        } else if (
+          submitExistingWordSuggestionToBackend.rejected.match(resultAction)
+        ) {
+          const payload =
+            resultAction.payload as RejectedPayloadForSuggestionForms;
+
+          console.log("Result Action:", resultAction);
+          console.log("Payload from rejected action:", payload);
+
+          // Check if details are present
+          if (payload.details) {
+            console.log("Validation errors:", payload.details);
+            // You can update state with detailed errors if needed
+          } else if (payload.errors) {
+            // Handle validation errors
+            console.log("Specific validation errors:", payload.errors);
+            setToast({
+              message: "Please correct the highlighted errors.",
+              type: "error",
+            });
+          } else if (payload.error && payload.field) {
+            console.log(`Error on field '${payload.field}': ${payload.error}`);
+            setToast({
+              message: payload.error,
+              type: "error",
+            });
+          } else {
+            console.log(
+              "General error: Failed to submit suggestion. No specific error provided."
+            );
+            setToast({
+              message: "Failed to submit suggestion. Please try again.",
+              type: "error",
+            });
           }
-          setToast({
-            message: errorMessage,
-            type: "error",
-          });
         }
       } catch (error) {
-        console.warn(error);
+        console.warn("Unexpected error during submission:", error);
         setToast({
           message: "An unexpected error occurred. Please try again.",
           type: "error",

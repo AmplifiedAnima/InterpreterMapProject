@@ -7,7 +7,35 @@ from django.contrib.auth.hashers import make_password
 from django.contrib.auth import authenticate
 from rest_framework_simplejwt.tokens import RefreshToken
 from django.db import transaction
+from django.contrib.auth import update_session_auth_hash
 
+@api_view(['POST'])
+def change_password(request):
+    if not request.user.is_authenticated:
+        return Response({'detail': 'Authentication credentials were not provided.'}, status=401)
+
+    current_password = request.data.get('current_password')
+    new_password = request.data.get('new_password')
+
+    if not current_password or not new_password:
+        return Response({
+            'error': 'Both current and new password are required.',
+            'details': {
+                'current_password': 'This field is required.',
+                'new_password': 'This field is required.'
+            }
+        }, status=status.HTTP_400_BAD_REQUEST)
+
+    user = authenticate(username=request.user.username, password=current_password)
+
+    if user is not None:
+        user.set_password(new_password)
+        user.save()
+        update_session_auth_hash(request, user)  # Important to keep the user logged in after password change
+        return Response({'message': 'Password changed successfully.'}, status=status.HTTP_200_OK)
+    else:
+        return Response({'error': 'Current password is incorrect.'}, status=status.HTTP_400_BAD_REQUEST)
+    
 @api_view(['GET'])
 def get_user_profile(request):
     if not request.user.is_authenticated:

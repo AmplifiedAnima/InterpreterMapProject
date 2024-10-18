@@ -64,7 +64,7 @@ export const loginUser = createAsyncThunk<
       });
 
       const data = await response.json();
-      
+
       if (!response.ok) {
         return rejectWithValue({
           error: data.error || "Login failed",
@@ -140,3 +140,43 @@ export const refreshToken = createAsyncThunk<
     });
   }
 });
+
+export const changePassword = createAsyncThunk<
+  { message: string },
+  { currentPassword: string; newPassword: string },
+  { rejectValue: { error: string; details: Record<string, string[]> } }
+>(
+  "userAuth/changePassword",
+  async ({ currentPassword, newPassword }, { rejectWithValue }) => {
+    try {
+      const response = await fetch("http://localhost:8000/change-password/", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+        },
+        body: JSON.stringify({
+          current_password: currentPassword,
+          new_password: newPassword,
+        }),
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        return rejectWithValue(errorData);
+      }
+
+      const data = await response.json();
+      return { message: data.message };
+    } catch (error) {
+      return rejectWithValue({
+        error: "An unexpected error occurred",
+        details: {
+          non_field_errors: [
+            error instanceof Error ? error.message : "Unknown error",
+          ],
+        },
+      });
+    }
+  }
+);

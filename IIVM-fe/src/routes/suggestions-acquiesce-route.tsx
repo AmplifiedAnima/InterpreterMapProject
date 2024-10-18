@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useCallback } from "react";
+import React, { useEffect, useRef, useCallback, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Navigate } from "react-router-dom";
 import { SuggestionsAcquiesceComponent } from "../components/suggestionsView/SuggestionsAcquiesceComponent";
@@ -13,6 +13,7 @@ import {
 } from "../redux/suggestion/suggestionThunk";
 import { fetchVocabulary } from "../redux/vocabulary/vocabularyThunks";
 import FullPageSpinner from "../components/UI/FullPageSpinner";
+import { Toast } from "../components/UI/Toast"; // Import the Toast component
 
 export const SuggestionAcquiesceRoute: React.FC = () => {
   const suggestionsStatusRef = useRef("idle");
@@ -34,6 +35,9 @@ export const SuggestionAcquiesceRoute: React.FC = () => {
   const userRole = useSelector((state: RootState) => state.authState.profile?.user_type);
 
   const canApprove = userRole === "overseer" || userRole === "superuser";
+
+  // State for the toast
+  const [toast, setToast] = useState<{ message: string; type: 'success' | 'error' } | null>(null);
 
   useEffect(() => {
     suggestionsStatusRef.current = existingWordStatus; // Updated fetching status for existing words
@@ -67,40 +71,40 @@ export const SuggestionAcquiesceRoute: React.FC = () => {
   const handleApproveExisting = useCallback(async (id: number) => {
     try {
       await dispatch(approveVocabularySuggestion(id)).unwrap();
-      // Optionally show success toast here
+      setToast({ message: 'Suggestion approved successfully!', type: 'success' }); // Show success toast
     } catch (error) {
       console.error(error);
-      // Optionally show error toast here
+      setToast({ message: 'Failed to approve suggestion.', type: 'error' }); // Show error toast
     }
   }, [dispatch]);
 
   const handleApproveNew = useCallback(async (id: number) => {
     try {
       await dispatch(approveNewWordSuggestion(id)).unwrap();
-      // Optionally show success toast here
+      setToast({ message: 'New word suggestion approved successfully!', type: 'success' }); // Show success toast
     } catch (error) {
       console.error(error);
-      // Optionally show error toast here
+      setToast({ message: 'Failed to approve new word suggestion.', type: 'error' }); // Show error toast
     }
   }, [dispatch]);
 
   const handleRejectExisting = useCallback(async (id: number) => {
     try {
       await dispatch(rejectSuggestion({ suggestionId: id, suggestionType: 'vocabulary' })).unwrap();
-      // Optionally show success toast here
+      setToast({ message: 'Suggestion rejected successfully!', type: 'success' }); // Show success toast
     } catch (error) {
       console.error(error);
-      // Optionally show error toast here
+      setToast({ message: 'Failed to reject suggestion.', type: 'error' }); // Show error toast
     }
   }, [dispatch]);
 
   const handleRejectNew = useCallback(async (id: number) => {
     try {
       await dispatch(rejectSuggestion({ suggestionId: id, suggestionType: 'new_word' })).unwrap();
-      // Optionally show success toast here
+      setToast({ message: 'New word suggestion rejected successfully!', type: 'success' }); // Show success toast
     } catch (error) {
       console.error(error);
-      // Optionally show error toast here
+      setToast({ message: 'Failed to reject new word suggestion.', type: 'error' }); // Show error toast
     }
   }, [dispatch]);
 
@@ -131,17 +135,26 @@ export const SuggestionAcquiesceRoute: React.FC = () => {
   }
 
   return (
-    <SuggestionsAcquiesceComponent
-      existingWordSuggestions={existingWordSuggestions}
-      newWordSuggestions={newWordSuggestions}
-      vocabularyItems={vocabularyItemsArray}
-      canApprove={canApprove}
-      onLikeExisting={handleLikeExisting}
-      onApproveExisting={handleApproveExisting}
-      onRejectExisting={handleRejectExisting}
-      onLikeNew={handleLikeNew}
-      onApproveNew={handleApproveNew}
-      onRejectNew={handleRejectNew}
-    />
+    <>
+      <SuggestionsAcquiesceComponent
+        existingWordSuggestions={existingWordSuggestions}
+        newWordSuggestions={newWordSuggestions}
+        vocabularyItems={vocabularyItemsArray}
+        canApprove={canApprove}
+        onLikeExisting={handleLikeExisting}
+        onApproveExisting={handleApproveExisting}
+        onRejectExisting={handleRejectExisting}
+        onLikeNew={handleLikeNew}
+        onApproveNew={handleApproveNew}
+        onRejectNew={handleRejectNew}
+      />
+      {toast && (
+        <Toast
+          message={toast.message}
+          type={toast.type}
+          onClose={() => setToast(null)} // Close the toast
+        />
+      )}
+    </>
   );
 };

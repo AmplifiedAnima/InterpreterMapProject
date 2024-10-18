@@ -1,6 +1,11 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { AuthState, UserProfileData } from "./authTypes";
-import { loginUser, refreshToken, registerUser } from "./authThunks";
+import {
+  changePassword,
+  loginUser,
+  refreshToken,
+  registerUser,
+} from "./authThunks";
 
 const initialState: AuthState = {
   profile: null,
@@ -142,6 +147,26 @@ const userAuthSlice = createSlice({
         localStorage.removeItem("username");
         localStorage.removeItem("user_type");
       });
+    builder
+      .addCase(changePassword.pending, (state) => {
+        state.status = "loading";
+        state.error = null; // Clear any previous errors
+      })
+      .addCase(changePassword.fulfilled, (state) => {
+        state.status = "succeeded";
+        state.error = null; // Clear any errors on success
+      })
+      .addCase(changePassword.rejected, (state, action) => {
+        state.status = "failed";
+        if (action.payload) {
+          state.error = action.payload; // Store the error in state
+        } else {
+          state.error = {
+            error: "An unknown error occurred.",
+            details: { non_field_errors: ["An unknown error occurred"] },
+          };
+        }
+      });
   },
 });
 
@@ -153,4 +178,5 @@ export const {
   clearAuthErrors,
   clearAuthStatus,
 } = userAuthSlice.actions;
+
 export const authSliceReducer = userAuthSlice.reducer;

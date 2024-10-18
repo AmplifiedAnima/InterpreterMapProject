@@ -2,18 +2,15 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../redux/store";
-import { NewWordData } from "../interfaces/wordSuggestionSchema";
+import {
+  NewWordData,
+  RejectedPayloadForSuggestionForms,
+} from "../interfaces/wordSuggestionSchema";
 import { submitNewWordSuggestion } from "../redux/suggestion/suggestionThunk";
 import { AddWordForm } from "../components/Forms/AddWordForm";
 import { Toast } from "../components/UI/Toast";
 import { fetchCategoryLabelsOnly } from "../redux/vocabulary/vocabularyThunks";
 
-interface RejectedPayload {
-  errors?: Partial<Record<keyof NewWordData, string>>;
-  error?: string;
-  field?: keyof NewWordData;
-  details?: Partial<Record<keyof NewWordData, string>>; // Add details here
-}
 const languageNames = [
   { code: "pl", name: "Polish" },
   { code: "es", name: "Spanish" },
@@ -55,7 +52,8 @@ export const AddNewWordRoute: React.FC = () => {
         setIsDisabled(true);
         setTimeout(() => navigate("/vocabulary-map"), 3000);
       } else if (submitNewWordSuggestion.rejected.match(resultAction)) {
-        const payload = resultAction.payload as RejectedPayload;
+        const payload =
+          resultAction.payload as RejectedPayloadForSuggestionForms;
 
         // Log the payload for debugging
         console.log("Payload from rejected action:", payload);
@@ -99,7 +97,7 @@ export const AddNewWordRoute: React.FC = () => {
         Add New Word
       </h2>
       <AddWordForm
-        onSubmit={ handleNewWordFormSubmit}
+        onSubmit={handleNewWordFormSubmit}
         categoryOfItems={categoryOfItems}
         languageNames={languageNames}
         disabled={disabled}
