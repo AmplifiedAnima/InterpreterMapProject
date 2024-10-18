@@ -6,6 +6,7 @@ import { Input as InputPlaceholder } from "./../UI/InputPlaceholder";
 import { Button } from "../UI/Button";
 import { useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
+
 interface RegistrationFormProps {
   onSubmit: (data: UserRegistrationData) => void;
   status: "idle" | "loading" | "succeeded" | "failed";
@@ -31,9 +32,20 @@ const RegistrationForm: React.FC<RegistrationFormProps> = ({
 
   const navigate = useNavigate();
 
+  const renderError = (field: keyof UserRegistrationData) => {
+    const validationError = validationErrors?.[field];
+    const serverError = error?.details?.[field]?.[0];
+    const errorMessage = validationError || serverError;
+
+    return errorMessage ? (
+      <div className="bg-[#ffe1e6] rounded-md mt-1 flex justify-center items-center p-2">
+        <p className="text-red-600 text-sm font-medium">{errorMessage}</p>
+      </div>
+    ) : null;
+  };
+
   return (
     <AnimatePresence>
-      {" "}
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
@@ -63,16 +75,7 @@ const RegistrationForm: React.FC<RegistrationFormProps> = ({
                 onChange={handleChange}
                 className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
               />
-              {validationErrors?.username && (
-                <p className="text-red-500 text-xs italic mt-1">
-                  {validationErrors.username}
-                </p>
-              )}
-              {status != "succeeded" && error?.details?.username && (
-                <p className="text-red-500 text-xs italic mt-1">
-                  {error.details.username[0]}
-                </p>
-              )}
+              {renderError("username")}
             </div>
 
             {/* Email field */}
@@ -92,16 +95,7 @@ const RegistrationForm: React.FC<RegistrationFormProps> = ({
                 onChange={handleChange}
                 className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
               />
-              {validationErrors?.email && (
-                <p className="text-red-500 text-xs italic mt-1">
-                  {validationErrors.email}
-                </p>
-              )}
-              {status != "succeeded" && error?.details?.email && (
-                <p className="text-red-500 text-xs italic mt-1">
-                  {error.details.email[0]}
-                </p>
-              )}
+              {renderError("email")}
             </div>
 
             {/* Password field */}
@@ -121,16 +115,7 @@ const RegistrationForm: React.FC<RegistrationFormProps> = ({
                 onChange={handleChange}
                 className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline"
               />
-              {validationErrors?.password && (
-                <p className="text-red-500 text-xs italic">
-                  {validationErrors.password}
-                </p>
-              )}
-              {status != "succeeded" && error?.details?.password && (
-                <p className="text-red-500 text-xs italic mt-1">
-                  {error.details.password[0]}
-                </p>
-              )}
+              {renderError("password")}
             </div>
 
             <div className="flex items-center justify-center">
@@ -149,9 +134,9 @@ const RegistrationForm: React.FC<RegistrationFormProps> = ({
               </Button>
             </div>
 
-            {error?.error && (
+            {status !== "succeeded" && error?.error && (
               <p className="text-red-500 text-xs italic mt-4 text-center">
-                {/* {error.error} */}
+                {error.error}
               </p>
             )}
           </form>

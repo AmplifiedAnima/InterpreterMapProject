@@ -56,7 +56,10 @@ export const ProfilePageComponent: React.FC<ProfileDashboardProps> = ({
             {isChangingPassword ? (
               <div>
                 <div className="mb-4">
-                  <label htmlFor="currentPassword" className="block text-gray-700 font-semibold mb-2">
+                  <label
+                    htmlFor="currentPassword"
+                    className="block text-gray-700 font-semibold mb-2"
+                  >
                     Current Password
                   </label>
                   <input
@@ -68,7 +71,10 @@ export const ProfilePageComponent: React.FC<ProfileDashboardProps> = ({
                   />
                 </div>
                 <div className="mb-6">
-                  <label htmlFor="newPassword" className="block text-gray-700 font-semibold mb-2">
+                  <label
+                    htmlFor="newPassword"
+                    className="block text-gray-700 font-semibold mb-2"
+                  >
                     New Password
                   </label>
                   <input
@@ -97,6 +103,7 @@ export const ProfilePageComponent: React.FC<ProfileDashboardProps> = ({
                 onClick={() => setIsChangingPassword(true)}
                 label="Change Password"
                 className="bg-[#7c85c7] text-white hover:bg-[#6c75b7]"
+                disabled={true}
               />
             )}
           </div>

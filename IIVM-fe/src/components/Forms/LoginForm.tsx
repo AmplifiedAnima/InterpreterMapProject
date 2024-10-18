@@ -25,9 +25,17 @@ const LoginForm: React.FC<LoginFormProps> = ({
 
   const navigate = useNavigate();
 
+  const renderError = (field: keyof UserLoginData) => {
+    const error = errors?.[field];
+    return error ? (
+      <div className="bg-[#ffe1e6] rounded-md mt-1 flex justify-center items-center p-2">
+        <p className="text-red-600 text-sm font-medium">{error}</p>
+      </div>
+    ) : null;
+  };
+  
   return (
     <AnimatePresence>
-      {" "}
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
@@ -54,13 +62,9 @@ const LoginForm: React.FC<LoginFormProps> = ({
                 disabled={status === "succeeded"}
                 value={values.username || ""}
                 onChange={handleChange}
-                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline mb-2"
               />
-              {errors?.username && (
-                <p className="text-red-500 text-xs italic mt-1">
-                  {errors.username}
-                </p>
-              )}
+              {renderError("username")}
               {details.username && (
                 <p className="text-red-500 text-xs italic mt-1">
                   {details.username[0]}
@@ -83,9 +87,7 @@ const LoginForm: React.FC<LoginFormProps> = ({
                 onChange={handleChange}
                 className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline"
               />
-              {errors?.password && (
-                <p className="text-red-500 text-xs italic">{errors.password}</p>
-              )}
+              {renderError("password")}
               {details.password && (
                 <p className="text-red-500 text-xs italic mt-1">
                   {details.password[0]}
@@ -108,10 +110,9 @@ const LoginForm: React.FC<LoginFormProps> = ({
                   : "Login"}
               </Button>
             </div>
-            {status !== "succeeded"}
-            {error && (
+            {status !== "succeeded" && error && (
               <p className="text-red-500 text-xs italic mt-4 text-center">
-                {/* {error} */}
+                {error}
               </p>
             )}
             {status !== "succeeded" && details.non_field_errors && (

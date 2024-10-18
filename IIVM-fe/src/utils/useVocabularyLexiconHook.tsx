@@ -22,7 +22,7 @@ export const useVocabularyLexiconHook = () => {
   const [deviceType, setDeviceType] = useState<
     "mobile" | "largeTablet" | "smallTablet" | "desktop"
   >("desktop");
-  const [activeTab, setActiveTab] = useState<"categories" | "list" | "detail">(
+  const [activeTab, setActiveTab] = useState<"categories" | "list" | "detail"|'graph'>(
     "categories"
   );
   const [activeToolTip, setActiveToolTip] = useState(false);

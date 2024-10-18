@@ -32,7 +32,7 @@ export const Header = () => {
   }, []);
 
   const buttonStylingSpecificForHeader =
-    "px-4 mx-[4px] justify-start text-sm text-white hover:bg-[#8b8ad6] transition-colors duration-200 font-sans font-medium tracking-wide";
+    "px-4 mx-[4px] justify-start text-sm text-white hover:bg-[#8b8ad6] transition-colors duration-200 font-sans font-medium tracking-wide bg-[#5e67aa]";
 
   const toggleDropdown = () => setIsDropdownOpen((prev) => !prev);
   const toggleMobileMenu = () => setIsMobileMenuOpen((prev) => !prev);
@@ -72,7 +72,7 @@ export const Header = () => {
     },
   ];
   return (
-    <div className="flex justify-between items-center bg-[#7d7cc7] py-2 px-4 font-sans">
+    <div className="flex justify-between items-center bg-[#5e67aa] py-2 px-4 font-sans">
       <div className="text-white text-xl font-bold">Interpreter Lexicon</div>
       <div className="flex items-center space-x-2">
         <div className="relative">

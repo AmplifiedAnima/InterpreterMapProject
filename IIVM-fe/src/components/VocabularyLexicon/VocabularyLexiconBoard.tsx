@@ -15,6 +15,7 @@ import { CheckCircle, PlusCircle } from "lucide-react";
 import { useSelector } from "react-redux";
 import { RootState } from "../../redux/store";
 import { motion, AnimatePresence } from "framer-motion";
+// import SideWordDetail from "./SideWordDetail";
 
 export const VocabularyLexicon: React.FC<{
   groupedVocabulary: GroupedVocabularyType;
@@ -91,13 +92,9 @@ export const VocabularyLexicon: React.FC<{
 
   const renderToolbar = () => (
     <VocabularyLexiconToolbar
-      isListModeOpen={activeTab === "list"}
       isOpened={graphIsOpened}
       onShowSavedVocabulary={() => setShowSavedVocabularyModal(true)}
       searchQuery={searchQuery}
-      setListMode={() =>
-        setActiveTab(activeTab === "list" ? "categories" : "list")
-      }
       onSearch={handleSearch}
       vocabularyList={Object.values(groupedVocabulary)
         .flat()
@@ -111,7 +108,7 @@ export const VocabularyLexicon: React.FC<{
   );
   const renderCategoryList = () => (
     <AnimatePresence>
-      <div className="flex flex-col items-center justify-center p-1 m-4 overflow-y-auto">
+      <div className="flex flex-col items-center justify-center p-1 m-4 overflow-y-auto ">
         {categoryLabels.map((category) => (
           <motion.div
             key={category}
@@ -132,9 +129,9 @@ export const VocabularyLexicon: React.FC<{
                 (deviceType === "mobile" && "w-72")
               } ${
                 selectedCategory === category
-                  ? "bg-[#555585] text-white"
+                  ? "hover:bg-[#8b8ad6] text-white"
                   : "text-white"
-              } my-1 justify-start text-sm text-white hover:bg-[#8b8ad6] transition-colors duration-200 font-sans font-medium tracking-wide`}
+              } my-1 justify-start text-sm text-white hover:bg-[#8b8ad6] transition-colors duration-200 font-sans font-medium tracking-wide bg-[#5e67aa]`}
             >
               {category.toUpperCase()}
             </Button>
@@ -341,20 +338,22 @@ export const VocabularyLexicon: React.FC<{
       <div className="flex space-x-8 justify-center p-2 bg-gray-200">
         <Button
           onClick={() => setActiveTab("categories")}
-          className={activeTab === "categories" ? "bg-blue-500 text-white" : ""}
+          className={
+            activeTab === "categories" ? "bg-[#63629e] text-white" : ""
+          }
         >
           Categories
         </Button>
         <Button
           onClick={() => setActiveTab("list")}
-          className={activeTab === "list" ? "bg-blue-500 text-white" : ""}
+          className={activeTab === "list" ? "bg-[#63629e] text-white" : ""}
         >
           List
         </Button>
         {selectedWord && (
           <Button
             onClick={() => setActiveTab("detail")}
-            className={activeTab === "detail" ? "bg-blue-500 text-white" : ""}
+            className={activeTab === "detail" ? "bg-[#63629e] text-white" : ""}
           >
             Detail
           </Button>

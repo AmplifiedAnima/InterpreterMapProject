@@ -58,13 +58,16 @@ export const fetchAllSuggestions = createAsyncThunk<AllSuggestionsResponse>(
     }
   }
 );
+type ErrorResponse = Partial<Record<keyof SuggestionData, string>> | { message: string };
 
-export const fetchSuggestionToBackend = createAsyncThunk<
+export const submitExistingWordSuggestionToBackend = createAsyncThunk<
   SuggestionData,
-  Omit<SuggestionData, "id">
+  Omit<SuggestionData, "id">,
+  {
+    rejectValue: ErrorResponse;
+  }
 >(
   "vocabulary/fetchSuggestionToBackend",
-
   async (formData, { rejectWithValue }) => {
     try {
       const token = localStorage.getItem("accessToken");
@@ -81,21 +84,24 @@ export const fetchSuggestionToBackend = createAsyncThunk<
       );
 
       const responseData = await response.json();
-      console.log("Response data:", responseData);
 
       if (!response.ok) {
-        return rejectWithValue(responseData);
+        // If the server returns field-specific errors, return them as is
+        if (typeof responseData === 'object' && responseData !== null) {
+          return rejectWithValue(responseData as ErrorResponse);
+        }
+        // If it's a string or unknown format, wrap it in a message property
+        return rejectWithValue({ message: String(responseData) });
       }
 
       return responseData;
     } catch (error) {
-      return rejectWithValue(
-        error instanceof Error ? error.message : "An error occurred"
-      );
+      // For caught errors, always return an object with a message property
+      return rejectWithValue({ message: error instanceof Error ? error.message : "An unknown error occurred" });
     }
   }
 );
-export const suggestNewWord = createAsyncThunk(
+export const submitNewWordSuggestion = createAsyncThunk(
   "vocabulary/suggestNewWord",
   async (newWordData: NewWordData, { rejectWithValue }) => {
     try {

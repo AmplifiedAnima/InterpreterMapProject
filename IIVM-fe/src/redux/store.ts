@@ -6,7 +6,7 @@ import {
   vocabularyReducer,
 } from "./vocabulary/VocabularySlice";
 import { authSliceReducer } from "./auth/authSlice";
-import { suggestionsReducer } from "./vocabulary/SuggestionSlice";
+import { suggestionsReducer } from "./suggestion/SuggestionSlice";
 
 export const store = configureStore({
   reducer: {

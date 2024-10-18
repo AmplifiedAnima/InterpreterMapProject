@@ -4,17 +4,16 @@ import { Input } from "../UI/InputPlaceholder";
 import searchIcon from "../../assets/icons/search.svg";
 import saveIcon from "../../assets/icons/save.svg";
 
-
 interface VocabularyMapToolbarProps {
   isOpened: boolean;
-  setListMode: () => void;
+
   onToolTipLegendOpen: boolean;
   setOnToolTipLegendOpen: () => void;
   onShowSavedVocabulary: () => void;
   onSearch: (query: string) => void;
   searchQuery: string;
   vocabularyList: string[];
-  isListModeOpen: boolean;
+
   showGraph: boolean;
   onToggleGraph: () => void;
   selectedCategory: string | null;
@@ -97,15 +96,14 @@ export const VocabularyLexiconToolbar: React.FC<VocabularyMapToolbarProps> = ({
           text={showGraph ? "List" : "Graph"}
         />
       )}
+
       {showGraph && selectedCategory && (
         <>
-     
           {!onToolTipLegendOpen && (
             <ToolbarButton onClick={setOnToolTipLegendOpen} text="Legend" />
           )}
         </>
       )}
-
     </>
   );
 
