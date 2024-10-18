@@ -1,7 +1,8 @@
-FROM python:3.9
+FROM node:20
 WORKDIR /app
-COPY requirements.txt ./
-RUN pip install --no-cache-dir -r requirements.txt
+COPY package*.json ./
+RUN npm install
 COPY . .
-EXPOSE 8000
-CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]
+RUN npm run build
+EXPOSE $PORT
+CMD ["npm", "start"]
