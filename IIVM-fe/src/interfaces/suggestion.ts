@@ -1,11 +1,3 @@
-// export interface Suggestion {
-//   id: number;
-//   vocabulary_item: number; // Changed from vocabulary_item_id to match the actual data
-//   suggestion_type: "colloquial" | "translation";
-//   suggestion: string;
-//   language: string; // This is likely a 2-character language code
-//   status: string;
-// }
 export type Language =
   | "pl"
   | "en"

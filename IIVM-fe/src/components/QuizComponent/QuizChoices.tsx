@@ -42,10 +42,11 @@ const QuizChoices: React.FC<QuizChoicesProps> = ({
           <Button
             onClick={() => onChoiceSelect(choice)}
             className={`
-              rounded-lg w-full   px-4 text-left transition-colors duration-200
+              rounded-lg w-full px-4 text-left transition-colors duration-200
               ${getButtonColor(choice)}
               ${showFeedback ? 'cursor-default' : 'cursor-pointer'}
               shadow-md hover:shadow-lg
+              flex items-center justify-between
             `}
             disabled={showFeedback}
           >
@@ -53,7 +54,7 @@ const QuizChoices: React.FC<QuizChoicesProps> = ({
               <span className="w-8 h-8 flex items-center justify-center rounded-full bg-white text-[#333333] mr-3 font-semibold">
                 {String.fromCharCode(65 + index)}
               </span>
-              <span className="flex-1">{choice}</span>
+              <span className="flex-1 text-center">{choice}</span>
             </span>
           </Button>
         </motion.div>

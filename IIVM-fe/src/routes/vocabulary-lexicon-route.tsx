@@ -27,31 +27,26 @@ export const VocabularyLexiconRoute: React.FC = () => {
     error,
     currentItemId,
     savedVocabularyIds,
+    savedVocabularyStatus,
   } = useSelector((state: RootState) => state.vocabulary);
 
   const currentItem = useMemo(
     () => (currentItemId ? items[currentItemId] : null),
     [items, currentItemId]
-  );
-
+  );// Zoptymalizowany useEffect do pobierania zapisanego słownictwa
   useEffect(() => {
-    console.log("Component re-rendered");
-    console.log("Current category:", category);
-    console.log("Current id:", id);
-    console.log("Category Labels:", categoryLabels);
-    console.log("Grouped Items:", groupedItems);
-    console.log("Status:", status);
-  });
-
-  useEffect(() => {
-    const savedVocabularyNotInSlice = savedVocabularyIds.filter(
-      (id) => !items[id]
-    );
-    if (savedVocabularyNotInSlice.length > 0) {
-      console.log("Fetching saved vocabulary");
+    if (savedVocabularyStatus === "idle") {
       dispatch(fetchSavedVocabularyOfUser());
+    } else if (savedVocabularyStatus === "succeeded") {
+      const savedVocabularyNotInSlice = savedVocabularyIds.filter(
+        (id) => !items[id]
+      );
+      if (savedVocabularyNotInSlice.length > 0) {
+        console.log("Fetching missing saved vocabulary");
+        dispatch(fetchSavedVocabularyOfUser());
+      }
     }
-  }, [dispatch, items, savedVocabularyIds]);
+  }, [dispatch, savedVocabularyStatus, savedVocabularyIds, items]);
 
   useEffect(() => {
     const fetchData = async () => {
