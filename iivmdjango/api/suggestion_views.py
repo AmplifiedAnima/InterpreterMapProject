@@ -128,7 +128,6 @@ def create_suggestion_for_the_word(request):
         
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
-
 def approve_new_word_suggestion(request, pk):
     try:
         with transaction.atomic():
@@ -159,7 +158,7 @@ def approve_new_word_suggestion(request, pk):
             }, status=status.HTTP_200_OK)
     except NewWordSuggestion.DoesNotExist:
         return Response({'error': 'Suggestion not found'}, status=status.HTTP_404_NOT_FOUND)
-    
+
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
 def approve_vocabulary_suggestion(request, pk):
@@ -179,13 +178,17 @@ def approve_vocabulary_suggestion(request, pk):
             suggestion.status = 'accepted'
             suggestion.save()
             
+            # Fetch the updated vocabulary item with all translations
+            vocabulary_item.refresh_from_db()
+            serializer = VocabularyItemSerializer(vocabulary_item)
+            
             return Response({
                 'message': 'Vocabulary suggestion approved and updated',
-                'vocabulary_item': VocabularyItemSerializer(vocabulary_item).data
+                'vocabulary_item': serializer.data
             }, status=status.HTTP_200_OK)
     except SuggestionToVocabularyItem.DoesNotExist:
-        return Response({'error': 'Suggestion not found'}, status=status.HTTP_404_NOT_FOUND)
-
+            return Response({'error': 'Suggestion not found'}, status=status.HTTP_404_NOT_FOUND)
+        
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
 def reject_suggestion(request, pk):

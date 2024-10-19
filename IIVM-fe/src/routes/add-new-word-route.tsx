@@ -50,7 +50,7 @@ export const AddNewWordRoute: React.FC = () => {
           type: "success",
         });
         setIsDisabled(true);
-        setTimeout(() => navigate("/vocabulary-map"), 3000);
+        setTimeout(() => navigate("/vocabulary-map"), 2000);
       } else if (submitNewWordSuggestion.rejected.match(resultAction)) {
         const payload =
           resultAction.payload as RejectedPayloadForSuggestionForms;

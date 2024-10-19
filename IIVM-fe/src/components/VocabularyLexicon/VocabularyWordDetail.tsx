@@ -211,7 +211,7 @@ const VocabularyWordDetail: React.FC<VocabularyDetailProps> = ({
           </div>
         </>
       ) : (
-        <div className="flex-grow flex flex-col items-center justify-center text-center space-y-4">
+        <div className="flex-grow flex flex-col items-center justify-center text-center space-y-4 mt-52">
           <Book className="w-16 h-16 text-[#5e67aa]" />
           <h2 className="text-2xl font-bold text-[#5e67aa]">Ready to learn?</h2>
           <p className="text-gray-700">Select a word to get started.</p>

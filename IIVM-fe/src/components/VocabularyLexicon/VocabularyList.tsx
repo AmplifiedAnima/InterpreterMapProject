@@ -59,7 +59,7 @@ const VocabularyList: React.FC<VocabularyListProps> = ({
 
     return (
       <div key={category} className="relative">
-        <div className="category-header sticky top-0 bg-gradient-to-r from-[#5e67aa] to-[#7c85c7] text-left px-3 py-1.5 font-semibold text-white text-sm md:text-base rounded-t-md shadow-sm z-50">
+        <div className="category-header sticky top-0 bg-gradient-to-r from-[#5e67aa] to-[#7c85c7] text-left px-3 py-1.5 font-semibold text-white text-sm md:text-base rounded-t-md shadow-sm z-10">
           {category.toUpperCase()}
         </div>
         <AnimatePresence>
@@ -95,7 +95,7 @@ const VocabularyList: React.FC<VocabularyListProps> = ({
         </div>
       </div>
 
-      <div ref={listRef} className="flex-1 overflow-y-auto pr-1 z-50">
+      <div ref={listRef} className="flex-1 overflow-y-auto pr-1 ">
         {selectedCategory && groupedVocabulary[selectedCategory]
           ? renderVocabularyItems(
               selectedCategory,

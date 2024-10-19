@@ -19,8 +19,6 @@ module.exports = {
           DEFAULT: '#8A94A6', // Default scrollbar color
           hover: '#4A5568',   // Hover state color
       
-            // Add custom spacing for scrollbar width
-          height: '8px', // Set to your desired size
     
         },},},
         

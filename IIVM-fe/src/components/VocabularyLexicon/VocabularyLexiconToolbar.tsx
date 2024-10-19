@@ -108,7 +108,7 @@ export const VocabularyLexiconToolbar: React.FC<VocabularyMapToolbarProps> = ({
   );
 
   return (
-    <div className="flex items-center justify-center space-x-2 p-2 bg-white rounded-lg shadow-sm my-2">
+    <div className="flex items-center justify-center space-x-2 p-2 bg-white rounded-lg shadow-sm my-2 z-50">
       <div className="relative flex items-center">
         <Input
           className="h-10  pr-2 rounded-l-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#a09edd]"
@@ -124,7 +124,7 @@ export const VocabularyLexiconToolbar: React.FC<VocabularyMapToolbarProps> = ({
           <img src={searchIcon} />
         </button>
         {showSuggestions && suggestions.length > 0 && (
-          <div className="absolute top-full left-0 z-50 w-full bg-white border border-gray-300 rounded-md shadow-lg mt-1">
+          <div className="absolute top-full left-0 w-full bg-white border border-gray-300 rounded-md shadow-lg mt-1">
             {suggestions.map((suggestion, index) => (
               <div
                 key={index}

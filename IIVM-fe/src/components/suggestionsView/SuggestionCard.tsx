@@ -43,6 +43,7 @@ export const SuggestionCard: React.FC<{
         return "bg-gray-200 text-gray-800"; // Default fallback
     }
   };
+
   return (
     <motion.div
       className="bg-white border border-gray-200 shadow-sm overflow-hidden mb-4"
@@ -134,7 +135,10 @@ export const SuggestionCard: React.FC<{
                     className="text-sm bg-[#5e67aa] text-white hover:bg-[#7a7fa0] py-2 px-4 flex items-center space-x-1"
                   >
                     <span>{item.like_count}</span>
-                    <ThumbsUp size={14} className="ml-2 -top-[0.25px] relative" />
+                    <ThumbsUp
+                      size={14}
+                      className="ml-2 -top-[0.25px] relative"
+                    />
                   </Button>
                 </motion.div>
                 {canApprove && item.status === "pending" && (

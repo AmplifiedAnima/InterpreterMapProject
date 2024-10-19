@@ -17,6 +17,7 @@ import {
   selectExistingWordError,
   selectExistingWordStatus,
 } from "../redux/suggestion/SuggestionSlice";
+import { ExistingWordSuggestion } from "../interfaces/suggestion";
 
 const languageNames = [
   { code: "pl", name: "Polish" },
@@ -45,7 +46,9 @@ export const AddSuggestionRoute: React.FC = () => {
   const [disabled, setIsDisabled] = useState(false);
 
   const suggestionsRef = useRef<HTMLDivElement>(null);
-  const locationState = location.state as LocationStateSuggestionExistingWordForm | undefined;
+  const locationState = location.state as
+    | LocationStateSuggestionExistingWordForm
+    | undefined;
 
   const initialSuggestionValues: Partial<SuggestionData> = {
     term: locationState?.word || "",
@@ -114,15 +117,25 @@ export const AddSuggestionRoute: React.FC = () => {
     },
     [handleSuggestionChange]
   );
-
   const handleSuggestionFormSubmit = useCallback(
     async (data: SuggestionData) => {
       console.log("Submitting suggestion:", data);
       dispatch(clearSuggestionErrors()); // Clear previous errors
 
       try {
+        //type assertion stuff
+        const suggestionData = {
+          term: data.term,
+          suggestion_type: data.suggestionType,
+          suggestion: data.suggestion,
+          language: data.language,
+          status: "pending",
+          vocabulary_item: "",
+          like_count: 0,
+        } as Omit<ExistingWordSuggestion, "id">;
+
         const resultAction = await dispatch(
-          submitExistingWordSuggestionToBackend(data)
+          submitExistingWordSuggestionToBackend(suggestionData)
         );
 
         if (
@@ -143,32 +156,7 @@ export const AddSuggestionRoute: React.FC = () => {
           console.log("Result Action:", resultAction);
           console.log("Payload from rejected action:", payload);
 
-          // Check if details are present
-          if (payload.details) {
-            console.log("Validation errors:", payload.details);
-            // You can update state with detailed errors if needed
-          } else if (payload.errors) {
-            // Handle validation errors
-            console.log("Specific validation errors:", payload.errors);
-            setToast({
-              message: "Please correct the highlighted errors.",
-              type: "error",
-            });
-          } else if (payload.error && payload.field) {
-            console.log(`Error on field '${payload.field}': ${payload.error}`);
-            setToast({
-              message: payload.error,
-              type: "error",
-            });
-          } else {
-            console.log(
-              "General error: Failed to submit suggestion. No specific error provided."
-            );
-            setToast({
-              message: "Failed to submit suggestion. Please try again.",
-              type: "error",
-            });
-          }
+          // Handle errors...
         }
       } catch (error) {
         console.warn("Unexpected error during submission:", error);

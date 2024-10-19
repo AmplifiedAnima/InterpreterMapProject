@@ -33,8 +33,20 @@ export const suggestionSchema = z.object({
     .string()
     .regex(extendedLettersNumbersSpaceHyphenApostrophe, extendedLettersNumbersSpaceHyphenApostropheError)
     .min(2, "Suggestion must be at least 2 characters"),
-  language: z.union([languageEnum, z.literal('coloquial expression')])
+  language: languageEnum
 });
 
 export type NewWordData = z.infer<typeof newWordSchema>;
 export type SuggestionData = z.infer<typeof suggestionSchema>;
+
+export interface LocationStateSuggestionExistingWordForm {
+  word?: string;
+  translations?: Record<string, string>;
+}
+
+export interface RejectedPayloadForSuggestionForms {
+  errors?: Partial<Record<keyof SuggestionData, string>>;
+  error?: string;
+  field?: keyof SuggestionData;
+  details?: Partial<Record<keyof SuggestionData, string>>;
+}

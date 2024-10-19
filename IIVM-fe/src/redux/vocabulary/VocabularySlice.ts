@@ -60,8 +60,42 @@ const vocabularySlice = createSlice({
       state.currentCategory = null;
     },
     updateCategoryLabels: (state, action: PayloadAction<string[]>) => {
-      const newLabels = action.payload.filter(label => !state.categoryLabels.includes(label));
+      const newLabels = action.payload.filter(
+        (label) => !state.categoryLabels.includes(label)
+      );
       state.categoryLabels = [...state.categoryLabels, ...newLabels];
+    },
+    updateVocabularyItem: (
+      state,
+      action: PayloadAction<VocabularyItemInterface>
+    ) => {
+      const updatedItem = action.payload;
+      state.items[updatedItem.id] = updatedItem;
+    },
+
+    addApprovedNewWord: (
+      state,
+      action: PayloadAction<VocabularyItemInterface>
+    ) => {
+      const newItem = action.payload;
+      // Add the new item to the state.items map
+      state.items[newItem.id] = newItem;
+
+      // If the new item has a category, group it accordingly
+      if (newItem.category) {
+        // Ensure the category exists in groupedItems
+        if (!state.groupedItems[newItem.category]) {
+          state.groupedItems[newItem.category] = [];
+        }
+
+        // Add the new item to the respective category group
+        state.groupedItems[newItem.category].push(newItem);
+
+        // Add the category to categoryLabels if it doesn't exist
+        if (!state.categoryLabels.includes(newItem.category)) {
+          state.categoryLabels.push(newItem.category);
+        }
+      }
     },
   },
   extraReducers: (builder) => {
@@ -76,8 +110,16 @@ const vocabularySlice = createSlice({
             state.items[item.id] = item;
           });
           state.groupedItems = groupByCategoryDescending(action.payload);
-          const newLabels = [...new Set(action.payload.map((item) => item.category).filter((category): category is string => !!category))];
-          state.categoryLabels = [...new Set([...state.categoryLabels, ...newLabels])];
+          const newLabels = [
+            ...new Set(
+              action.payload
+                .map((item) => item.category)
+                .filter((category): category is string => !!category)
+            ),
+          ];
+          state.categoryLabels = [
+            ...new Set([...state.categoryLabels, ...newLabels]),
+          ];
         } else {
           state.error = "Received invalid data format";
         }
@@ -95,7 +137,7 @@ const vocabularySlice = createSlice({
         });
         state.groupedItems[category] = items;
         state.currentCategory = category;
-        
+
         const newCategories = action.payload.categories.filter(
           (c: string) => !state.categoryLabels.includes(c)
         );
@@ -171,6 +213,8 @@ export const {
   clearVocabularyErrors,
   clearCategoryData,
   updateCategoryLabels,
+  addApprovedNewWord,
+  updateVocabularyItem
 } = vocabularySlice.actions;
 
 export const vocabularyReducer = vocabularySlice.reducer;

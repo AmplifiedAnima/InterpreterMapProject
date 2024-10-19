@@ -12,12 +12,12 @@ interface SuggestionsAcquiesceComponentProps {
   newWordSuggestions: NewWordSuggestion[];
   vocabularyItems: VocabularyItemInterface[];
   canApprove: boolean;
-  onLikeExisting: (id: number) => void;
-  onApproveExisting: (id: number) => Promise<void>;
-  onRejectExisting: (id: number) => Promise<void>;
-  onLikeNew: (id: number) => void;
-  onApproveNew: (id: number) => Promise<void>;
-  onRejectNew: (id: number) => Promise<void>;
+  onLikeExisting: (id: string) => void;
+  onApproveExisting: (id: string) => Promise<void>;
+  onRejectExisting: (id: string) => Promise<void>;
+  onLikeNew: (id: string) => void;
+  onApproveNew: (id: string) => Promise<void>;
+  onRejectNew: (id: string) => Promise<void>;
 }
 
 export const SuggestionsAcquiesceComponent: React.FC<
@@ -35,7 +35,7 @@ export const SuggestionsAcquiesceComponent: React.FC<
   onRejectNew,
 }) => {
   const [showExistingSuggestions, setShowExistingSuggestions] = useState(false);
-  const [expandedCardId, setExpandedCardId] = useState<number | null>(null);
+  const [expandedCardId, setExpandedCardId] = useState<string | null>(null);
   const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
@@ -50,7 +50,7 @@ export const SuggestionsAcquiesceComponent: React.FC<
     setExpandedCardId(null);
   }, []);
 
-  const toggleCardExpansion = useCallback((id: number) => {
+  const toggleCardExpansion = useCallback((id: string) => {
     setExpandedCardId((prevId) => (prevId === id ? null : id));
   }, []);
 
@@ -70,56 +70,67 @@ export const SuggestionsAcquiesceComponent: React.FC<
     ? sortedExistingSuggestions
     : sortedNewSuggestions;
 
+  const noSuggestionsMessage = showExistingSuggestions
+    ? "No existing word suggestions available."
+    : "No new word suggestions available.";
+
   return (
-    <div className="p-6 max-w-5xl mx-auto">
-      <div className="flex flex-col sm:flex-row justify-between items-center mb-8 space-y-4 sm:space-y-0">
+    <div className="p-8 max-w-7xl mx-auto bg-gray-100 rounded-xl shadow-lg">
+      <div className="flex flex-col sm:flex-row justify-between items-center mb-12 space-y-6 sm:space-y-0">
         <h2 className="text-2xl font-bold text-[#404670]">
           {showExistingSuggestions
             ? "Existing Word Suggestions"
             : "New Word Suggestions"}
         </h2>
-        <Button onClick={toggleSuggestionType}>
+        <Button
+          onClick={toggleSuggestionType}
+          className="text-xl py-3 px-6 rounded-lg"
+        >
           {showExistingSuggestions
             ? "Show New Suggestions"
             : "Show Existing Suggestions"}
         </Button>
       </div>
-      <div className="space-y-6">
-        {suggestions.map((item) => (
-          <SuggestionCard
-            key={item.id}
-            item={item}
-            isExisting={showExistingSuggestions}
-            vocabularyItem={
-              showExistingSuggestions
-                ? vocabularyItems.find(
-                    (v) =>
-                      v.id === (item as ExistingWordSuggestion).vocabulary_item
-                  )
-                : undefined
-            }
-            onLike={() =>
-              showExistingSuggestions
-                ? onLikeExisting(item.id)
-                : onLikeNew(item.id)
-            }
-            onApprove={() =>
-              showExistingSuggestions
-                ? onApproveExisting(item.id)
-                : onApproveNew(item.id)
-            }
-            onReject={() =>
-              showExistingSuggestions
-                ? onRejectExisting(item.id)
-                : onRejectNew(item.id)
-            }
-            canApprove={canApprove}
-            isExpanded={!isMobile || expandedCardId === item.id}
-            toggleExpand={() => toggleCardExpansion(item.id)}
-            isMobile={isMobile}
-          />
-        ))}
-      </div>
+      {suggestions.length === 0 ? (
+        <p className="text-center text-gray-500 text-2xl my-12">{noSuggestionsMessage}</p>
+      ) : (
+        <div className="space-y-8">
+          {suggestions.map((item) => (
+            <SuggestionCard
+              key={item.id}
+              item={item}
+              isExisting={showExistingSuggestions}
+              vocabularyItem={
+                showExistingSuggestions
+                  ? vocabularyItems.find(
+                      (v) =>
+                        v.id === (item as ExistingWordSuggestion).vocabulary_item
+                    )
+                  : undefined
+              }
+              onLike={() =>
+                showExistingSuggestions
+                  ? onLikeExisting(item.id)
+                  : onLikeNew(item.id)
+              }
+              onApprove={() =>
+                showExistingSuggestions
+                  ? onApproveExisting(item.id)
+                  : onApproveNew(item.id)
+              }
+              onReject={() =>
+                showExistingSuggestions
+                  ? onRejectExisting(item.id)
+                  : onRejectNew(item.id)
+              }
+              canApprove={canApprove}
+              isExpanded={!isMobile || expandedCardId === item.id}
+              toggleExpand={() => toggleCardExpansion(item.id)}
+              isMobile={isMobile}
+            />
+          ))}
+        </div>
+      )}
     </div>
   );
 };

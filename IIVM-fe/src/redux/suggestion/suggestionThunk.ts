@@ -3,7 +3,10 @@ import {
   NewWordData,
   SuggestionData,
 } from "../../interfaces/wordSuggestionSchema";
-import { AllSuggestionsResponse } from "../../interfaces/suggestion";
+import {
+  AllSuggestionsResponse,
+  ExistingWordSuggestion,
+} from "../../interfaces/suggestion";
 import { RootState } from "../store";
 
 export const fetchSuggestionsForWord = createAsyncThunk(
@@ -58,49 +61,62 @@ export const fetchAllSuggestions = createAsyncThunk<AllSuggestionsResponse>(
     }
   }
 );
-type ErrorResponse = Partial<Record<keyof SuggestionData, string>> | { message: string };
-
-export const submitExistingWordSuggestionToBackend = createAsyncThunk<
-  SuggestionData,
-  Omit<SuggestionData, "id">,
-  {
-    rejectValue: ErrorResponse;
-  }
->(
-  "vocabulary/fetchSuggestionToBackend",
-  async (formData, { rejectWithValue }) => {
-    try {
-      const token = localStorage.getItem("accessToken");
-      const response = await fetch(
-        "http://localhost:8000/save-suggestion-for-specific-word/",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-          body: JSON.stringify(formData),
-        }
-      );
-
-      const responseData = await response.json();
-
-      if (!response.ok) {
-        // If the server returns field-specific errors, return them as is
-        if (typeof responseData === 'object' && responseData !== null) {
+type ErrorResponse =
+  | Partial<Record<keyof SuggestionData, string>>
+  | { message: string };
+  export const submitExistingWordSuggestionToBackend = createAsyncThunk<
+    ExistingWordSuggestion, // The type of the returned value on success
+    Omit<ExistingWordSuggestion, "id">, // The type of the input value
+    {
+      rejectValue: ErrorResponse; // The type for rejected values
+    }
+  >(
+    "vocabulary/fetchSuggestionToBackend",
+    async (formData, { rejectWithValue }) => {
+      try {
+        const token = localStorage.getItem("accessToken");
+        const response = await fetch(
+          "http://localhost:8000/save-suggestion-for-specific-word/",
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+            body: JSON.stringify(formData),
+          }
+        );
+  
+        const responseData = await response.json();
+        console.log(`Response data suggestion to backend`, responseData);
+  
+        if (!response.ok) {
+          // Handle errors based on the response
           return rejectWithValue(responseData as ErrorResponse);
         }
-        // If it's a string or unknown format, wrap it in a message property
-        return rejectWithValue({ message: String(responseData) });
+  
+        // Map the response to fit the ExistingWordSuggestion interface
+        const suggestion: ExistingWordSuggestion = {
+          id: responseData.id.toString(), // Ensure id is a string
+          vocabulary_item: responseData.vocabulary_item,
+          suggestion_type: responseData.suggestion_type as "colloquial" | "translation",
+          suggestion: responseData.suggestion,
+          language: responseData.language,
+          status: responseData.status,
+          like_count: responseData.like_count,
+        };
+  
+        return suggestion; // Return the mapped suggestion
+      } catch (error) {
+        // Handle caught errors
+        return rejectWithValue({
+          message: error instanceof Error ? error.message : "An unknown error occurred",
+        });
       }
-
-      return responseData;
-    } catch (error) {
-      // For caught errors, always return an object with a message property
-      return rejectWithValue({ message: error instanceof Error ? error.message : "An unknown error occurred" });
     }
-  }
-);
+  );
+  
+
 export const submitNewWordSuggestion = createAsyncThunk(
   "vocabulary/suggestNewWord",
   async (newWordData: NewWordData, { rejectWithValue }) => {
@@ -134,7 +150,7 @@ export const submitNewWordSuggestion = createAsyncThunk(
 
 export const likeExistingWordSuggestion = createAsyncThunk(
   "vocabulary/likeExistingWordSuggestion",
-  async (suggestionId: number, { rejectWithValue }) => {
+  async (suggestionId: string, { rejectWithValue }) => {
     try {
       const response = await fetch(
         `http://localhost:8000/like-vocabulary-suggestion/${suggestionId}/`,
@@ -161,7 +177,7 @@ export const likeExistingWordSuggestion = createAsyncThunk(
 
 export const likeNewWordSuggestion = createAsyncThunk(
   "vocabulary/likeNewWordSuggestion",
-  async (suggestionId: number, { rejectWithValue }) => {
+  async (suggestionId: string, { rejectWithValue }) => {
     try {
       const response = await fetch(
         `http://localhost:8000/like-new-word-suggestion/${suggestionId}/`,
@@ -187,14 +203,7 @@ export const likeNewWordSuggestion = createAsyncThunk(
 );
 export const approveVocabularySuggestion = createAsyncThunk(
   "vocabulary/approveVocabularySuggestion",
-  async (suggestionId: number, { rejectWithValue, getState }) => {
-    const state = getState() as RootState;
-    const userRole = state.authState.profile?.user_type;
-
-    if (userRole !== "overseer" && userRole !== "superuser") {
-      return rejectWithValue("Unauthorized: Insufficient permissions");
-    }
-
+  async (suggestionId: string, { rejectWithValue }) => {
     try {
       const response = await fetch(
         `http://localhost:8000/approve-vocabulary-suggestion/${suggestionId}/`,
@@ -208,20 +217,19 @@ export const approveVocabularySuggestion = createAsyncThunk(
       );
 
       if (!response.ok) {
-        throw new Error("Failed to approve suggestion");
+        throw new Error("Failed to approve vocabulary suggestion");
       }
 
       const data = await response.json();
-      return { id: suggestionId, ...data };
+      return data.vocabulary_item; // Return the updated vocabulary item
     } catch (error) {
       return rejectWithValue(error);
     }
   }
 );
-
 export const approveNewWordSuggestion = createAsyncThunk(
   "vocabulary/approveNewWordSuggestion",
-  async (suggestionId: number, { rejectWithValue, getState }) => {
+  async (suggestionId: string, { rejectWithValue, getState }) => {
     const state = getState() as RootState;
     const userRole = state.authState.profile?.user_type;
 
@@ -246,19 +254,22 @@ export const approveNewWordSuggestion = createAsyncThunk(
       }
 
       const data = await response.json();
-      return { id: suggestionId, ...data };
+      // Ensure you are accessing the correct keys
+      const { id, message, vocabulary_item: vocabularyItem } = data;
+      return { id, message, vocabularyItem }; // Consistent key name
     } catch (error) {
       return rejectWithValue(error);
     }
   }
 );
+
 export const rejectSuggestion = createAsyncThunk(
   "vocabulary/rejectSuggestion",
   async (
     {
       suggestionId,
       suggestionType,
-    }: { suggestionId: number; suggestionType: "new_word" | "vocabulary" },
+    }: { suggestionId: string; suggestionType: "new_word" | "vocabulary" },
     { rejectWithValue }
   ) => {
     try {
