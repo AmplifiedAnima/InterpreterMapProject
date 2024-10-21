@@ -1,2 +1,2 @@
 # InterpreterMapProject
-React App / Typescript / React Router project
+React/Typescript/Python/Django/project
