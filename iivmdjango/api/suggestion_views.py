@@ -3,50 +3,131 @@ from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated
 from rest_framework import status
 from django.db import transaction
-from .serializers import VocabularyItemSerializer, TranslationSerializer, NewWordSuggestionSerializer, SuggestionToVocabularyItemSerializer
+from .serializers import VocabularyItemSerializer, NewWordSuggestionSerializer, SuggestionToVocabularyItemSerializer
 from .models import VocabularyItem, Translation, NewWordSuggestion, SuggestionToVocabularyItem
-from djangobackend.models import UserProfile
 import uuid
+import logging
 
-@api_view(['GET'])
-def getSuggestionsForWord(request, pk):
-    try:
-        suggestions_for_word = SuggestionToVocabularyItem.objects.filter(vocabulary_item_id=pk)
-        serializer = SuggestionToVocabularyItemSerializer(suggestions_for_word, many=True)
-        return Response(serializer.data)
-    except Exception as e:
-        return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
 
-@api_view(['GET'])
-def getAllSuggestionsForAllWords(request):
-    try:
-        existing_word_suggestions = SuggestionToVocabularyItem.objects.all()
-        new_word_suggestions = NewWordSuggestion.objects.all()
+logger = logging.getLogger(__name__)
 
-        existing_word_serializer = SuggestionToVocabularyItemSerializer(existing_word_suggestions, many=True)
-        new_word_serializer = NewWordSuggestionSerializer(new_word_suggestions, many=True)
-
-        combined_suggestions = {
-            'existing_word_suggestions': existing_word_serializer.data,
-            'new_word_suggestions': new_word_serializer.data
-        }
-
-        return Response(combined_suggestions)
-    except Exception as e:
-        return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
-@api_view(['POST'])
-@permission_classes([IsAuthenticated])
-
-    
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
 def create_new_word_suggestion(request):
-    serializer = NewWordSuggestionSerializer(data=request.data)
+    term = request.data.get('term', '').lower()  # Convert to lowercase
+
+    # Check if the word already exists in the VocabularyItem model (case-insensitive)
+    if VocabularyItem.objects.filter(term__iexact=term).exists():
+        return Response({
+            'error': 'Validation failed',
+            'details': {
+                'term': ['This word already exists in the vocabulary.']
+            }
+        }, status=status.HTTP_400_BAD_REQUEST)
+
+    # Check if the suggestion already exists (case-insensitive)
+    if NewWordSuggestion.objects.filter(term__iexact=term).exists():
+        return Response({
+            'error': 'Validation failed',
+            'details': {
+                'term': ['A suggestion for this word already exists.']
+            }
+        }, status=status.HTTP_400_BAD_REQUEST)
+
+    # Create a new dictionary with lowercase 'term'
+    lowercase_data = request.data.copy()
+    lowercase_data['term'] = term
+
+    serializer = NewWordSuggestionSerializer(data=lowercase_data)
     if serializer.is_valid():
         serializer.save()
         return Response(serializer.data, status=status.HTTP_201_CREATED)
-    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+    # If the serializer is not valid, return detailed error messages
+    return Response({
+        'error': 'Validation failed',
+        'details': serializer.errors
+    }, status=status.HTTP_400_BAD_REQUEST)
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def create_suggestion_for_the_word(request):
+    try:
+        term = request.data.get('term')
+        if not term:
+            logger.error("Term is missing in the request data")
+            return Response({
+                'error': 'Validation failed',
+                'details': {
+                    'term': ['Term is required']
+                }
+            }, status=status.HTTP_400_BAD_REQUEST)
+
+        try:
+            vocabulary_item = VocabularyItem.objects.get(term=term)
+        except VocabularyItem.DoesNotExist:
+            logger.error(f"Vocabulary item '{term}' not found")
+            return Response({
+                'error': 'Not found',
+                'details': {
+                    'term': [f"Vocabulary item '{term}' not found"]
+                }
+            }, status=status.HTTP_404_NOT_FOUND)
+        
+        suggestion_type = request.data.get('suggestionType', '')
+        suggestion = request.data.get('suggestion', '')
+        language = request.data.get('language', '')[:2]  # Limit to 2 characters for all cases
+        
+        logger.info(f"Received suggestion: type={suggestion_type}, suggestion={suggestion}, language={language}")
+
+        # Check if a similar suggestion already exists
+        existing_suggestion = SuggestionToVocabularyItem.objects.filter(
+            vocabulary_item=vocabulary_item,
+            suggestion_type='colloquial' if suggestion_type == 'colloquial' else 'translation',
+            suggestion=suggestion,
+            language=language
+        ).first()
+
+        if existing_suggestion:
+            logger.warning(f"Similar suggestion already exists: {existing_suggestion}")
+            return Response({
+                'error': 'Validation failed',
+                'details': {
+                    'suggestion': ['A similar suggestion already exists for this term']
+                }
+            }, status=status.HTTP_409_CONFLICT)
+
+        serializer_data = {
+            'vocabulary_item': vocabulary_item.id,
+            'suggestion_type': 'colloquial' if suggestion_type == 'colloquial' else 'translation',
+            'suggestion': suggestion,
+            'language': language,
+            'status': 'pending'
+        }
+        
+        serializer = SuggestionToVocabularyItemSerializer(data=serializer_data)
+        if serializer.is_valid():
+            serializer.save()
+            logger.info(f"Suggestion created successfully: {serializer.data}")
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        else:
+            logger.error(f"Serializer validation failed: {serializer.errors}")
+            return Response({
+                'error': 'Validation failed',
+                'details': serializer.errors
+            }, status=status.HTTP_400_BAD_REQUEST)
+    
+    except Exception as e:
+        logger.exception(f"An unexpected error occurred: {str(e)}")
+        return Response({
+            'error': 'An unexpected error occurred',
+            'details': {
+                'non_field_errors': [str(e)]
+            }
+        }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
 def approve_new_word_suggestion(request, pk):
     try:
         with transaction.atomic():
@@ -77,6 +158,7 @@ def approve_new_word_suggestion(request, pk):
             }, status=status.HTTP_200_OK)
     except NewWordSuggestion.DoesNotExist:
         return Response({'error': 'Suggestion not found'}, status=status.HTTP_404_NOT_FOUND)
+
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
 def approve_vocabulary_suggestion(request, pk):
@@ -96,13 +178,17 @@ def approve_vocabulary_suggestion(request, pk):
             suggestion.status = 'accepted'
             suggestion.save()
             
+            # Fetch the updated vocabulary item with all translations
+            vocabulary_item.refresh_from_db()
+            serializer = VocabularyItemSerializer(vocabulary_item)
+            
             return Response({
                 'message': 'Vocabulary suggestion approved and updated',
-                'vocabulary_item': VocabularyItemSerializer(vocabulary_item).data
+                'vocabulary_item': serializer.data
             }, status=status.HTTP_200_OK)
     except SuggestionToVocabularyItem.DoesNotExist:
-        return Response({'error': 'Suggestion not found'}, status=status.HTTP_404_NOT_FOUND)
-
+            return Response({'error': 'Suggestion not found'}, status=status.HTTP_404_NOT_FOUND)
+        
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
 def reject_suggestion(request, pk):
@@ -123,31 +209,33 @@ def reject_suggestion(request, pk):
     except model.DoesNotExist:
         return Response({'error': 'Suggestion not found'}, status=status.HTTP_404_NOT_FOUND)
 
-@api_view(['POST'])
-@permission_classes([IsAuthenticated])
-def create_suggestion_for_the_word(request):
+@api_view(['GET'])
+def getSuggestionsForWord(request, pk):
     try:
-        vocabulary_item = VocabularyItem.objects.get(term=request.data['term'])
-    except VocabularyItem.DoesNotExist:
-        return Response({"error": f"Vocabulary item '{request.data['term']}' not found"}, status=status.HTTP_404_NOT_FOUND)
+        suggestions_for_word = SuggestionToVocabularyItem.objects.filter(vocabulary_item_id=pk)
+        serializer = SuggestionToVocabularyItemSerializer(suggestions_for_word, many=True)
+        return Response(serializer.data)
+    except Exception as e:
+        return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
 
-    suggestion_type = request.data.get('suggestionType', '')
-    language = request.data.get('language', '')[:2]  # Limit to 2 characters for all cases
+@api_view(['GET'])
+def getAllSuggestionsForAllWords(request):
+    try:
+        existing_word_suggestions = SuggestionToVocabularyItem.objects.all()
+        new_word_suggestions = NewWordSuggestion.objects.all()
 
-    serializer_data = {
-        'vocabulary_item': vocabulary_item.id,
-        'suggestion_type': 'colloquial' if suggestion_type == 'colloquial' else 'translation',
-        'suggestion': request.data.get('suggestion', ''),
-        'language': language,
-        'status': 'pending'
-    }
+        existing_word_serializer = SuggestionToVocabularyItemSerializer(existing_word_suggestions, many=True)
+        new_word_serializer = NewWordSuggestionSerializer(new_word_suggestions, many=True)
 
-    serializer = SuggestionToVocabularyItemSerializer(data=serializer_data)
-    if serializer.is_valid():
-        serializer.save()
-        return Response(serializer.data, status=status.HTTP_201_CREATED)
-    
-    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        combined_suggestions = {
+            'existing_word_suggestions': existing_word_serializer.data,
+            'new_word_suggestions': new_word_serializer.data
+        }
+
+        return Response(combined_suggestions)
+    except Exception as e:
+        return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
+
 
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])

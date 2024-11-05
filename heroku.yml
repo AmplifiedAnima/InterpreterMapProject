@@ -1,0 +1,6 @@
+build:
+  docker:
+    web: ./IIVM-fe/Dockerfile  # Ścieżka do Dockerfile frontend
+    backend: ./iivmdjango/Dockerfile  # Ścieżka do Dockerfile backend
+  config:
+    NODE_ENV: production  # Ustawienia środowiska

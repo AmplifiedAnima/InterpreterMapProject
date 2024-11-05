@@ -2,7 +2,6 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 import { UserLoginData, UserRegistrationData } from "./authTypes";
 import { VocabularyItemInterface } from "../../interfaces/vocabulary.interface";
 import { UserProfileData } from "./authTypes";
-
 export const registerUser = createAsyncThunk<
   {
     access: string;
@@ -12,7 +11,7 @@ export const registerUser = createAsyncThunk<
     savedVocabulary: VocabularyItemInterface[];
   },
   UserRegistrationData,
-  { rejectValue: string }
+  { rejectValue: { error: string; details: Record<string, string[]> } }
 >(
   "userAuth/registerUser",
   async (registrationData: UserRegistrationData, { rejectWithValue }) => {
@@ -22,37 +21,37 @@ export const registerUser = createAsyncThunk<
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({
-          user: registrationData,
-        }),
+        body: JSON.stringify(registrationData),
       });
 
       if (!response.ok) {
         const errorData = await response.json();
-        const errorMessage =
-          errorData.non_field_errors &&
-          Array.isArray(errorData.non_field_errors)
-            ? errorData.non_field_errors.join(", ")
-            : "Registration failed. Please check your input.";
-
-        return rejectWithValue(errorMessage);
+        return rejectWithValue(errorData);
       }
 
       const data = await response.json();
       return data;
     } catch (error) {
-      return rejectWithValue(
-        error instanceof Error ? error.message : "An error occurred"
-      );
+      return rejectWithValue({
+        error: "An error occurred",
+        details: {
+          non_field_errors: [
+            error instanceof Error ? error.message : "Unknown error",
+          ],
+        },
+      });
     }
   }
 );
-
-export const loginUser = createAsyncThunk<{
-  access: string;
-  refresh: string;
-  profile: UserProfileData;
-}, UserLoginData, { rejectValue: string }>(
+export const loginUser = createAsyncThunk<
+  {
+    access: string;
+    refresh: string;
+    profile: UserProfileData;
+  },
+  UserLoginData,
+  { rejectValue: { error: string; details: Record<string, string[]> } }
+>(
   "userAuth/loginUser",
   async (loginData: UserLoginData, { rejectWithValue }) => {
     try {
@@ -64,45 +63,48 @@ export const loginUser = createAsyncThunk<{
         body: JSON.stringify(loginData),
       });
 
+      const data = await response.json();
+
       if (!response.ok) {
-        const errorMessage =
-          response.status === 401
-            ? "Unauthorized, check username and password"
-            : "Login failed. Please check your input.";
-        return rejectWithValue(errorMessage);
+        return rejectWithValue({
+          error: data.error || "Login failed",
+          details: data.details || { non_field_errors: ["An error occurred"] },
+        });
       }
 
-      const data = await response.json();
-      console.log(data);  // Log the entire response for debugging
-
-      // Ensure that the expected fields are present in the response
       if (!data.access || !data.refresh) {
-        return rejectWithValue("Missing access or refresh token");
+        return rejectWithValue({
+          error: "Missing access or refresh token",
+          details: { non_field_errors: ["Missing access or refresh token"] },
+        });
       }
 
       return {
         access: data.access,
         refresh: data.refresh,
         profile: {
-          username: data.username || "",  // Default to empty string if not provided
-          email: data.email || "",  // Default to empty string if not provided
-          savedVocabulary: data.savedVocabulary || [],  // Default to empty array if not provided
-          user_type: data.user_type || "",  // Default to empty string if not provided
+          username: data.username || "",
+          email: data.email || "",
+          savedVocabulary: data.savedVocabulary || [],
+          user_type: data.user_type || "",
         },
       };
     } catch (error) {
-      return rejectWithValue(
-        error instanceof Error ? error.message : "An error occurred"
-      );
+      return rejectWithValue({
+        error: "An unexpected error occurred",
+        details: {
+          non_field_errors: [
+            error instanceof Error ? error.message : "Unknown error",
+          ],
+        },
+      });
     }
   }
 );
-
-
 export const refreshToken = createAsyncThunk<
   { access: string },
   { refresh: string },
-  { rejectValue: string }
+  { rejectValue: { error: string; details: Record<string, string[]> } }
 >("userAuth/refreshToken", async ({ refresh }, { rejectWithValue }) => {
   try {
     const response = await fetch("http://localhost:8000/token/refresh/", {
@@ -118,15 +120,63 @@ export const refreshToken = createAsyncThunk<
         response.status === 401
           ? "Refresh token expired or invalid."
           : "Token refresh failed.";
-      return rejectWithValue(errorMessage);
+      return rejectWithValue({
+        error: errorMessage,
+        details: { non_field_errors: [errorMessage] },
+      });
     }
 
     const data = await response.json();
     console.log(data);
     return { access: data.access };
   } catch (error) {
-    return rejectWithValue(
-      error instanceof Error ? error.message : "An error occurred"
-    );
+    return rejectWithValue({
+      error: "An unexpected error occurred",
+      details: {
+        non_field_errors: [
+          error instanceof Error ? error.message : "An error occurred",
+        ],
+      },
+    });
   }
 });
+
+export const changePassword = createAsyncThunk<
+  { message: string },
+  { currentPassword: string; newPassword: string },
+  { rejectValue: { error: string; details: Record<string, string[]> } }
+>(
+  "userAuth/changePassword",
+  async ({ currentPassword, newPassword }, { rejectWithValue }) => {
+    try {
+      const response = await fetch("http://localhost:8000/change-password/", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+        },
+        body: JSON.stringify({
+          current_password: currentPassword,
+          new_password: newPassword,
+        }),
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        return rejectWithValue(errorData);
+      }
+
+      const data = await response.json();
+      return { message: data.message };
+    } catch (error) {
+      return rejectWithValue({
+        error: "An unexpected error occurred",
+        details: {
+          non_field_errors: [
+            error instanceof Error ? error.message : "Unknown error",
+          ],
+        },
+      });
+    }
+  }
+);

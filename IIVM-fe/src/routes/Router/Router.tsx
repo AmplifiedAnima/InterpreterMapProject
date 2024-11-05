@@ -1,17 +1,18 @@
 import * as React from "react";
 import { createBrowserRouter } from "react-router-dom";
 import { Root } from "../Root.";
-import { ErrorPage } from "../Error-page";
-import { VocbularyLeixconRoute } from "../vocabulary-lexicon-route";
-import  LandingPage  from "../LandingPage";
-import { QuizPage } from "../quiz-page";
+import { ErrorPageRoute } from "../error-page-route";
+import { VocabularyLexiconRoute } from "../vocabulary-lexicon-route";
+import LandingPageRoute from "../landing-page-route";
+import { QuizPageRoute } from "../quiz-page-route";
 import { Header } from "../../components/Header";
-import { GraphPage } from "../Graph-page";
-import { ProfilePage } from "../profile-page";
+
+import { ProfilePageRoute } from "../profile-page-route";
 import CreateUserProfilePage from "../create-user-profile-page";
-import LoginUserPage from "../login-user-page";
-import { AddWordPage } from "../add-word-page";
+import LoginUserRoute from "../login-user-route";
+import { AddNewWordRoute } from "../add-new-word-route";
 import { SuggestionAcquiesceRoute } from "../suggestions-acquiesce-route";
+import { AddSuggestionRoute } from "../add-new-suggestion-to-word-route";
 
 export const router = createBrowserRouter([
   {
@@ -20,34 +21,35 @@ export const router = createBrowserRouter([
     errorElement: (
       <>
         <Header />
-        <ErrorPage />
+        <ErrorPageRoute />
       </>
     ),
     children: [
       {
         index: true,
-        element: <LandingPage />,
+        element: <LandingPageRoute />,
       },
       {
         path: "vocabulary-map/:category?/:id?",
-        element: <VocbularyLeixconRoute />,
+        element: <VocabularyLexiconRoute/>,
       },
       {
         path: "add-word-page",
-        element: <AddWordPage />,
+        element: <AddNewWordRoute />,
+      },
+      {
+        path: "add-new-suggestion-to-word",
+        element: <AddSuggestionRoute />,
       },
       {
         path: "quiz-page",
-        element: <QuizPage />,
+        element: <QuizPageRoute />,
       },
       { path: "suggestion-acquiesce", element: <SuggestionAcquiesceRoute /> },
-      {
-        path: "vocabulary-graph",
-        element: <GraphPage />,
-      },
+
       {
         path: "profile-page",
-        element: <ProfilePage />,
+        element: <ProfilePageRoute />,
       },
       {
         path: "create-user-profile",
@@ -55,7 +57,7 @@ export const router = createBrowserRouter([
       },
       {
         path: "login-user",
-        element: <LoginUserPage />,
+        element: <LoginUserRoute />,
       },
     ],
   },

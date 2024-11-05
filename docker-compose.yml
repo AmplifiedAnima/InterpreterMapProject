@@ -1,0 +1,18 @@
+version: '3'
+services:
+  frontend:
+    build:
+      context: ./IIVM-fe
+      dockerfile: Dockerfile
+    ports:
+      - "5173:5173"
+    volumes:
+      - ./IIVM-fe:/app
+    command: npm run dev -- --host
+
+  backend:
+    build:
+      context: ./iivmdjango
+      dockerfile: Dockerfile
+    ports:
+      - "8000:8000"

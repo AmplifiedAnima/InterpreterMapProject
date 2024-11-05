@@ -1,18 +1,20 @@
 import React, { useEffect, useCallback, useMemo } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { VocabularyMapBoard } from "../components/VocabularyLexicon/VocabularyLexiconBoard";
+import { VocabularyLexicon } from "../components/VocabularyLexicon/VocabularyLexiconBoard";
 import {
   fetchVocabularyByCategory,
   fetchVocabularyWithSpecificId,
   fetchVocabulary,
+  fetchSavedVocabularyOfUser,
 } from "../redux/vocabulary/vocabularyThunks";
 import { setCurrentItem } from "../redux/vocabulary/VocabularySlice";
 import { AppDispatch, RootState } from "../redux/store";
 import { useParams, useNavigate } from "react-router-dom";
-import { VocabularyItemInterface, } from "../interfaces/vocabulary.interface";
+import { VocabularyItemInterface } from "../interfaces/vocabulary.interface";
 import FullPageSpinner from "../components/UI/FullPageSpinner";
+import { motion } from "framer-motion";
 
-export const VocbularyLeixconRoute: React.FC = () => {
+export const VocabularyLexiconRoute: React.FC = () => {
   const dispatch: AppDispatch = useDispatch();
   const navigate = useNavigate();
   const { category, id } = useParams<{ category?: string; id?: string }>();
@@ -24,69 +26,111 @@ export const VocbularyLeixconRoute: React.FC = () => {
     status,
     error,
     currentItemId,
+    savedVocabularyIds,
+    savedVocabularyStatus,
   } = useSelector((state: RootState) => state.vocabulary);
 
-  const currentItem = useMemo(() => 
-    currentItemId ? items[currentItemId] : null, 
+  const currentItem = useMemo(
+    () => (currentItemId ? items[currentItemId] : null),
     [items, currentItemId]
-  );
+  );// Zoptymalizowany useEffect do pobierania zapisanego słownictwa
+  useEffect(() => {
+    if (savedVocabularyStatus === "idle") {
+      dispatch(fetchSavedVocabularyOfUser());
+    } else if (savedVocabularyStatus === "succeeded") {
+      const savedVocabularyNotInSlice = savedVocabularyIds.filter(
+        (id) => !items[id]
+      );
+      if (savedVocabularyNotInSlice.length > 0) {
+        console.log("Fetching missing saved vocabulary");
+        dispatch(fetchSavedVocabularyOfUser());
+      }
+    }
+  }, [dispatch, savedVocabularyStatus, savedVocabularyIds, items]);
 
-  // Fetch vocabulary by category, specific item, or all items
   useEffect(() => {
     const fetchData = async () => {
-      if (status === 'loading') return;
+      console.log("Fetching data...");
+      console.log("Status:", status);
+      if (status === "loading") return;
 
       if (id) {
         if (!items[id]) {
+          console.log("Fetching vocabulary with specific id:", id);
           await dispatch(fetchVocabularyWithSpecificId(id));
         } else {
+          console.log("Setting current item:", id);
           dispatch(setCurrentItem(id));
         }
       } else if (category) {
         if (!groupedItems[category] || groupedItems[category].length === 0) {
+          console.log("Fetching vocabulary by category:", category);
           await dispatch(fetchVocabularyByCategory(category));
+        } else {
+          console.log("Using cached data for category:", category);
         }
       } else {
-        // If no category or id is specified, fetch all items
         if (Object.keys(groupedItems).length === 0) {
+          console.log("Fetching all vocabulary");
           await dispatch(fetchVocabulary());
+        } else {
+          console.log("Using cached data for all vocabulary");
         }
       }
+      console.log("Fetch complete");
     };
 
     fetchData();
   }, [dispatch, category, id, items, groupedItems, status]);
 
-  const handleCategorySelect = useCallback((selectedCategory: string) => {
-    navigate(`/vocabulary-map/${selectedCategory}`);
-  }, [navigate]);
+  const handleCategorySelect = useCallback(
+    (selectedCategory: string) => {
+      console.log("Category selected:", selectedCategory);
+      navigate(`/vocabulary-map/${selectedCategory}`);
+    },
+    [navigate]
+  );
 
-  const handleWordSelect = useCallback((word: VocabularyItemInterface) => {
-    dispatch(setCurrentItem(word.id));
-    navigate(`/vocabulary-map/${word.category}/${word.id}`);
-  }, [navigate, dispatch]);
+  const handleWordSelect = useCallback(
+    (word: VocabularyItemInterface) => {
+      console.log("Word selected:", word);
+      dispatch(setCurrentItem(word.id));
+      navigate(`/vocabulary-map/${word.category}/${word.id}`);
+    },
+    [navigate, dispatch]
+  );
 
   const hasNecessaryData = useMemo(() => {
-    if (!category && !id) {
-      // For the main vocabulary map page
-      return Object.keys(groupedItems).length > 0;
-    }
-    return categoryLabels.length > 0 && (
-      !category || (groupedItems[category] && groupedItems[category].length > 0)
-    );
+    const result = !category && !id
+      ? Object.keys(groupedItems).length > 0
+      : categoryLabels.length > 0 &&
+        (!category || (groupedItems[category] && groupedItems[category].length > 0));
+    
+    console.log("Has necessary data:", result);
+    console.log("Category Labels length:", categoryLabels.length);
+    console.log("Grouped Items keys:", Object.keys(groupedItems));
+    
+    return result;
   }, [category, id, categoryLabels, groupedItems]);
 
   if (status === "loading" || !hasNecessaryData) {
+    console.log("Rendering FullPageSpinner");
     return <FullPageSpinner />;
   }
 
   if (status === "failed") {
+    console.log("Rendering error state");
     return <div>Error: {error}</div>;
   }
 
+  console.log("Rendering VocabularyLexicon");
   return (
-    <div>
-      <VocabularyMapBoard
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.2, ease: "easeOut" }}
+    >
+      <VocabularyLexicon
         groupedVocabulary={groupedItems}
         categoryLabels={categoryLabels}
         onCategorySelect={handleCategorySelect}
@@ -94,6 +138,6 @@ export const VocbularyLeixconRoute: React.FC = () => {
         selectedCategory={category || null}
         selectedWord={currentItem}
       />
-    </div>
+    </motion.div>
   );
 };

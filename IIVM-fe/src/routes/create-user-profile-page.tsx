@@ -1,30 +1,72 @@
-import React, { useEffect } from "react";
+// CreateUserProfilePage.tsx
+import React, {  useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
 import { registerUser } from "../redux/auth/authThunks";
-import RegistrationForm from "../components/Forms/RegistrationForm";
-import { RootState, AppDispatch } from "../redux/store";
 import { UserRegistrationData } from "../redux/auth/authTypes";
+import { RootState, AppDispatch } from "../redux/store";
+import RegistrationForm from "../components/Forms/RegistrationForm";
+import { useNavigate } from "react-router-dom";
+import { Toast } from "../components/UI/Toast";
 
+import { useAuthErrorCleaner } from "../utils/useAuthErrorCleaner";
 const CreateUserProfilePage: React.FC = () => {
   const dispatch: AppDispatch = useDispatch();
+  const { status, error } = useSelector((state: RootState) => state.authState);
   const navigate = useNavigate();
-  const { status, error, isLoggedIn } = useSelector(
-    (state: RootState) => state.authState
-  );
+  const [toastMessage, setToastMessage] = useState<string | null>(null);
+  const [toastType, setToastType] = useState<"success" | "error">("success");
 
-  useEffect(() => {
-    if (status === "succeeded") {
-      navigate("/login-user");
+  useAuthErrorCleaner();
+
+  const handleRegister = async (
+    formData: Omit<UserRegistrationData, "user_type">
+  ) => {
+    const registrationData: UserRegistrationData = {
+      ...formData,
+      user_type: "interpreter",
+    };
+
+    const resultAction = await dispatch(registerUser(registrationData));
+    if (registerUser.fulfilled.match(resultAction)) {
+      console.log("Registration successful:", resultAction.payload);
+      setToastMessage("Registration successful! Please log in.");
+      setToastType("success");
+      // Navigate to login page after a short delay
+      setTimeout(() => navigate("/login-user"), 2000);
+    } else {
+      console.error("Registration failed:", resultAction.payload);
+      if (
+        resultAction.payload &&
+        typeof resultAction.payload === "object" &&
+        "error" in resultAction.payload
+      ) {
+        setToastMessage(resultAction.payload.error);
+      } else {
+        setToastMessage("Registration failed. Please try again.");
+      }
+      setToastType("error");
     }
-  }, [status, isLoggedIn, navigate]);
+  };
 
-  const handleSubmit = (data: UserRegistrationData) => {
-    dispatch(registerUser(data));
+  const handleCloseToast = () => {
+    setToastMessage(null);
   };
 
   return (
-    <RegistrationForm onSubmit={handleSubmit} status={status} error={error} />
+    <>
+      <RegistrationForm
+        onSubmit={handleRegister}
+        status={status}
+        error={error || null}
+      />
+      {toastMessage && (
+        <Toast
+          message={toastMessage}
+          type={toastType}
+          onClose={handleCloseToast}
+        />
+      )}
+    </>
   );
 };
 

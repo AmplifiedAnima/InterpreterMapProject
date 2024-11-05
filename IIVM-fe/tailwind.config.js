@@ -18,7 +18,10 @@ module.exports = {
         scrollbar: {
           DEFAULT: '#8A94A6', // Default scrollbar color
           hover: '#4A5568',   // Hover state color
+      
+    
         },},},
+        
     },
     plugins: [
       require('tailwind-scrollbar')({ nocompatible: true }), // Add the plugin

@@ -7,6 +7,7 @@ import {
   saveVocabularyForUser,
   removeSavedVocabularyForUser,
   saveVocabularyItem,
+  fetchCategoryLabelsOnly,
 } from "./vocabularyThunks";
 import {
   GroupedVocabularyType,
@@ -37,6 +38,7 @@ const initialState: VocabularyState = {
   savedVocabularyStatus: "idle",
   error: null,
 };
+
 const vocabularySlice = createSlice({
   name: "vocabulary",
   initialState,
@@ -50,65 +52,120 @@ const vocabularySlice = createSlice({
     clearSavedVocabulary(state) {
       state.savedVocabularyIds = [];
     },
+    clearVocabularyErrors(state) {
+      state.error = null;
+    },
+    clearCategoryData: (state) => {
+      state.groupedItems = {};
+      state.currentCategory = null;
+    },
+    updateCategoryLabels: (state, action: PayloadAction<string[]>) => {
+      const newLabels = action.payload.filter(
+        (label) => !state.categoryLabels.includes(label)
+      );
+      state.categoryLabels = [...state.categoryLabels, ...newLabels];
+    },
+    updateVocabularyItem: (
+      state,
+      action: PayloadAction<VocabularyItemInterface>
+    ) => {
+      const updatedItem = action.payload;
+      state.items[updatedItem.id] = updatedItem;
+    },
+
+    addApprovedNewWord: (
+      state,
+      action: PayloadAction<VocabularyItemInterface>
+    ) => {
+      const newItem = action.payload;
+      // Add the new item to the state.items map
+      state.items[newItem.id] = newItem;
+
+      // If the new item has a category, group it accordingly
+      if (newItem.category) {
+        // Ensure the category exists in groupedItems
+        if (!state.groupedItems[newItem.category]) {
+          state.groupedItems[newItem.category] = [];
+        }
+
+        // Add the new item to the respective category group
+        state.groupedItems[newItem.category].push(newItem);
+
+        // Add the category to categoryLabels if it doesn't exist
+        if (!state.categoryLabels.includes(newItem.category)) {
+          state.categoryLabels.push(newItem.category);
+        }
+      }
+    },
   },
   extraReducers: (builder) => {
     builder
-    .addCase(fetchVocabulary.fulfilled, (state, action) => {
-      state.status = "succeeded";
-      if (Array.isArray(action.payload)) {
-        state.items = action.payload.reduce((acc, item) => {
-          if (item && typeof item === 'object' && 'id' in item) {
-            acc[item.id] = item as VocabularyItemInterface;
-          }
-          return acc;
-        }, {} as { [id: string]: VocabularyItemInterface });
-        state.groupedItems = groupByCategoryDescending(action.payload);
-        state.categoryLabels = [...new Set(action.payload
-          .map(item => (item as VocabularyItemInterface).category)
-          .filter((category): category is string => typeof category === 'string' && category !== '')
-        )];
-      } else if (typeof action.payload === 'object' && action.payload !== null) {
-        // If payload is an object, assume it's already in the correct format
-        state.items = action.payload as { [id: string]: VocabularyItemInterface };
-        state.groupedItems = groupByCategoryDescending(Object.values(state.items));
-        state.categoryLabels = [...new Set(
-          Object.values(state.items)
-            .map(item => item.category)
-            .filter((category): category is string => typeof category === 'string' && category !== '')
-        )];
-      } else {
-        console.error('Received payload is in an unexpected format:', action.payload);
-        state.error = 'Received invalid data format';
-      }
-    })
+      .addCase(fetchVocabulary.pending, (state) => {
+        state.status = "loading";
+      })
+      .addCase(fetchVocabulary.fulfilled, (state, action) => {
+        state.status = "succeeded";
+        if (Array.isArray(action.payload)) {
+          action.payload.forEach((item) => {
+            state.items[item.id] = item;
+          });
+          state.groupedItems = groupByCategoryDescending(action.payload);
+          const newLabels = [
+            ...new Set(
+              action.payload
+                .map((item) => item.category)
+                .filter((category): category is string => !!category)
+            ),
+          ];
+          state.categoryLabels = [
+            ...new Set([...state.categoryLabels, ...newLabels]),
+          ];
+        } else {
+          state.error = "Received invalid data format";
+        }
+      })
+      .addCase(fetchVocabulary.rejected, (state, action) => {
+        state.status = "failed";
+        state.error = action.error.message || "An error occurred";
+      })
       .addCase(fetchVocabularyByCategory.fulfilled, (state, action) => {
         const category = action.meta.arg;
-        action.payload.items.forEach((item) => {
+        const items = action.payload.items;
+
+        items.forEach((item) => {
           state.items[item.id] = item;
         });
-        state.groupedItems[category] = action.payload.items;
+        state.groupedItems[category] = items;
         state.currentCategory = category;
-        state.categoryLabels = action.payload.categories;
+
+        const newCategories = action.payload.categories.filter(
+          (c: string) => !state.categoryLabels.includes(c)
+        );
+        state.categoryLabels = [...state.categoryLabels, ...newCategories];
       })
       .addCase(fetchVocabularyWithSpecificId.fulfilled, (state, action) => {
         const item = action.payload.item;
         state.items[item.id] = item;
         state.currentItemId = item.id;
+
         if (action.payload.categoryItems.length > 0) {
-          const category = item.category;
-          state.groupedItems[category!] = action.payload.categoryItems;
-          action.payload.categoryItems.forEach((categoryItem) => {
-            state.items[categoryItem.id] = categoryItem;
+          const category = item.category!;
+          state.groupedItems[category] = action.payload.categoryItems;
+          action.payload.categoryItems.forEach((catItem) => {
+            state.items[catItem.id] = catItem;
           });
         }
-        if (action.payload.categories.length > 0) {
-          state.categoryLabels = action.payload.categories;
-        }
+
+        const newCategories = action.payload.categories.filter(
+          (c: string) => !state.categoryLabels.includes(c)
+        );
+        state.categoryLabels = [...state.categoryLabels, ...newCategories];
       })
       .addCase(fetchSavedVocabularyOfUser.fulfilled, (state, action) => {
         state.savedVocabularyStatus = "succeeded";
-        state.savedVocabularyIds = action.payload.map((item) => item.id);
-        action.payload.forEach((item) => {
+        const items = action.payload;
+        state.savedVocabularyIds = items.map((item) => item.id);
+        items.forEach((item) => {
           state.items[item.id] = item;
         });
       })
@@ -129,6 +186,7 @@ const vocabularySlice = createSlice({
         state.error = null;
         const newItem = action.payload;
         state.items[newItem.id] = newItem;
+
         if (newItem.category) {
           if (!state.groupedItems[newItem.category]) {
             state.groupedItems[newItem.category] = [];
@@ -138,11 +196,25 @@ const vocabularySlice = createSlice({
             state.categoryLabels.push(newItem.category);
           }
         }
+      })
+      .addCase(fetchCategoryLabelsOnly.fulfilled, (state, action) => {
+        state.categoryLabels = action.payload.categories;
+      })
+      .addCase(fetchCategoryLabelsOnly.rejected, (state, action) => {
+        state.error = action.error.message || "Failed to fetch category labels";
       });
   },
 });
 
-export const { setCurrentItem, resetCurrentItem, clearSavedVocabulary } =
-  vocabularySlice.actions;
+export const {
+  setCurrentItem,
+  resetCurrentItem,
+  clearSavedVocabulary,
+  clearVocabularyErrors,
+  clearCategoryData,
+  updateCategoryLabels,
+  addApprovedNewWord,
+  updateVocabularyItem
+} = vocabularySlice.actions;
 
 export const vocabularyReducer = vocabularySlice.reducer;

@@ -8,6 +8,8 @@ import iconWhite from "../assets/icons/home_white.svg";
 import mapWhite from "../assets/icons/map_white.svg";
 import questionMarkWhite from "../assets/icons/help-circle_white.svg";
 import menuIcon from "../assets/icons/menu.svg";
+import listIcon from "../assets/icons/clipboard_white.svg";
+import userIcon from "../assets/icons/user.svg";
 import "/node_modules/flag-icons/css/flag-icons.min.css";
 
 export const Header = () => {
@@ -29,7 +31,8 @@ export const Header = () => {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-  const buttonStylingSpecificForHeader = "px-4 mx-[4px] justify-start text-sm";
+  const buttonStylingSpecificForHeader =
+    "px-4 mx-[4px] justify-start text-sm text-white hover:bg-[#8b8ad6] transition-colors duration-200 font-sans font-medium tracking-wide bg-[#5e67aa]";
 
   const toggleDropdown = () => setIsDropdownOpen((prev) => !prev);
   const toggleMobileMenu = () => setIsMobileMenuOpen((prev) => !prev);
@@ -44,96 +47,103 @@ export const Header = () => {
     ...(isLoggedIn
       ? [
           {
-            label: `${isMobile ? "" : "Lexicon"}`,
+            label: "Lexicon",
             icon: mapWhite,
             onClick: () => navigate("/vocabulary-map"),
           },
           {
             label: "Suggestions",
+            icon: questionMarkWhite,
             onClick: () => navigate("suggestion-acquiesce"),
           },
           {
-            label: `${isMobile ? "" : "Learn"}`,
-            icon: questionMarkWhite,
+            label: "Learn",
+            icon: listIcon,
             onClick: () => navigate("/quiz-page"),
           },
         ]
       : []),
     {
       label: isLoggedIn ? "Profile" : "Login",
+      icon: userIcon,
       onClick: isLoggedIn
         ? () => navigate("profile-page")
         : () => navigate("login-user"),
     },
   ];
-
   return (
-    <div className="flex justify-end border-b-[1px] border-b-black bg-gradient-to-l py-1 from-white to-[#a09edd] px-1">
-      <div className="relative">
-        <Button
-          className={buttonStylingSpecificForHeader}
-          onClick={toggleDropdown}
-          label={
-            <div className="flex items-center">
-              <i className={`fi fi-${language === "es" ? "es" : "pl"}`}></i>
-            </div>
-          }
-        />
-        {isDropdownOpen && (
-          <div className="absolute right-0 mt-2 w-40 bg-white border border-gray-300 rounded shadow-lg z-10">
-            <button
-              className="flex items-center px-4 py-2 hover:bg-gray-200 w-full text-left"
-              onClick={() => handleLanguageSelection("pl")}
-            >
-              <i className="fi fi-pl mr-2"></i> Polish
-            </button>
-            <button
-              className="flex items-center px-4 py-2 hover:bg-gray-200 w-full text-left"
-              onClick={() => handleLanguageSelection("es")}
-            >
-              <i className="fi fi-es mr-2"></i> Spanish
-            </button>
-          </div>
-        )}
-      </div>
-
-      {!isMobile ? (
-        <>
-          {menuItems.map((item, index) => (
-            <Button
-              key={index}
-              label={item.label}
-              imageIcon={item.icon}
-              className={buttonStylingSpecificForHeader}
-              onClick={item.onClick}
-            />
-          ))}
-        </>
-      ) : (
+    <div className="flex justify-between items-center bg-[#5e67aa] py-2 px-4 font-sans">
+      <div className="text-white text-xl font-bold">Interpreter Lexicon</div>
+      <div className="flex items-center space-x-2">
         <div className="relative">
           <Button
-            imageIcon={menuIcon}
             className={buttonStylingSpecificForHeader}
-            onClick={toggleMobileMenu}
+            onClick={toggleDropdown}
+            label={
+              <div className="flex items-center">
+                <i
+                  className={`fi fi-${language === "es" ? "es" : "pl"} mr-2`}
+                ></i>
+                <span className="uppercase">{language}</span>
+              </div>
+            }
           />
-          {isMobileMenuOpen && (
+          {isDropdownOpen && (
             <div className="absolute right-0 mt-2 w-40 bg-white border border-gray-300 rounded shadow-lg z-10">
-              {menuItems.map((item, index) => (
-                <button
-                  key={index}
-                  className="flex items-center px-4 py-2 hover:bg-gray-200 w-full text-left"
-                  onClick={() => {
-                    item.onClick();
-                    setIsMobileMenuOpen(false);
-                  }}
-                >
-                  {item.label}
-                </button>
-              ))}
+              <button
+                className="flex items-center px-4 py-2 hover:bg-gray-200 w-full text-left text-sm"
+                onClick={() => handleLanguageSelection("pl")}
+              >
+                <i className="fi fi-pl mr-2"></i> Polish
+              </button>
+              <button
+                className="flex items-center px-4 py-2 hover:bg-gray-200 w-full text-left text-sm"
+                onClick={() => handleLanguageSelection("es")}
+              >
+                <i className="fi fi-es mr-2"></i> Spanish
+              </button>
             </div>
           )}
         </div>
-      )}
+
+        {!isMobile ? (
+          <>
+            {menuItems.map((item, index) => (
+              <Button
+                key={index}
+                label={item.label}
+                imageIcon={item.icon}
+                className={buttonStylingSpecificForHeader}
+                onClick={item.onClick}
+              />
+            ))}
+          </>
+        ) : (
+          <div className="relative">
+            <Button
+              imageIcon={menuIcon}
+              className={buttonStylingSpecificForHeader}
+              onClick={toggleMobileMenu}
+            />
+            {isMobileMenuOpen && (
+              <div className="absolute right-0 mt-2 w-40 bg-white border border-gray-300 rounded shadow-lg z-10">
+                {menuItems.map((item, index) => (
+                  <button
+                    key={index}
+                    className="flex items-center px-4 py-2 hover:bg-gray-200 w-full text-left text-sm"
+                    onClick={() => {
+                      item.onClick();
+                      setIsMobileMenuOpen(false);
+                    }}
+                  >
+                    {item.label}
+                  </button>
+                ))}
+              </div>
+            )}
+          </div>
+        )}
+      </div>
     </div>
   );
 };

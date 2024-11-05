@@ -7,7 +7,9 @@
     "dev": "vite",
     "build": "tsc -b && vite build",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "start": "vite preview --port $PORT --host 0.0.0.0",
+    "heroku-postbuild": "npm run build"
   },
   "dependencies": {
     "@conform-to/react": "^1.1.5",
@@ -18,6 +20,7 @@
     "cytoscape": "^3.30.2",
     "d3": "^7.9.0",
     "flag-icons": "^7.2.3",
+    "framer-motion": "^11.11.9",
     "lucide-react": "^0.441.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
@@ -43,6 +46,6 @@
     "tailwindcss": "^3.4.10",
     "typescript": "^5.5.3",
     "typescript-eslint": "^8.0.1",
-    "vite": "^5.4.1"
+    "vite": "^5.4.2"
   }
 }

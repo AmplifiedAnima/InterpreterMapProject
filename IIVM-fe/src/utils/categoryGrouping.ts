@@ -61,12 +61,3 @@ export const groupByCategoryDescending = (
 };
 
 
-// vocabulary.filter(
-//   (item) => item
-//   // item.category !== "medical equipment" &&
-//   // item.category !== "medical records" &&
-
-//   // item.category !== "diagnostic procedures" &&
-//   // item.category !== "medical professionals" &&
-//   // item.category !== "hospital departments"
-// );
